@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
-    "start": "next start --hostname 0.0.0.0",
+    "start": "serve out -l 3100 --no-clipboard",
     "test": "playwright test"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "serve": "^14.2.6",
     "typescript": "^5.8.0"
   }
 }
