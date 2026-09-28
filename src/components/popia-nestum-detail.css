@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+.popia-page {
+  --cream:#f7f1e6;
+  --paper:#fffaf1;
+  --brown:#7b4d2f;
+  --brown-dark:#4d2e1d;
+  --green:#263526;
+  --green-soft:#dfe5d5;
+  --text:#25251f;
+  --muted:#706f65;
+  --line:#ded7ca;
+  background:var(--cream);
+  color:var(--text);
+  font-family:'DM Sans',Arial,sans-serif;
+}
+.popia-page *, .popia-page *::before, .popia-page *::after{box-sizing:border-box}
+.popia-page :is(.hero,.band,.features,.order,.topbar,.overlay,.drawer) { box-sizing:border-box; }
+.popia-page a{text-decoration:none;color:inherit}
+.popia-page button{font:inherit}
+.popia-page .topbar{
+  background:var(--green);color:#eef0e6;
+  padding:10px 6%;font-size:12px;text-align:center;letter-spacing:.4px
+}
+.popia-page .hero{
+  max-width:1240px;margin:auto;padding:55px 6% 75px;
+  display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center
+}
+.popia-page .hero { min-height:0; }
+.popia-page .kicker{color:var(--brown);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px}
+.popia-page h1{font-family:'Playfair Display',serif;font-size:clamp(48px,6vw,82px);line-height:.98;color:var(--green);margin-bottom:24px;letter-spacing:normal;font-weight:700}
+.popia-page .lead{font-size:17px;line-height:1.8;color:var(--muted);max-width:550px;margin-bottom:30px}
+.popia-page .price-row{display:flex;align-items:center;gap:18px;margin-bottom:25px}
+.popia-page .price{font-size:31px;font-weight:700;color:var(--brown-dark)}
+.popia-page .size{font-size:13px;color:var(--muted);border-left:1px solid #c8c0b4;padding-left:18px}
+.popia-page .actions{display:flex;gap:12px;align-items:center}
+.popia-page .primary{background:var(--green);color:white;border:0;border-radius:9px;padding:16px 28px;font-weight:700;cursor:pointer}
+.popia-page .primary:hover{transform:translateY(-1px)}
+.popia-page .secondary{border:1px solid #aaa394;background:transparent;border-radius:9px;padding:15px 22px;cursor:pointer}
+.popia-page .photo-wrap{position:relative}
+.popia-page .photo{
+  border-radius:24px;overflow:hidden;background:#d7c4ae;
+  box-shadow:0 24px 60px rgba(63,43,28,.18)
+}
+.popia-page .photo img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+.popia-page .sticker{
+  position:absolute;right:-15px;bottom:28px;background:var(--brown);color:white;
+  width:110px;height:110px;border-radius:50%;display:grid;place-items:center;
+  text-align:center;font-size:12px;line-height:1.35;transform:rotate(8deg);
+  border:6px solid var(--cream)
+}
+.popia-page .band{background:var(--green);color:white;padding:55px 6%}
+.popia-page .band-inner{max-width:1100px;margin:auto;text-align:center}
+.popia-page .band h2{font-family:'Playfair Display',serif;font-size:38px;margin-bottom:12px;letter-spacing:normal}
+.popia-page .band p{color:#d9dfd3;line-height:1.7;max-width:650px;margin:auto}
+.popia-page .features{max-width:1100px;margin:auto;padding:75px 6%;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.popia-page .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px}
+.popia-page .num{font-size:12px;color:var(--brown);font-weight:700;letter-spacing:1px}
+.popia-page .card h3{font-size:18px;margin:15px 0 9px;color:var(--green);letter-spacing:normal}
+.popia-page .card p{color:var(--muted);line-height:1.65;font-size:14px}
+.popia-page .order{background:var(--paper);max-width:1100px;margin:0 auto 75px;padding:45px;border-radius:22px;border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:30px}
+.popia-page .order h2{font-family:'Playfair Display',serif;color:var(--green);font-size:35px;letter-spacing:normal}
+.popia-page .order p{color:var(--muted);margin-top:8px}
+.popia-page .buybox{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.popia-page .qty{display:flex;align-items:center;border:1px solid #c8c0b4;border-radius:9px;overflow:hidden}
+.popia-page .qty button{width:42px;height:48px;border:0;background:transparent;cursor:pointer;font-size:20px}
+.popia-page .qty span{width:38px;text-align:center}
+.popia-page footer{background:#eee7da;border-top:1px solid var(--line);padding:28px 6%;display:flex;justify-content:space-between;color:#68675e;font-size:12px}
+.popia-page .overlay{display:none;position:fixed;inset:0;background:rgba(20,24,18,.58);z-index:30}
+.popia-page .overlay.show{display:block}
+.popia-page .drawer{position:absolute;right:0;top:0;height:100%;width:420px;max-width:92%;background:var(--paper);padding:30px;box-shadow:-20px 0 50px rgba(0,0,0,.2)}
+.popia-page .drawer-head{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px}
+.popia-page .drawer-head h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--green);letter-spacing:normal}
+.popia-page .close{border:0;background:none;font-size:28px;cursor:pointer;color:#666}
+.popia-page .cart-item{padding:25px 0;border-bottom:1px solid var(--line)}
+.popia-page .cart-line{display:flex;justify-content:space-between;gap:15px}
+.popia-page .cart-meta{color:var(--muted);font-size:13px;margin-top:7px}
+.popia-page .cart-controls{display:flex;align-items:center;gap:9px;margin-top:16px}
+.popia-page .cart-controls button{width:30px;height:30px;border-radius:50%;border:1px solid #bbb2a5;background:transparent;cursor:pointer}
+.popia-page .remove{margin-left:auto!important;border:0!important;width:auto!important;color:#8a7667}
+.popia-page .total{display:flex;justify-content:space-between;font-size:20px;margin-top:25px;color:var(--green)}
+.popia-page .empty{text-align:center;color:var(--muted);margin-top:90px;line-height:1.7}
+html[data-theme='dark'] .popia-page {
+  --cream:#191e19;
+  --paper:#242a22;
+  --brown:#e9b994;
+  --brown-dark:#f0caa8;
+  --green:#cfe1c6;
+  --text:#f2f0e9;
+  --muted:#c3c8ba;
+  --line:#4b5548;
+}
+html[data-theme='dark'] .popia-page .topbar, html[data-theme='dark'] .popia-page .band, html[data-theme='dark'] .popia-page .primary{background:#263526;color:#eef0e6}
+html[data-theme='dark'] .popia-page footer{background:#232920;color:#c3c8ba}
+html[data-theme='dark'] .popia-page .sticker{background:#7b4d2f;color:white}
+html[data-theme='dark'] .popia-page .secondary, html[data-theme='dark'] .popia-page .qty, html[data-theme='dark'] .popia-page .cart-controls button{border-color:var(--line)}
+html[data-theme='dark'] .popia-page .close, html[data-theme='dark'] .popia-page .remove{color:var(--muted)}
+@media(max-width:800px){
+  .popia-page .hero{grid-template-columns:1fr;padding-top:38px}
+  .popia-page .photo{order:-1}
+  .popia-page .features{grid-template-columns:1fr}
+  .popia-page .order{margin:0 20px 55px;padding:30px;display:block}
+  .popia-page .buybox{margin-top:25px}
+  .popia-page footer{display:block;text-align:center;line-height:2}
+  .popia-page .sticker{right:5px}
+}
