@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProductDetail from "@/components/product-detail";
 import PopiaNestumDetail from "@/components/popia-nestum-detail";
+import HoneyCornflakesDetail from "@/components/honey-cornflakes-detail";
 import { getProduct, isProductId, products } from "@/lib/product";
 import "@/components/popia-nestum-detail.css";
+import "@/components/honey-cornflakes-detail.css";
 
 export function generateStaticParams() { return products.map((product) => ({ id: product.id })); }
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -11,6 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!isProductId(id)) return { title: "Product not found" };
   const product = getProduct(id);
   if (id === "popia-nestum") return { title: "Popia Nestum — Rangup Sampai Habis", description: product.description, alternates: { canonical: `/product/${id}` } };
+  if (id === "honey-cornflakes") return { title: "Cornflakes Madu — Moon Store", description: product.description, alternates: { canonical: `/product/${id}` } };
   const image = product.image || "/products/usb.png";
   return {
     title: product.name,
@@ -44,5 +47,5 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       availability: "https://schema.org/InStock",
     })),
   };
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />{id === "popia-nestum" ? <PopiaNestumDetail product={product} /> : <section className="section-wrap product-page"><ProductDetail product={product} /></section>}</>;
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />{id === "popia-nestum" ? <PopiaNestumDetail product={product} /> : id === "honey-cornflakes" ? <HoneyCornflakesDetail product={product} /> : <section className="section-wrap product-page"><ProductDetail product={product} /></section>}</>;
 }

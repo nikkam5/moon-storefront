@@ -22,7 +22,7 @@ export default function Footer() {
     event.currentTarget.style.setProperty("--fy", `${event.clientY - box.top}px`);
   }
 
-  if (pathname === "/product/popia-nestum") return null;
+  if (pathname === "/product/popia-nestum" || pathname === "/product/honey-cornflakes") return null;
 
   return (
     <footer className="site-footer">

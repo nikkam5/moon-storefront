@@ -80,9 +80,9 @@ export const products: Product[] = [
     categoryLabel: "Snacks & Treats",
     tagline: "Toasted crunchy cornflakes glazed with pure golden honey and sweet butter.",
     description: "Cornflakes Madu, the way a good treat should be: balanced sweetness, a delicate caramel finish, and a long-lasting crunch. Made for sharing (or not).",
-    specs: [["Net weight", "Approx. 280g per jar"], ["Glaze", "Pure golden honey and sweet butter"], ["Finish", "Delicate caramel · balanced sweetness"], ["Texture", "Toasted and crunchy"]],
+    specs: [["Net weight", "Approx. 300g per jar"], ["Glaze", "Pure golden honey and sweet butter"], ["Finish", "Delicate caramel · balanced sweetness"], ["Texture", "Toasted and crunchy"]],
     note: "Contains butter. Please ask us for the full ingredients and allergen information before ordering.",
-    variants: [{ id: "standard-jar", label: "Standard Jar", detail: "Approx. 280g", price: 15 }],
+    variants: [{ id: "standard-jar", label: "Standard Jar", detail: "Approx. 300g", price: 15 }],
   },
 ];
 

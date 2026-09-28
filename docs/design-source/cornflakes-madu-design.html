@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cornflakes Madu — Moon Store</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#111a14;
+    --bg-card:#1a2420;
+    --green:#2d4a2e;
+    --honey:#D4A017;
+    --honey-light:#F5C518;
+    --honey-glow:rgba(212,160,23,.25);
+    --honey-soft:rgba(212,160,23,.08);
+    --text:#e8e6e1;
+    --text-muted:#9a9e97;
+    --text-dim:#6b7068;
+    --accent:#f0ede6;
+    --border:#2a332d;
+    --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+
+  /* Honeycomb Background Pattern */
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:.35;
+    background-image:
+      linear-gradient(30deg, var(--honey-soft) 12%, transparent 12.5%, transparent 87%, var(--honey-soft) 87.5%, var(--honey-soft)),
+      linear-gradient(150deg, var(--honey-soft) 12%, transparent 12.5%, transparent 87%, var(--honey-soft) 87.5%, var(--honey-soft)),
+      linear-gradient(30deg, var(--honey-soft) 12%, transparent 12.5%, transparent 87%, var(--honey-soft) 87.5%, var(--honey-soft)),
+      linear-gradient(150deg, var(--honey-soft) 12%, transparent 12.5%, transparent 87%, var(--honey-soft) 87.5%, var(--honey-soft)),
+      linear-gradient(60deg, rgba(212,160,23,.05) 25%, transparent 25.5%, transparent 75%, rgba(212,160,23,.05) 75%, rgba(212,160,23,.05)),
+      linear-gradient(60deg, rgba(212,160,23,.05) 25%, transparent 25.5%, transparent 75%, rgba(212,160,23,.05) 75%, rgba(212,160,23,.05));
+    background-size:80px 140px;
+    background-position:0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+  }
+
+  /* Floating Hexagons */
+  .hex-float{
+    position:fixed;
+    width:60px;height:60px;
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    opacity:.08;
+    pointer-events:none;
+    z-index:0;
+    animation:floatHex 20s ease-in-out infinite;
+  }
+  .hex-float:nth-child(1){top:15%;left:5%;animation-delay:0s}
+  .hex-float:nth-child(2){top:60%;right:8%;width:90px;height:90px;animation-delay:-5s;opacity:.06}
+  .hex-float:nth-child(3){bottom:20%;left:15%;width:40px;height:40px;animation-delay:-10s}
+  .hex-float:nth-child(4){top:30%;right:15%;width:50px;height:50px;animation-delay:-15s;opacity:.05}
+  @keyframes floatHex{
+    0%,100%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-30px) rotate(180deg)}
+  }
+
+  /* Top Banner */
+  .top-banner{
+    background:linear-gradient(90deg, var(--green), #3a5c3b);
+    text-align:center;
+    padding:10px 20px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:1;
+  }
+  .top-banner a{
+    display:inline-flex;align-items:center;gap:4px;
+    color:var(--honey-light);font-size:13px;font-weight:500;
+  }
+  .top-banner a:hover{text-decoration:underline}
+
+  /* Header */
+  .header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 48px;
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;
+    background:rgba(17,26,20,.95);
+    backdrop-filter:blur(10px);
+    z-index:100;
+  }
+  .logo{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:700;letter-spacing:0.5px}
+  .logo-icon{
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    color:#111;
+    width:38px;height:38px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:16px;
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  .nav{display:flex;align-items:center;gap:32px;font-size:14px}
+  .nav a{color:var(--text-muted);transition:color .2s;position:relative}
+  .nav a:hover,.nav a.active{color:var(--honey-light)}
+  .nav a.active::after{
+    content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+    width:6px;height:6px;border-radius:50%;background:var(--honey);
+  }
+  .header-actions{display:flex;align-items:center;gap:16px}
+  .theme-btn{
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--border);background:transparent;
+    color:var(--honey);cursor:pointer;font-size:16px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;
+  }
+  .theme-btn:hover{border-color:var(--honey);box-shadow:0 0 12px var(--honey-glow)}
+  .cart-btn{
+    display:flex;align-items:center;gap:8px;
+    background:transparent;border:1px solid var(--border);
+    color:var(--text);padding:8px 16px;border-radius:24px;
+    cursor:pointer;font-size:14px;transition:all .2s;
+  }
+  .cart-btn:hover{border-color:var(--honey);color:var(--honey-light)}
+  .cart-count{
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    color:#111;
+    width:20px;height:20px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;
+  }
+
+  /* Main Content */
+  .main{max-width:1200px;margin:0 auto;padding:32px 48px 80px;position:relative;z-index:1}
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:14px;color:var(--text-muted);
+    margin-bottom:32px;cursor:pointer;transition:color .2s;
+  }
+  .back-link:hover{color:var(--honey-light)}
+
+  .product-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+
+  /* Product Image — Hexagonal Frame */
+  .product-image-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .product-image-wrap::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    opacity:.9;
+    filter:blur(0px);
+  }
+  .product-image-wrap::after{
+    content:'';
+    position:absolute;
+    inset:4px;
+    background:var(--bg);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  .product-image{
+    position:relative;
+    z-index:2;
+    width:100%;
+    aspect-ratio:1/1;
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    overflow:hidden;
+    background:var(--brown,#4a3a2e);
+  }
+  .product-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    transform:scale(1.15);
+  }
+  .img-counter{
+    position:absolute;
+    bottom:18%;
+    right:18%;
+    font-size:11px;
+    color:var(--text);
+    background:rgba(0,0,0,.55);
+    padding:4px 10px;
+    border-radius:12px;
+    z-index:3;
+    backdrop-filter:blur(4px);
+  }
+
+  /* Honeycomb decorative dots around image */
+  .hex-deco{
+    position:absolute;
+    width:20px;height:20px;
+    background:var(--honey);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    opacity:.5;
+    z-index:1;
+  }
+  .hex-deco.d1{top:10%;left:5%;animation:pulse 3s ease-in-out infinite}
+  .hex-deco.d2{bottom:15%;right:3%;width:14px;height:14px;animation:pulse 3s ease-in-out infinite .5s}
+  .hex-deco.d3{top:50%;left:0;width:10px;height:10px;animation:pulse 3s ease-in-out infinite 1s}
+  @keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}
+
+  /* Product Info */
+  .product-info{padding-top:8px}
+  .category-label{
+    font-size:12px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--honey);margin-bottom:12px;font-weight:600;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .category-label::before{
+    content:'';width:8px;height:8px;
+    background:var(--honey);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  .product-title{
+    font-size:42px;font-weight:700;line-height:1.15;
+    margin-bottom:16px;letter-spacing:-0.5px;
+    background:linear-gradient(135deg, var(--text) 60%, var(--honey-light));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .product-subtitle{font-size:15px;color:var(--text-muted);margin-bottom:24px}
+  .price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
+  .price{
+    font-size:32px;font-weight:700;
+    color:var(--honey-light);
+    text-shadow:0 0 20px var(--honey-glow);
+  }
+  .price-label{font-size:13px;color:var(--text-muted)}
+  .product-desc{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px}
+  .variant-row{
+    display:flex;align-items:center;gap:10px;
+    font-size:14px;color:var(--text-muted);margin-bottom:28px;
+    padding:10px 14px;
+    background:var(--honey-soft);
+    border-left:3px solid var(--honey);
+    border-radius:4px;
+  }
+  .variant-row .check{
+    color:var(--honey-light);
+    font-weight:700;
+  }
+
+  .add-to-cart{
+    width:100%;padding:18px 24px;
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    color:#111;
+    border:none;border-radius:8px;
+    font-size:15px;font-weight:700;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:space-between;
+    transition:all .25s;
+    margin-bottom:40px;
+    letter-spacing:.3px;
+    box-shadow:0 4px 20px var(--honey-glow);
+  }
+  .add-to-cart:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 30px rgba(212,160,23,.4);
+  }
+  .add-to-cart:active{transform:translateY(0)}
+  .add-to-cart svg{width:20px;height:20px}
+
+  /* Product Details Table */
+  .details-section{border-top:1px solid var(--border);padding-top:28px}
+  .details-title{
+    font-size:22px;font-weight:700;margin-bottom:20px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .details-title::before{
+    content:'';width:10px;height:10px;
+    background:var(--honey);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  .details-table{width:100%}
+  .details-table tr{border-bottom:1px solid var(--border);transition:background .2s}
+  .details-table tr:hover{background:var(--honey-soft)}
+  .details-table td{padding:14px 8px;font-size:14px;vertical-align:top}
+  .details-table td:first-child{
+    color:var(--honey);font-weight:500;width:140px;
+  }
+  .details-table td:last-child{color:var(--text)}
+  .allergy-note{
+    font-size:13px;color:var(--text-dim);margin-top:20px;line-height:1.6;
+    padding:12px 16px;
+    border-left:2px solid var(--honey);
+    background:var(--honey-soft);
+    border-radius:0 4px 4px 0;
+  }
+
+  /* CTA Banner */
+  .cta-banner{max-width:1200px;margin:0 auto;padding:0 48px 60px;position:relative;z-index:1}
+  .cta-inner{
+    background:linear-gradient(135deg, var(--green) 0%, #3a5c3b 50%, var(--honey) 150%);
+    border-radius:12px;
+    padding:48px 56px;
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-inner::before{
+    content:'';
+    position:absolute;
+    top:-50px;right:-50px;
+    width:200px;height:200px;
+    background:var(--honey);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    opacity:.15;
+  }
+  .cta-inner::after{
+    content:'';
+    position:absolute;
+    bottom:-30px;left:30%;
+    width:120px;height:120px;
+    background:var(--honey-light);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    opacity:.1;
+  }
+  .cta-label{
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--honey-light);margin-bottom:12px;
+    display:flex;align-items:center;gap:6px;
+    position:relative;z-index:1;
+  }
+  .cta-heading{
+    font-size:32px;font-weight:700;line-height:1.25;
+    position:relative;z-index:1;
+  }
+  .cta-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    color:#111;
+    padding:14px 28px;border-radius:8px;
+    font-size:14px;font-weight:700;
+    border:none;cursor:pointer;
+    transition:all .25s;
+    white-space:nowrap;
+    position:relative;z-index:1;
+    box-shadow:0 4px 15px rgba(212,160,23,.3);
+  }
+  .cta-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 25px rgba(212,160,23,.5);
+  }
+
+  /* Footer */
+  .footer{max-width:1200px;margin:0 auto;padding:0 48px 40px;border-top:1px solid var(--border);position:relative;z-index:1}
+  .footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1.4fr;gap:48px;padding:48px 0 40px}
+  .footer-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;margin-bottom:16px}
+  .footer-logo .logo-icon{width:32px;height:32px;font-size:13px}
+  .footer-tagline{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:16px}
+  .footer-location{font-size:13px;color:var(--text-dim);display:flex;align-items:center;gap:6px}
+  .footer-col h4{
+    font-size:14px;font-weight:600;margin-bottom:16px;
+    color:var(--honey-light);
+    display:flex;align-items:center;gap:8px;
+  }
+  .footer-col h4::before{
+    content:'';width:6px;height:6px;
+    background:var(--honey);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  .footer-links{list-style:none}
+  .footer-links li{margin-bottom:12px}
+  .footer-links a{
+    font-size:14px;color:var(--text-muted);
+    display:flex;align-items:center;justify-content:space-between;
+    transition:all .2s;
+  }
+  .footer-links a:hover{color:var(--honey-light);padding-left:4px}
+  .footer-contact-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-muted);margin-bottom:12px}
+  .footer-contact-item a{color:var(--text-muted);transition:color .2s}
+  .footer-contact-item a:hover{color:var(--honey-light)}
+  .footer-address{font-size:13px;color:var(--text-dim);line-height:1.6;margin-top:12px}
+  .footer-hours{font-size:14px;font-weight:600;margin-top:16px;margin-bottom:8px;color:var(--honey-light)}
+  .footer-hours-note{font-size:12px;color:var(--text-dim);line-height:1.6}
+  .footer-bottom{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 0;font-size:12px;color:var(--text-dim);
+    border-top:1px solid var(--border);
+    flex-wrap:wrap;gap:12px;
+  }
+  .footer-bottom a{color:var(--text-dim);display:flex;align-items:center;gap:4px;transition:color .2s}
+  .footer-bottom a:hover{color:var(--honey-light)}
+
+  /* Cart Drawer */
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;backdrop-filter:blur(4px)}
+  .cart-overlay.open{opacity:1;visibility:visible}
+  .cart-drawer{
+    position:fixed;top:0;right:0;bottom:0;
+    width:420px;max-width:90vw;
+    background:var(--bg);
+    z-index:201;
+    transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;
+    padding:32px;
+    border-left:2px solid var(--honey);
+  }
+  .cart-drawer.open{transform:translateX(0)}
+  .cart-drawer-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+  .cart-drawer-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--honey);margin-bottom:4px}
+  .cart-drawer-title{font-size:28px;font-weight:700}
+  .cart-drawer-title span{font-weight:400;color:var(--text-muted);font-size:22px}
+  .cart-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:4px;transition:color .2s}
+  .cart-close:hover{color:var(--honey-light)}
+  .cart-divider{height:1px;background:linear-gradient(90deg, var(--honey), transparent);margin:16px 0 40px}
+  .cart-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .cart-empty-icon{
+    width:64px;height:64px;margin-bottom:20px;
+    background:var(--honey-soft);
+    border:2px solid var(--honey);
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .cart-empty h3{font-size:24px;font-weight:700;margin-bottom:8px}
+  .cart-empty p{font-size:14px;color:var(--text-muted);margin-bottom:28px}
+  .cart-explore-btn{
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    color:#111;
+    padding:14px 32px;border:none;border-radius:8px;
+    font-size:14px;font-weight:700;cursor:pointer;
+    transition:all .25s;
+    box-shadow:0 4px 15px var(--honey-glow);
+  }
+  .cart-explore-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,160,23,.4)}
+
+  .n-badge{
+    position:fixed;bottom:20px;left:20px;
+    width:36px;height:36px;
+    background:linear-gradient(135deg, var(--honey), var(--honey-light));
+    color:#111;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:700;
+    clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    z-index:50;
+  }
+
+  @media(max-width:900px){
+    .header{padding:14px 20px}
+    .nav{gap:20px}
+    .main{padding:24px 20px 60px}
+    .product-layout{grid-template-columns:1fr;gap:32px}
+    .product-title{font-size:30px}
+    .cta-banner{padding:0 20px 40px}
+    .cta-inner{padding:32px}
+    .cta-heading{font-size:24px}
+    .footer{padding:0 20px 30px}
+    .footer-grid{grid-template-columns:1fr;gap:32px}
+    .footer-bottom{flex-direction:column;text-align:center}
+  }
+  @media(max-width:600px){
+    .nav{display:none}
+    .product-title{font-size:26px}
+    .price{font-size:26px}
+    .product-image-wrap{padding:10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Hexagons -->
+<div class="hex-float"></div>
+<div class="hex-float"></div>
+<div class="hex-float"></div>
+<div class="hex-float"></div>
+
+<!-- Top Banner -->
+<div class="top-banner">
+  <span>Local roots. Everyday good finds.</span>
+  <a href="#">WhatsApp us anytime ↗</a>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">MS</div>
+    <span>MOON STORE</span>
+  </div>
+  <nav class="nav">
+    <a href="#">Home</a>
+    <a href="#" class="active">Shop</a>
+    <a href="#">Our story</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-btn" title="Toggle theme">☀</button>
+    <button class="cart-btn" id="openCart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- Main Product Section -->
+<main class="main">
+  <a class="back-link" href="#">← Back to catalog</a>
+
+  <div class="product-layout">
+    <!-- Product Image — Hexagonal Frame -->
+    <div class="product-image-wrap">
+      <div class="hex-deco d1"></div>
+      <div class="hex-deco d2"></div>
+      <div class="hex-deco d3"></div>
+      <div class="product-image">
+        <img src="cornflakesmadu.jpeg" alt="Cornflakes Madu - Honey Coated Cornflakes in clear jars">
+      </div>
+      <span class="img-counter">01 / 01</span>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info">
+      <div class="category-label">Snacks &amp; Treats</div>
+      <h1 class="product-title">Cornflakes Madu</h1>
+      <p class="product-subtitle">Crunchy cornflakes generously coated in pure, golden honey — sweet, crispy, and utterly addictive.</p>
+
+      <div class="price-row">
+        <span class="price">RM 15.00</span>
+        <span class="price-label">Standard Jar</span>
+      </div>
+
+      <p class="product-desc">Our homemade, small-batch treat. Freshly prepared and packed into an airtight tub, with zero added artificial preservatives and plenty of crunch in every bite.</p>
+
+      <div class="variant-row">
+        <span class="check">✓</span>
+        <span>Standard Jar · Approx. 300g</span>
+      </div>
+
+      <button class="add-to-cart" id="addToCartBtn">
+        Add to cart
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </button>
+
+      <!-- Product Details -->
+      <div class="details-section">
+        <h2 class="details-title">Product details</h2>
+        <table class="details-table">
+          <tr><td>Net weight</td><td>Approx. 300g per jar</td></tr>
+          <tr><td>Made</td><td>Freshly prepared in small batches</td></tr>
+          <tr><td>Packaging</td><td>Airtight seal tub</td></tr>
+          <tr><td>Preservatives</td><td>Zero added artificial preservatives</td></tr>
+        </table>
+        <p class="allergy-note">Please ask us about ingredients and allergens before ordering if you have a food allergy. Contains wheat and honey.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- CTA Banner -->
+<section class="cta-banner">
+  <div class="cta-inner">
+    <div>
+      <div class="cta-label">✦ Your everyday, with a little extra</div>
+      <h2 class="cta-heading">See something you like?<br>Let's make it a conversation.</h2>
+    </div>
+    <button class="cta-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      Say hello on WhatsApp ↗
+    </button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <div class="logo-icon">MS</div>
+        <span>MOON STORE</span>
+      </div>
+      <p class="footer-tagline">Tech for your day. Care for your ride.<br>Treats for your happy little moments.</p>
+      <div class="footer-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Locally fulfilled in Kampong Raja, Besut.
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Take a look around</h4>
+      <ul class="footer-links">
+        <li><a href="#">Home <span>↗</span></a></li>
+        <li><a href="#">Explore catalog <span>↗</span></a></li>
+        <li><a href="#">Our story <span>↗</span></a></li>
+        <li><a href="#">Get in touch <span></span></a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Keep in touch</h4>
+      <div class="footer-contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        <a href="tel:+601161647061">+60 11-6164 7061</a>
+      </div>
+      <div class="footer-contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:m00netor32026@gmail.com">m00netor32026@gmail.com</a>
+      </div>
+      <p class="footer-address">Jalan Taman Kepas Indah, Taman Kepas Indah, Kampong Raja, 22000 Jerteh, Besut, Terengganu, Malaysia</p>
+      <div class="footer-hours">Open daily · 24 hours</div>
+      <p class="footer-hours-note">WhatsApp inquiries always open. Availability and delivery confirmed via chat; replies may not be immediate.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Moon Store. All rights reserved.</span>
+    <span>Good finds. A little closer to home.</span>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">Back to top ↗</a>
+  </div>
+</footer>
+
+<!-- Cart Drawer -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-header">
+    <div>
+      <div class="cart-drawer-label">Your Moon Store Finds</div>
+      <div class="cart-drawer-title">Your cart <span>(<span id="drawerCartCount">0</span>)</span></div>
+    </div>
+    <button class="cart-close" id="closeCart">✕</button>
+  </div>
+  <div class="cart-divider"></div>
+  <div class="cart-empty" id="cartEmpty">
+    <div class="cart-empty-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    </div>
+    <h3>Your next good find awaits.</h3>
+    <p>Your cart is empty. Let's change that.</p>
+    <button class="cart-explore-btn" id="exploreBtn">Explore Catalog</button>
+  </div>
+</div>
+
+<div class="n-badge">N</div>
+
+<script>
+  const cartOverlay=document.getElementById('cartOverlay'),
+        cartDrawer=document.getElementById('cartDrawer'),
+        openCartBtn=document.getElementById('openCart'),
+        closeCartBtn=document.getElementById('closeCart'),
+        addToCartBtn=document.getElementById('addToCartBtn'),
+        exploreBtn=document.getElementById('exploreBtn'),
+        cartCountEl=document.getElementById('cartCount'),
+        drawerCartCountEl=document.getElementById('drawerCartCount'),
+        cartEmpty=document.getElementById('cartEmpty');
+  let cartItems=0;
+
+  function openCart(){cartOverlay.classList.add('open');cartDrawer.classList.add('open');document.body.style.overflow='hidden'}
+  function closeCart(){cartOverlay.classList.remove('open');cartDrawer.classList.remove('open');document.body.style.overflow=''}
+
+  openCartBtn.addEventListener('click',openCart);
+  closeCartBtn.addEventListener('click',closeCart);
+  cartOverlay.addEventListener('click',closeCart);
+  exploreBtn.addEventListener('click',closeCart);
+
+  addToCartBtn.addEventListener('click',function(){
+    cartItems++;
+    cartCountEl.textContent=cartItems;
+    drawerCartCountEl.textContent=cartItems;
+    cartEmpty.innerHTML=`<div style="text-align:center;padding:20px 0">
+      <div style="width:64px;height:64px;margin:0 auto 20px;background:var(--honey-soft);border:2px solid var(--honey);clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);display:flex;align-items:center;justify-content:center">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--honey)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <h3 style="font-size:20px;font-weight:700;margin-bottom:8px;color:var(--honey-light)">Added to cart! 🍯</h3>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px">Cornflakes Madu × ${cartItems}</p>
+      <button class="cart-explore-btn" onclick="closeCart()">Continue Shopping</button>
+    </div>`;
+    openCart();
+    this.innerHTML='✓ Added!';this.style.background='linear-gradient(135deg,#4a7c4e,#5a9c5e)';this.style.color='#fff';
+    setTimeout(()=>{this.innerHTML='Add to cart <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>';this.style.background='';this.style.color=''},1500);
+  });
+
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart()});
+</script>
+</body>
+</html>

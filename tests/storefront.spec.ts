@@ -100,6 +100,30 @@ test("Popia detail preserves the supplied page with Moon Store header and workin
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
+test("Cornflakes detail preserves the supplied page with Moon Store header and working cart", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("article", { name: "Golden Honey Cornflakes" }).locator(".catalog-card-link").click();
+  await expect(page).toHaveURL(/\/product\/honey-cornflakes$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Cornflakes Madu");
+  await expect(page.locator(".honey-page .price-row")).toContainText("RM 15.00");
+  await expect(page.locator(".honey-page .variant-row")).toContainText("Approx. 300g");
+  await expect(page.locator(".honey-page .details-table")).toContainText("Approx. 300g per jar");
+  await expect(page.locator(".site-footer")).toHaveCount(0);
+  await expect(page.locator(".honey-page .footer")).toContainText("Good finds. A little closer to home.");
+  await expect(page.getByRole("banner").getByRole("link", { name: "MOON STORE home" })).toBeVisible();
+  await page.getByRole("button", { name: "Increase quantity" }).click();
+  await expect(page.locator(".honey-page .qty")).toContainText("2");
+  await page.getByRole("button", { name: "Add to cart" }).click();
+  await expect(page.getByRole("dialog", { name: "Your Cart" }).locator(".cart-total")).toContainText("RM30.00");
+  await page.getByRole("button", { name: "Close cart" }).click();
+  await page.getByRole("button", { name: "Open cart, 2 items" }).click();
+  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 30.00");
+  await page.getByRole("button", { name: "Close cart" }).click();
+  await page.getByRole("banner").getByRole("link", { name: "MOON STORE home" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 test("catalog filters, capacities, contacts and anchored navigation", async ({ page }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
