@@ -105,6 +105,7 @@ test("Cornflakes detail preserves the supplied page with Moon Store header and w
   await page.getByRole("article", { name: "Golden Honey Cornflakes" }).locator(".catalog-card-link").click();
   await expect(page).toHaveURL(/\/product\/honey-cornflakes$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Cornflakes Madu");
+  await expect(page.locator(".honey-page .product-image img")).toHaveAttribute("src", "/products/cornflakes-madu.jpeg");
   await expect(page.locator(".honey-page .price-row")).toContainText("RM 15.00");
   await expect(page.locator(".honey-page .variant-row")).toContainText("Approx. 300g");
   await expect(page.locator(".honey-page .details-table")).toContainText("Approx. 300g per jar");
