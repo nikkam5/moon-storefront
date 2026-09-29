@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   if (!isProductId(id)) return { title: "Product not found" };
   const product = getProduct(id);
-  if (id === "popia-nestum") return { title: "Popia Nestum — Rangup Sampai Habis", description: product.description, alternates: { canonical: `/product/${id}` } };
-  if (id === "honey-cornflakes") return { title: "Cornflakes Madu — Moon Store", description: product.description, alternates: { canonical: `/product/${id}` } };
+  if (id === "popia-nestum") return { title: "Popia Nestum - Rangup Sampai Habis", description: product.description, alternates: { canonical: `/product/${id}` } };
+  if (id === "honey-cornflakes") return { title: "Cornflakes Madu - Moon Store", description: product.description, alternates: { canonical: `/product/${id}` } };
   const image = product.image || "/products/usb.png";
   return {
     title: product.name,

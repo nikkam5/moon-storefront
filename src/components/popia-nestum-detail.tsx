@@ -37,12 +37,12 @@ export default function PopiaNestumDetail({ product }: { product: Product }) {
       </div>
     </section>
 
-    <section className="band" id="cerita"><div className="band-inner"><h2>Satu bekas, banyak kenangan.</h2><p>Dibuat untuk jadi kudapan yang mudah dinikmati bila-bila masa — waktu minum petang, tengok cerita, atau sekadar nak rasa sesuatu yang rangup.</p></div></section>
+    <section className="band" id="cerita"><div className="band-inner"><h2>Satu bekas, banyak kenangan.</h2><p>Dibuat untuk jadi kudapan yang mudah dinikmati bila-bila masa, waktu minum petang, tengok cerita, atau sekadar nak rasa sesuatu yang rangup.</p></div></section>
 
     <section className="features" id="kelebihan">
-      <div className="card"><div className="num">01 — RANGUP</div><h3>Tekstur yang sedap</h3><p>Setiap gigitan memberikan rasa rangup yang membuatkan susah nak berhenti.</p></div>
-      <div className="card"><div className="num">02 — NESTUM</div><h3>Salutan penuh rasa</h3><p>Nestum yang wangi dan manis menjadi sentuhan utama dalam setiap popia.</p></div>
-      <div className="card"><div className="num">03 — 250G</div><h3>Sesuai untuk dikongsi</h3><p>Satu bekas 250g yang sesuai untuk kudapan sendiri atau dinikmati bersama keluarga.</p></div>
+      <div className="card"><div className="num">01 - RANGUP</div><h3>Tekstur yang sedap</h3><p>Setiap gigitan memberikan rasa rangup yang membuatkan susah nak berhenti.</p></div>
+      <div className="card"><div className="num">02 - NESTUM</div><h3>Salutan penuh rasa</h3><p>Nestum yang wangi dan manis menjadi sentuhan utama dalam setiap popia.</p></div>
+      <div className="card"><div className="num">03 - 250G</div><h3>Sesuai untuk dikongsi</h3><p>Satu bekas 250g yang sesuai untuk kudapan sendiri atau dinikmati bersama keluarga.</p></div>
     </section>
 
     <section className="order" id="order">

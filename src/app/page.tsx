@@ -12,13 +12,13 @@ const questions = [
 
 export default function Home() {
   return (
-    <>
+    <div className="home-motion">
       <div className="curtain-stage">
       <Hero />
 
       <section id="shop" className="catalog-section section-wrap" aria-labelledby="catalog-heading">
         <div className="section-heading" data-reveal>
-          <div><span className="eyebrow">THE EVERYDAY COLLECTION</span><h2 id="catalog-heading">Good finds.<br /><span className="text-accent">Your kind of things.</span></h2></div>
+          <div><h2 id="catalog-heading">Good finds.<br /><span className="text-accent">Your kind of things.</span></h2></div>
           <div className="section-intro"><p>A useful upgrade, a little motor care, or something sweet. There’s a different kind of essential for every part of your day.</p><span className="catalog-note"><MessageCircle size={17} aria-hidden="true" /> Questions? Let’s talk on WhatsApp.</span></div>
         </div>
         <ShopCatalog simple />
@@ -27,13 +27,11 @@ export default function Home() {
 
       <section id="about" className="about-section section-wrap" aria-labelledby="about-heading" data-reveal>
         <div className="story-screen"><GlowPanel>
-          <span className="eyebrow">ROOTED IN BESUT</span>
           <Sparkles className="about-sparkle" size={56} strokeWidth={1.4} aria-hidden="true" />
           <p className="about-art-title">Different finds.<br />Same little<br /><span>Moon.</span></p>
           <div className="about-art-caption"><Heart size={20} aria-hidden="true" /><span>Tech, motor care &amp; homemade joy.</span></div>
         </GlowPanel></div>
         <div className="about-copy">
-          <span className="eyebrow">A LOCAL STORE. A PERSONAL TOUCH.</span>
           <h2 id="about-heading">Hello from<br />Kampong Raja.</h2>
           <p>We’re Moon Store, a multi-category lifestyle store bringing tech essentials, motor care, and homemade snacks together in one friendly place.</p>
           <p>Based in Kampong Raja, Besut, Terengganu, we fulfill locally and keep the conversation personal. Whether you’re choosing something practical or treating yourself, we’re here to help you explore.</p>
@@ -55,7 +53,7 @@ export default function Home() {
 
       <section id="contact" className="contact-section section-wrap" aria-labelledby="contact-heading" data-reveal>
         <div className="section-heading">
-          <div><span className="eyebrow">JUST A MESSAGE AWAY</span><h2 id="contact-heading">Let’s talk<br /><span className="text-accent">everyday essentials.</span></h2></div>
+          <div><h2 id="contact-heading">Let’s talk<br /><span className="text-accent">everyday essentials.</span></h2></div>
           <div className="section-intro"><p>Need a closer look or have a delivery question? Say hello. We’ll help you work out the details.</p></div>
         </div>
         <div className="contact-grid">
@@ -75,7 +73,7 @@ export default function Home() {
           <article className="contact-card contact-chat">
             <span className="contact-icon"><MessageCircle size={26} aria-hidden="true" /></span>
             <h3>A friendly hello starts here</h3>
-            <a href={business.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-dark">Chat on WhatsApp <ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
+            <a href={business.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-dark">Chat on WhatsApp <span className="button-icon"><ArrowUpRight size={16} aria-hidden="true" /></span><span className="sr-only"> (opens in a new tab)</span></a>
             <div className="contact-direct-links">
               <a href="tel:+601161647061"><Phone size={17} aria-hidden="true" />{business.phone}</a>
               <a href={`mailto:${business.email}`}><Mail size={17} aria-hidden="true" />{business.email}</a>
@@ -85,13 +83,13 @@ export default function Home() {
       </section>
 
       <section id="questions" className="faq-section section-wrap" aria-labelledby="faq-heading" data-reveal>
-        <div><span className="eyebrow">GOOD TO KNOW</span><h2 id="faq-heading">A little clarity.<br />Before you choose.</h2><p>Simple answers for your next good find.</p></div>
+        <div><h2 id="faq-heading">A little clarity.<br />Before you choose.</h2><p>Simple answers for your next good find.</p></div>
         <div className="faq-list">
           {questions.map((question) => (
             <details key={question.title}><summary>{question.title}<Plus size={19} aria-hidden="true" /></summary><p>{question.answer}</p></details>
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -1,0 +1,32 @@
+.tech-text {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  touch-action: none;
+  user-select: none;
+}
+
+/* Drag field: the canvas extends well beyond the word's layout box so
+   grabbed letters stay visible anywhere they are dragged (clipped only by
+   ancestors such as the hero). It never intercepts pointer input; grabs
+   start on the small layout box and continue via pointer capture. */
+.tech-text-canvas {
+  display: block;
+  position: absolute;
+  left: -320px;
+  top: -160px;
+  width: calc(100% + 640px);
+  height: calc(100% + 580px);
+  max-width: none;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .tech-text-canvas {
+    left: -120px;
+    top: -120px;
+    width: calc(100% + 240px);
+    height: calc(100% + 420px);
+  }
+}

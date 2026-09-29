@@ -36,7 +36,7 @@ export default function HoneyCornflakesDetail({ product }: { product: Product })
           <div className="hex-deco d2" aria-hidden="true" />
           <div className="hex-deco d3" aria-hidden="true" />
           <div className="product-image">
-            {product.image ? <img src={product.image} alt="Cornflakes Madu - Honey Coated Cornflakes in clear jars" /> : <div className="photo-placeholder" role="img" aria-label="Cornflakes Madu — product photo coming soon"><span>PRODUCT PHOTO COMING SOON</span></div>}
+            {product.image ? <img src={product.image} alt="Cornflakes Madu - Honey Coated Cornflakes in clear jars" /> : <div className="photo-placeholder" role="img" aria-label="Cornflakes Madu - product photo coming soon"><span>PRODUCT PHOTO COMING SOON</span></div>}
           </div>
           <span className="img-counter">01 / 01</span>
         </div>
@@ -44,7 +44,7 @@ export default function HoneyCornflakesDetail({ product }: { product: Product })
         <div className="product-info">
           <div className="category-label">Snacks &amp; Treats</div>
           <h1 className="product-title">Cornflakes Madu</h1>
-          <p className="product-subtitle">Crunchy cornflakes generously coated in pure, golden honey — sweet, crispy, and utterly addictive.</p>
+          <p className="product-subtitle">Crunchy cornflakes generously coated in pure, golden honey, sweet, crispy, and utterly addictive.</p>
 
           <div className="price-row">
             <span className="price">RM {price.toFixed(2)}</span>
@@ -94,7 +94,7 @@ export default function HoneyCornflakesDetail({ product }: { product: Product })
         </div>
         <a className="cta-btn" href={business.whatsapp} target="_blank" rel="noopener noreferrer">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
-          Say hello on WhatsApp ↗<span className="sr-only"> (opens in a new tab)</span>
+          Chat on WhatsApp ↗<span className="sr-only"> (opens in a new tab)</span>
         </a>
       </div>
     </section>

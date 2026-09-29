@@ -29,7 +29,7 @@ export default function Footer() {
       <div className="footer-banner footer-spotlight" data-reveal data-fade-both onPointerMove={spotlight}>
         <span className="footer-banner-ambient" aria-hidden="true" />
         <div><span className="eyebrow"><Sparkles size={16} aria-hidden="true" /> YOUR EVERYDAY, WITH A LITTLE EXTRA</span><h2>See something you like?<br />Let’s make it a conversation.</h2></div>
-        <a href={business.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-dark"><MessageCircle size={19} aria-hidden="true" /> Say hello on WhatsApp <ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
+        <a href={business.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-dark"><MessageCircle size={18} aria-hidden="true" /> Chat on WhatsApp <span className="button-icon"><ArrowUpRight size={16} aria-hidden="true" /></span><span className="sr-only"> (opens in a new tab)</span></a>
       </div>
       <div className="footer-top" data-reveal>
         <div className="footer-brand">

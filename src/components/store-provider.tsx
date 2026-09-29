@@ -88,7 +88,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     {children}
     <dialog ref={dialog} className="cart-drawer" aria-labelledby="drawer-title" onCancel={() => setOpen(false)} onClick={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
       <div className="drawer-inner">
-        <div className="drawer-heading"><div><span className="eyebrow">YOUR MOON STORE FINDS</span><h2 id="drawer-title">Your cart <span>({count})</span></h2></div><button ref={closeButton} className="icon-button" aria-label="Close cart" onClick={() => setOpen(false)}><X /></button></div>
+        <div className="drawer-heading"><div><span className="drawer-kicker">YOUR MOON STORE FINDS</span><h2 id="drawer-title">Your cart <span>({count})</span></h2></div><button ref={closeButton} className="icon-button" aria-label="Close cart" onClick={() => setOpen(false)}><X /></button></div>
         {count ? <>
           <div className="added-note"><Check size={16} /> Good choice. We saved it for you.</div>
           <div className="drawer-items">{items.map((item) => <CartRow key={cartKey(item)} item={item} />)}</div>
@@ -102,7 +102,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
 export function WhatsAppCheckout() {
   const { items } = useStore();
   if (!items.length) return null;
-  return <a className="button button-whatsapp full-width" href={checkoutUrl(items)} target="_blank" rel="noopener noreferrer">Order on WhatsApp <MessageCircle size={19} /></a>;
+  return <a className="button button-whatsapp full-width" href={checkoutUrl(items)} target="_blank" rel="noopener noreferrer">Order on WhatsApp <span className="button-icon"><MessageCircle size={16} /></span></a>;
 }
 
 export function CartRow({ item }: { item: CartItem }) {

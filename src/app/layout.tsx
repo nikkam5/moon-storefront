@@ -1,13 +1,20 @@
 import type { Metadata, Viewport } from "next";
+import { DM_Sans, Manrope, Geist } from "next/font/google";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import StoreProvider, { RevealRoot } from "@/components/store-provider";
 import { business } from "@/lib/business";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
+const bodyFont = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-body", display: "swap" });
+const headingFont = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-heading", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: { default: "Moon Store — Tech, Motor Care & Signature Treats", template: "%s | Moon Store" },
+  title: { default: "Moon Store - Tech, Motor Care & Signature Treats", template: "%s | Moon Store" },
   description: "Kingston USB storage, Motul motorcycle oils and homemade crunchy snacks. Locally dispatched from Besut, Terengganu. Order with Moon Store on WhatsApp.",
   keywords: ["Moon Store", "Besut", "Kampong Raja", "Jerteh", "Terengganu", "Kingston USB", "Motul 7100", "Motul 5100", "Popia Nestum", "Honey Cornflakes"],
   authors: [{ name: "Moon Store" }],
@@ -19,13 +26,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_MY",
     siteName: "Moon Store",
-    title: "Moon Store — Tech, Motor Care & Signature Treats",
+    title: "Moon Store - Tech, Motor Care & Signature Treats",
     description: "Kingston USB storage, Motul motorcycle oils and homemade crunchy snacks. Locally dispatched from Besut, Terengganu.",
     images: [{ url: "/products/usb.png", width: 1200, height: 630, alt: "Kingston DataTraveler Exodia G2 at Moon Store" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Moon Store — Tech, Motor Care & Signature Treats",
+    title: "Moon Store - Tech, Motor Care & Signature Treats",
     description: "Curated quality essentials dispatched locally from Besut, Terengganu. Order on WhatsApp.",
     images: ["/products/usb.png"],
   },
@@ -58,5 +65,5 @@ const storeJsonLd = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en-MY" suppressHydrationWarning><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" /><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('moonstore-theme');var s=t==='light'||t==='dark';document.documentElement.dataset.theme=s?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(s)document.documentElement.dataset.themeOverride='true';}catch(e){document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}})();` }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }} /></head><body><StoreProvider><RevealRoot><a href="#main" className="skip-link">Skip to content</a><Header /><main id="main">{children}</main><Footer /></RevealRoot></StoreProvider></body></html>;
+  return <html lang="en-MY" suppressHydrationWarning className={cn(bodyFont.variable, headingFont.variable, "font-sans", geist.variable)}><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('moonstore-theme');var s=t==='light'||t==='dark';document.documentElement.dataset.theme=s?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(s)document.documentElement.dataset.themeOverride='true';}catch(e){document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}})();` }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }} /></head><body><StoreProvider><RevealRoot><a href="#main" className="skip-link">Skip to content</a><Header /><main id="main">{children}</main><Footer /></RevealRoot></StoreProvider></body></html>;
 }
