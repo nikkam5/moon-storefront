@@ -43,8 +43,8 @@ export default function Hero() {
             fontWeight={800}
             fontSize={90}
             letterSpacing={0.02}
-            color="#eef5ff"
-            accentColor="#9fd0ff"
+            color="#eff7ff"
+            accentColor="#99caff"
             reveal="area"
             reach={220}
             softness={0.5}

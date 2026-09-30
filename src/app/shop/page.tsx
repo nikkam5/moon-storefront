@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ShopCatalog from "@/components/shop-catalog";
+import "@/components/shop-compact.css";
 
 export const metadata: Metadata = { title: "Shop the collection", description: "Kingston USB flash drives, Motul motorcycle oils and homemade snacks. Browse in RM and order with Moon Store on WhatsApp." };
 export default function Shop() {

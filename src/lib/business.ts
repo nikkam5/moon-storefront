@@ -8,6 +8,8 @@ export const business = {
   address,
   hours: "Open daily · 24 hours",
   whatsapp: "https://wa.me/601161647061",
+  facebook: "https://www.facebook.com/share/1EUjt43LbE/",
+  instagram: "https://www.instagram.com/moon.store_my/",
   maps: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`,
   founders: ["Iman Asnawi", "Arish Haikal", "Nik Amir"],
 };

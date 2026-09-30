@@ -1,0 +1,23 @@
+.ticket-catalog-section { overflow: clip; }
+.shop-catalog-preview.shop-catalog-tickets .catalog-grid, .shop-catalog-preview.shop-catalog-tickets[data-filter="all"] .catalog-grid, .shop-catalog-preview.shop-catalog-tickets:not([data-filter="all"]) .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 860px; margin-inline: auto; gap: 28px; align-items: start; }
+.shop-catalog-preview.shop-catalog-tickets .catalog-card.catalog-ticket { grid-column: auto; display: grid; justify-items: center; min-width: 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.shop-catalog-preview.shop-catalog-tickets .catalog-card.catalog-ticket[hidden] { display: none; }
+.catalog-ticket { --ticket-edge: var(--line); }
+html[data-theme="dark"] .catalog-ticket { --ticket-edge: color-mix(in srgb, var(--moon-accent) 40%, var(--moon-surface)); }
+.catalog-ticket .tear-ticket__edge path { transition: stroke 180ms ease; }
+.catalog-ticket:hover .tear-ticket__edge path { stroke: var(--accent); }
+.product-ticket-copy { display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 100%; padding: 0 16px 14px; }
+.catalog-ticket .tear-ticket__content { pointer-events: none; }
+.catalog-ticket .tear-ticket[data-grabbing], .catalog-ticket .tear-ticket[data-tear-phase="drop"] { z-index: 2; }
+.shop-catalog-preview.shop-catalog-tickets .catalog-ticket h3 { min-height: 0; margin: 0; color: var(--ink); font-size: 17px; font-weight: 750; line-height: 1.25; letter-spacing: -.025em; }
+.product-ticket-copy > span { color: var(--muted); font-size: 13px; line-height: 1.35; }
+.product-ticket-stub { display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; padding: 39px 10px 31px; text-align: center; }
+.ticket-stub-price small { display: block; color: var(--muted); font-size: 12px; font-weight: 650; line-height: 1.4; }
+.ticket-stub-price strong { display: block; margin-top: 4px; color: var(--ink); font: 750 26px/1.15 var(--heading); letter-spacing: -.045em; }
+.ticket-tear-label { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--ink); }
+.ticket-tear-label > span { font-size: 12px; font-weight: 650; line-height: 1.25; }
+.catalog-ticket.category-tech .tear-ticket__image, .catalog-ticket.category-motor .tear-ticket__image { object-fit: contain; background: #f5f6f7; }
+.catalog-ticket .tear-ticket[data-ready] .ticket-tear-label > span { visibility: hidden; }
+.catalog-ticket .tear-ticket[data-ready] .ticket-tear-label::after { content: "Release"; position: absolute; bottom: 32px; font-size: 12px; font-weight: 750; }
+.shop-catalog-preview.shop-catalog-tickets .catalog-end { margin-top: 23px; }
+@media (max-width: 700px) { .shop-catalog-preview.shop-catalog-tickets .catalog-grid, .shop-catalog-preview.shop-catalog-tickets[data-filter="all"] .catalog-grid, .shop-catalog-preview.shop-catalog-tickets:not([data-filter="all"]) .catalog-grid { grid-template-columns: 1fr; max-width: 380px; gap: 22px; } }

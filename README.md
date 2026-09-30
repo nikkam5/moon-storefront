@@ -14,7 +14,7 @@ Open http://localhost:3000. Development output uses `.next-dev`; production buil
 ## Catalog and business details
 
 - `src/lib/product.ts` — four products, seven purchasable options, store-supplied specifications and RM prices.
-- `src/lib/business.ts` — address, founders, phone, email, hours, maps and WhatsApp destination.
+- `src/lib/business.ts` — address, founders, phone, email, hours, maps and the Facebook, Instagram and WhatsApp destinations.
 - `src/lib/whatsapp.ts` — URL-encoded order message with variants, quantities, line totals and delivery/pickup placeholders.
 - `src/components/brand-logo.tsx` — SVG monogram; `src/app/icon.svg` — browser icon.
 - `src/app/globals.css` — light/dark colour tokens and responsive styles.
@@ -24,6 +24,12 @@ Open http://localhost:3000. Development output uses `.next-dev`; production buil
 The homepage contains `#home`, `#shop`, `#about` and `#feedback`. The feedback form prepares a WhatsApp draft for the customer to review and send. `/shop` also serves the complete catalog and `/cart` provides a full cart review. Filtering, variants and product detail expansion do not navigate away.
 
 The hero's four product photos use a React Bits Stack: click or press Enter to cycle, or drag a card on desktop. The product name below links to its details. Touch devices use tap-to-cycle so vertical page scrolling stays usable. The hero scrolls naturally on screens too short for the full composition.
+
+The homepage catalog previews use 380 × 240px TearTickets in two desktop columns, scaling down on phones. Click or tap a picture to open its product, or pull a price stub fully free and release. Short pulls spring back; Escape or pointer cancellation restores the ticket. Picture links also work without JavaScript. Category and scroll position are saved for the return to the homepage catalog.
+
+MOONSTORE's idle sweep uses the display's animation-frame cadence. Its canvas clears and composites only the glyph/frame bounds, so the wide letter-drag field does not require a full-canvas repaint each frame. Rendering pauses off-screen or when the tab is hidden.
+
+The `/shop` catalog uses compact four-column cards on wide screens, two columns on tablets, and one column on phones. React Bits TiltedCard adds a restrained desktop photo tilt; reduced-motion and touch visitors get static photos. Footer social links use SlingButton: tap or activate by keyboard to open a link, or pull and release the loaded pad.
 
 ### Photos
 

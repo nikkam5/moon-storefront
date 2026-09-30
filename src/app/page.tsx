@@ -9,9 +9,9 @@ export default function Home() {
       <div className="curtain-stage">
         <Hero />
 
-        <section id="shop" className="catalog-section section-wrap" aria-labelledby="catalog-heading">
+        <section id="shop" className="catalog-section ticket-catalog-section section-wrap" aria-labelledby="catalog-heading">
           <div className="section-heading" data-reveal>
-            <div><h2 id="catalog-heading">Shop the collection.</h2><p className="section-intro">Four local picks across tech, motor care and homemade treats. Select a product for details and options.</p></div>
+            <div><h2 id="catalog-heading">Shop the collection.</h2><p className="section-intro">Four local picks. Click a photo or tear a ticket to explore.</p></div>
           </div>
           <ShopCatalog simple />
         </section>

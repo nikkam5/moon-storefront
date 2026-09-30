@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MAX_QUANTITY, Product } from "@/lib/product";
 import { business } from "@/lib/business";
 import { useStore } from "./store-provider";
+import FooterSocial from "./footer-social";
 
 export default function HoneyCornflakesDetail({ product }: { product: Product }) {
   const [selected, setSelected] = useState(1);
@@ -106,6 +107,7 @@ export default function HoneyCornflakesDetail({ product }: { product: Product })
             <div className="logo-icon">MS</div>
             <span>MOON STORE</span>
           </div>
+          <FooterSocial />
           <p className="footer-tagline">Tech for your day. Care for your ride.<br />Treats for your happy little moments.</p>
           <div className="footer-location">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>

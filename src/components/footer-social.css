@@ -1,0 +1,3 @@
+.footer-social { --social-pad: var(--surface-raised); --social-icon: var(--ink); --social-accent: var(--accent); --social-well: var(--paper); --social-band: var(--line); display: flex; align-items: center; gap: 24px; width: fit-content; margin: 27px 0 25px; padding: 8px 10px; }
+.footer-social .sling-button { flex-shrink: 0; }
+.honey-page .footer-social { --social-pad: var(--bg-card); --social-icon: var(--text); --social-accent: var(--honey-light); --social-well: var(--bg); --social-band: var(--border); }

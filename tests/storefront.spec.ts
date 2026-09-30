@@ -13,6 +13,10 @@ async function clickMainNav(page: Page, label: string, mobile: boolean) {
   }
 }
 
+async function openPreviewProduct(page: Page, name: string) {
+  await page.getByRole("article", { name }).getByRole("button", { name: /Tear to view/ }).press("Enter");
+}
+
 test("Home returns to a sharp, full-size hero", async ({ page }, testInfo) => {
   await page.goto("/#shop");
   await clickMainNav(page, "Home", testInfo.project.name === "mobile");
@@ -206,7 +210,7 @@ test("Back to catalog restores listing and filter", async ({ page }) => {
   await expect.poll(async () => page.evaluate(() => scrollY)).toBeGreaterThanOrEqual(before - 20);
 
   await page.goto("/");
-  await page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" }).locator(".catalog-card-link").click();
+  await openPreviewProduct(page, "Kingston DataTraveler Exodia G2");
   await page.getByRole("link", { name: "Back to catalog" }).click();
   await expect(page).toHaveURL(/\/#shop$/);
   await expect(page.locator("#shop .catalog-card:visible")).toHaveCount(4);
@@ -364,7 +368,7 @@ test("retired Motul 7100 is absent from the shop and static routes", async ({ pa
 
 test("homepage product opens its own details and adds the chosen variant", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" }).locator(".catalog-card-link").click();
+  await openPreviewProduct(page, "Kingston DataTraveler Exodia G2");
   await expect(page).toHaveURL(/\/product\/kingston-dtxg2$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kingston DataTraveler Exodia G2");
   await expect(page.locator(".product-gallery img")).toHaveAttribute("src", "/products/usb-3.2.jpg");
@@ -381,7 +385,7 @@ test("homepage product opens its own details and adds the chosen variant", async
 
 test("Popia detail preserves the supplied page with Moon Store header and working cart", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("article", { name: "Signature Popia Nestum Rangup" }).locator(".catalog-card-link").click();
+  await openPreviewProduct(page, "Signature Popia Nestum Rangup");
   await expect(page).toHaveURL(/\/product\/popia-nestum$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Rangup.Manis.Nestum.");
   await expect(page.locator(".popia-page .photo img")).toHaveAttribute("src", "/products/popia-nestum.png");
@@ -412,7 +416,7 @@ test("Popia detail preserves the supplied page with Moon Store header and workin
 
 test("Cornflakes detail preserves the supplied page with Moon Store header and working cart", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("article", { name: "Golden Honey Cornflakes" }).locator(".catalog-card-link").click();
+  await openPreviewProduct(page, "Golden Honey Cornflakes");
   await expect(page).toHaveURL(/\/product\/honey-cornflakes$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Cornflakes Madu");
   await expect(page.locator(".honey-page .product-image img")).toHaveAttribute("src", "/products/cornflakes-madu.jpeg");
@@ -448,13 +452,13 @@ test("catalog filters, capacities, feedback and anchored navigation", async ({ p
   await filters.getByRole("button", { name: "Tech Storage" }).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
   const usb = page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" });
-  await expect(usb.locator(".product-price")).toHaveText("From RM 35.00");
+  await expect(usb.getByRole("button", { name: /Tear to view/ })).toHaveAttribute("aria-label", /From RM 35\.00/);
   await filters.getByRole("button", { name: "Motor Care" }).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
   await filters.getByRole("button", { name: "Sweet Treats" }).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(2);
   await filters.getByRole("button", { name: "All" }).click();
-  await usb.locator(".catalog-card-link").click();
+  await openPreviewProduct(page, "Kingston DataTraveler Exodia G2");
   for (const [capacity, price] of [["64GB", "35.00"], ["128GB", "55.00"], ["256GB", "95.00"], ["512GB", "165.00"]]) {
     await page.getByRole("button", { name: new RegExp(capacity) }).click();
     await expect(page.locator(".detail-price")).toContainText(`RM ${price}`);

@@ -1,7 +1,7 @@
 export const RETURN_KEY = "moonstore-catalog-return";
 
-export function saveCatalogReturn(filter: string) {
-  try { sessionStorage.setItem(RETURN_KEY, JSON.stringify({ url: location.pathname + location.search + location.hash, scrollY: window.scrollY, filter })); } catch { /* Back link still works without storage. */ }
+export function saveCatalogReturn(filter: string, url = location.pathname + location.search + location.hash) {
+  try { sessionStorage.setItem(RETURN_KEY, JSON.stringify({ url, scrollY: window.scrollY, filter })); } catch { /* Back link still works without storage. */ }
 }
 
 export function readCatalogReturn(): { url: string; scrollY: number; filter: string } | null {

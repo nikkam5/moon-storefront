@@ -49,6 +49,13 @@
 
 :root {
   color-scheme: light;
+  /* Moon Store's shared midnight palette, including the Galaxy hero. */
+  --moon-night: #0c1729;
+  --moon-surface: #14243b;
+  --moon-raised: #1b3150;
+  --moon-accent: #99caff;
+  --moon-ink: #eff7ff;
+  --moon-muted: #b3c9e1;
   --paper: #faf7f0;
   --surface: #fffdf9;
   --surface-raised: #f1ece2;
@@ -115,13 +122,13 @@
 }
 html[data-theme='dark'] {
   color-scheme: dark;
-  --paper: #0c1729;
-  --surface: #14243b;
-  --surface-raised: #1b3150;
-  --ink: #eff7ff;
-  --muted: #b3c9e1;
+  --paper: var(--moon-night);
+  --surface: var(--moon-surface);
+  --surface-raised: var(--moon-raised);
+  --ink: var(--moon-ink);
+  --muted: var(--moon-muted);
   --line: #344d6d;
-  --accent: #99caff;
+  --accent: var(--moon-accent);
   --lime: #254b75;
   --lilac: #243b66;
   --peach: #303c69;

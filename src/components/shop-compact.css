@@ -1,0 +1,31 @@
+.standalone-shop { max-width: 1440px; padding-top: 32px; padding-bottom: 64px; }
+.standalone-shop .section-heading { margin-bottom: 17px; }
+.standalone-shop .section-heading h1 { font-size: clamp(30px, 3.4vw, 43px); }
+.standalone-shop .section-intro { max-width: 760px; font-size: 14px; }
+.standalone-shop .catalog-toolbar { padding: 12px 0 14px; }
+.standalone-shop .catalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: 14px; }
+.standalone-shop .catalog-card { min-width: 0; }
+.standalone-shop .catalog-card-image { height: 170px; padding: 12px; }
+.standalone-shop .catalog-card .catalog-card-image .tilted-card-img { padding: 0; transform: translateZ(0); filter: none; }
+.standalone-shop .category-tech .tilted-card-inner, .standalone-shop .category-motor .tilted-card-inner { border-radius: 15px; background: #f5f6f7; }
+.standalone-shop .category-tech .tilted-card-img, .standalone-shop .category-motor .tilted-card-img { object-fit: contain; }
+.standalone-shop .catalog-card-body { padding: 4px 16px 12px; }
+.standalone-shop .catalog-card h3 { min-height: 44px; margin: 7px 0 0; font-size: 17px; line-height: 1.3; }
+.standalone-shop .product-kicker { color: var(--muted); font-size: 10px; letter-spacing: .025em; }
+.standalone-shop .compact-photo-note { display: block; margin-top: 8px; color: var(--muted); font-size: 11px; }
+.standalone-shop .catalog-card .catalog-card-controls { padding: 0 16px 16px; border-top: 0; }
+.standalone-shop .product-options { margin: 0 0 12px; }
+.standalone-shop .variant-heading { align-items: center; gap: 5px; margin-bottom: 7px; font-size: 11px; }
+.standalone-shop .variant-pills { gap: 5px; }
+.standalone-shop .variant-pills button { min-height: 38px; font-size: 11px; }
+.standalone-shop .product-details summary { padding: 9px 0; font-size: 12px; }
+.standalone-shop .product-details p, .standalone-shop .product-details dl, .standalone-shop .product-details .product-note { font-size: 12px; }
+.standalone-shop .product-purchase { margin-top: auto; padding-top: 14px; gap: 8px; }
+.standalone-shop .product-price { font-size: 20px; }
+.standalone-shop .price-label { font-size: 10px; }
+.standalone-shop .catalog-card .add-button { min-height: 42px; padding: 10px 12px; gap: 7px; font-size: 12px; }
+.standalone-shop .cart-option-count { margin-top: 10px; font-size: 11px; }
+.standalone-shop .cart-option-count:empty { display: none; }
+.standalone-shop .catalog-end { margin-top: 22px; font-size: 12px; }
+@media (max-width: 1199px) { .standalone-shop .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .standalone-shop .catalog-card-image { height: 174px; } }
+@media (max-width: 600px) { .standalone-shop { padding-top: 29px; padding-bottom: 48px; } .standalone-shop .catalog-grid { grid-template-columns: 1fr; gap: 16px; } .standalone-shop .catalog-card-image { height: 164px; } .standalone-shop .catalog-card h3 { min-height: 0; font-size: 18px; } .standalone-shop .variant-pills button { min-height: 44px; } .standalone-shop .catalog-card .add-button { min-height: 44px; font-size: 13px; } }

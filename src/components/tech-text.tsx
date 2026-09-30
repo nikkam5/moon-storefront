@@ -171,6 +171,7 @@ const TechText = ({
     let raf = 0;
     let last = performance.now();
     let visible = true;
+    let intersects = true;
     let alive = true;
     let layoutKey = '';
     let requestedFont = '';
@@ -181,7 +182,7 @@ const TechText = ({
     let pulse = 0;
     let placed = false;
     let dragging = -1;
-    let tickCount = 0;
+    let paintedBounds: Box | null = null;
     const pointer = { x: 0, y: 0, inside: false };
     const grab = { x: 0, y: 0 };
     const lens = { x: 0, y: 0 };
@@ -367,22 +368,52 @@ const TechText = ({
       target.drawImage(art.image, Math.round((art.left + dx) * dpr - originX), Math.round((art.top + dy) * dpr - originY));
     };
 
-    const drawReveal = (s: Settings) => {
+    const clipBounds = (x1: number, y1: number, x2: number, y2: number): Box | null => {
+      const bounds = {
+        x1: Math.max(0, Math.floor(x1)),
+        y1: Math.max(0, Math.floor(y1)),
+        x2: Math.min(canvas.width, Math.ceil(x2)),
+        y2: Math.min(canvas.height, Math.ceil(y2)),
+      };
+      return bounds.x2 > bounds.x1 && bounds.y2 > bounds.y1 ? bounds : null;
+    };
+
+    // Keep the wide drag canvas, but only paint where glyph pixels exist.
+    const inkBounds = (): Box | null => {
+      let x1 = Infinity;
+      let y1 = Infinity;
+      let x2 = -Infinity;
+      let y2 = -Infinity;
+      for (const glyph of glyphs) {
+        const art = glyph.fill;
+        const homeX = Math.round(art.left * dpr);
+        const homeY = Math.round(art.top * dpr);
+        const liveX = Math.round((art.left + glyph.offset.x) * dpr);
+        const liveY = Math.round((art.top + glyph.offset.y) * dpr);
+        x1 = Math.min(x1, homeX, liveX);
+        y1 = Math.min(y1, homeY, liveY);
+        x2 = Math.max(x2, homeX + art.image.width, liveX + art.image.width);
+        y2 = Math.max(y2, homeY + art.image.height, liveY + art.image.height);
+      }
+      return clipBounds(x1, y1, x2, y2);
+    };
+
+    const drawReveal = (s: Settings, ink: Box) => {
       const radius = s.reach * dpr;
       const cx = lens.x * dpr;
       const cy = lens.y * dpr;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = falloff(ctx, cx, cy, radius, presence, s.softness);
-      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
-      ctx.globalCompositeOperation = 'source-over';
-
-      const x0 = Math.max(0, Math.floor(cx - radius));
-      const y0 = Math.max(0, Math.floor(cy - radius));
-      const x1 = Math.min(canvas.width, Math.ceil(cx + radius));
-      const y1 = Math.min(canvas.height, Math.ceil(cy + radius));
+      const x0 = Math.max(ink.x1, Math.floor(cx - radius));
+      const y0 = Math.max(ink.y1, Math.floor(cy - radius));
+      const x1 = Math.min(ink.x2, Math.ceil(cx + radius));
+      const y1 = Math.min(ink.y2, Math.ceil(cy + radius));
       if (x1 <= x0 || y1 <= y0) return;
       const w = x1 - x0;
       const h = y1 - y0;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = falloff(ctx, cx, cy, radius, presence, s.softness);
+      ctx.fillRect(x0, y0, w, h);
+      ctx.globalCompositeOperation = 'source-over';
+
       if (scratch.width < w || scratch.height < h) {
         scratch.width = Math.max(scratch.width, w);
         scratch.height = Math.max(scratch.height, h);
@@ -529,19 +560,7 @@ const TechText = ({
     const tick = (now: number) => {
       raf = 0;
       const s = settingsRef.current;
-      if (!s) return;
-      // The idle sweep is decorative: render it at quarter frame rate so the
-      // background loop stays cheap on software renderers and batteries.
-      // Any pointer interaction or drag resumes full rate immediately.
-      tickCount++;
-      const idleSweep = s.sweep && !reducedMotion && !pointer.inside && dragging < 0;
-      const returning = glyphs.some(({ offset, velocity }) =>
-        Math.hypot(offset.x, offset.y) > 0.05 || Math.hypot(velocity.x, velocity.y) > 0.5,
-      );
-      if (idleSweep && !returning && tickCount % 4 !== 0) {
-        if (visible && alive) raf = requestAnimationFrame(tick);
-        return;
-      }
+      if (!s || !visible || !alive || document.hidden) return;
       const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
       last = now;
       const view = ensureLayout(s);
@@ -628,7 +647,14 @@ const TechText = ({
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.globalCompositeOperation = 'source-over';
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (paintedBounds) ctx.clearRect(paintedBounds.x1, paintedBounds.y1, paintedBounds.x2 - paintedBounds.x1, paintedBounds.y2 - paintedBounds.y1);
+      const ink = inkBounds();
+      let nextBounds = ink;
+      if (frame.index >= 0 && frame.alpha >= 0.01) {
+        // Include the brackets, labels, tether and scattered frame specks.
+        const fx = clipBounds((frame.x1 - 40) * dpr, (frame.y1 - 40) * dpr, Math.max(frame.x2 + 40, frame.x1 + 160) * dpr, (frame.y2 + 40) * dpr);
+        if (fx) nextBounds = ink ? { x1: Math.min(ink.x1, fx.x1), y1: Math.min(ink.y1, fx.y1), x2: Math.max(ink.x2, fx.x2), y2: Math.max(ink.y2, fx.y2) } : fx;
+      }
       for (const glyph of glyphs) {
         const moved = Math.hypot(glyph.offset.x, glyph.offset.y);
         if (moved > 1) {
@@ -650,8 +676,9 @@ const TechText = ({
       }
       // The reveal compositing is the costliest pass: skip it while a letter
       // is held so drags stay fluid. It resumes on release.
-      if (presence > 0.001 && dragging < 0) drawReveal(s);
+      if (ink && presence > 0.001 && dragging < 0) drawReveal(s, ink);
       drawFrame(s);
+      paintedBounds = nextBounds;
 
       const settling =
         moving || Math.abs(presence - (s.reveal === 'area' && active && dragging < 0 ? 1 : 0)) > 0.002 || (frame.alpha > 0.01 && frame.alpha < 0.99);
@@ -659,7 +686,7 @@ const TechText = ({
     };
 
     const wake = () => {
-      if (raf || !visible || !alive) return;
+      if (raf || !visible || !alive || document.hidden) return;
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };
@@ -677,6 +704,7 @@ const TechText = ({
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
+      paintedBounds = null;
       layoutKey = '';
       wake();
     };
@@ -735,11 +763,25 @@ const TechText = ({
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+    const hero = container.closest('.hero-section');
+    const syncVisibility = () => {
+      visible = intersects && !hero?.classList.contains('hero-exit');
+      if (!visible) { cancelAnimationFrame(raf); raf = 0; }
+      else wake();
+    };
     const intersectionObserver = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      wake();
+      intersects = entry.isIntersecting;
+      syncVisibility();
     });
     intersectionObserver.observe(container);
+    const curtainObserver = hero ? new MutationObserver(syncVisibility) : null;
+    if (hero) curtainObserver?.observe(hero, { attributes: true, attributeFilter: ['class'] });
+    syncVisibility();
+    const onVisibilityChange = () => {
+      if (document.hidden) { cancelAnimationFrame(raf); raf = 0; }
+      else wake();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
     if (document.fonts) document.fonts.ready.then(refreshFonts, refreshFonts);
 
     resize();
@@ -750,6 +792,8 @@ const TechText = ({
       wakeRef.current = () => {};
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      curtainObserver?.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       container.removeEventListener('pointermove', onMove as unknown as EventListener);
       container.removeEventListener('pointerenter', onMove as unknown as EventListener);
       container.removeEventListener('pointerdown', onDown as unknown as EventListener);

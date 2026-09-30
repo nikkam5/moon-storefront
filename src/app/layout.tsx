@@ -59,7 +59,7 @@ const storeJsonLd = {
   telephone: "+601161647061",
   email: business.email,
   openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "00:00", closes: "23:59" },
-  sameAs: [business.whatsapp, business.maps],
+  sameAs: [business.facebook, business.instagram, business.whatsapp, business.maps],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
