@@ -1,26 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Cookie, Droplets, Sparkles, Usb } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { getProduct, money } from "@/lib/product";
 import GalaxyBackdrop from "./galaxy-backdrop";
+import ShinyText from "./shiny-text";
 import TechText from "./tech-text";
+import Stack, { type StackHandle } from "./Stack";
 
-const categories = [
-  { name: "Tech essentials", note: "For your everyday connections.", label: "PLUG INTO YOUR DAY", className: "hero-category-tech", Icon: Usb },
-  { name: "Motor care", note: "For the road ahead.", label: "KEEP THINGS MOVING", className: "hero-category-motor", Icon: Droplets },
-  { name: "Signature treats", note: "For your little snack breaks.", label: "A LITTLE HOMEMADE JOY", className: "hero-category-treats", Icon: Cookie },
-];
+const featured = [getProduct("popia-nestum"), getProduct("kingston-dtxg2"), getProduct("honey-cornflakes"), getProduct("motul-5100")];
+const featuredCards = featured.map((product, index) => <div key={product.id} className={`hero-stack-photo hero-stack-${product.category}`}>
+  <img src={product.image} alt={product.id === "motul-5100" ? `${product.name}, 4L bottle shown` : product.name} loading="eager" fetchPriority={index === 0 ? "high" : "auto"} draggable={false} />
+</div>);
 
 export default function Hero() {
-  function spotlight(event: React.PointerEvent<HTMLDivElement>) {
-    if (event.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const box = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty("--mx", `${event.clientX - box.left}px`);
-    event.currentTarget.style.setProperty("--my", `${event.clientY - box.top}px`);
-  }
-
+  const [current, setCurrent] = useState(0);
+  const stackRef = useRef<StackHandle>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const product = featured[current];
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    const fit = () => {
+      const headerHeight = (document.querySelector<HTMLElement>(".site-header")?.offsetHeight || 72) + (document.querySelector<HTMLElement>(".announcement")?.offsetHeight || 0);
+      hero.classList.toggle("hero-natural-scroll", hero.offsetHeight + headerHeight > innerHeight + 1);
+    };
+    const resize = new ResizeObserver(fit);
+    resize.observe(hero);
+    window.addEventListener("resize", fit);
+    fit();
+    return () => { resize.disconnect(); window.removeEventListener("resize", fit); };
+  }, []);
   return (
-    <section id="home" className="hero-section hero-galaxy section-wrap" aria-labelledby="hero-heading">
+    <section ref={heroRef} id="home" className="hero-section hero-galaxy section-wrap" aria-labelledby="hero-heading">
       <GalaxyBackdrop />
       <div className="hero-copy" data-reveal>
         <div className="moonstore-word">
@@ -28,7 +41,7 @@ export default function Hero() {
             text="MOONSTORE"
             fontFamily="Manrope"
             fontWeight={800}
-            fontSize={120}
+            fontSize={90}
             letterSpacing={0.02}
             color="#eef5ff"
             accentColor="#9fd0ff"
@@ -50,26 +63,23 @@ export default function Hero() {
           <span className="moonstore-static" aria-hidden="true">MOONSTORE</span>
           <noscript><style>{`.moonstore-word .moonstore-tech{display:none}.moonstore-word .moonstore-static{display:block}`}</style></noscript>
         </div>
-        <h1 id="hero-heading">Tech Essentials, <span className="hero-heading-accent">Performance Engine Oils</span> &amp; Signature Treats.</h1>
-        <p className="hero-subtitle">Curated quality essentials dispatched locally from Besut, Terengganu.</p>
+        <h1 id="hero-heading"><ShinyText text="Good finds, close to home." color="#d8eaff" shineColor="#ffffff" speed={3.4} spread={120} direction="left" /></h1>
+        <p className="hero-subtitle">Tech storage, motor care and homemade treats. Explore the collection and order with our team in Besut on WhatsApp.</p>
         <div className="hero-actions">
           <Link href="#shop" className="button button-dark hero-button">Explore Catalog <span className="button-icon"><ArrowUpRight size={16} aria-hidden="true" /></span></Link>
-          <Link href="#about" className="underlined-link">Meet Moon Store <ArrowUpRight size={17} aria-hidden="true" /></Link>
+          <Link href="#feedback" className="underlined-link">Share feedback <ArrowUpRight size={17} aria-hidden="true" /></Link>
         </div>
       </div>
 
-      <div className="hero-visual hero-spotlight" data-reveal onPointerMove={spotlight}>
-        <div className="hero-visual-header"><span className="hero-visual-label">THE MOON MIX</span><Sparkles size={24} aria-hidden="true" /></div>
-        <div className="hero-category-stack">
-          {categories.map(({ name, note, label, className, Icon }) => (
-            <Link href="#shop" className={`hero-category ${className}`} key={name} aria-label={`Explore ${name.toLowerCase()} in the catalog`}>
-              <span className="hero-category-icon"><Icon size={48} strokeWidth={1.6} aria-hidden="true" /></span>
-              <div className="hero-category-copy"><span className="hero-category-label">{label}</span><h2>{name}</h2><p>{note}</p></div>
-              <ArrowUpRight className="hero-category-arrow" size={23} aria-hidden="true" />
-            </Link>
-          ))}
+      <div className="hero-product-stack" data-reveal>
+        <div className="hero-stack-stage">
+          <Stack ref={stackRef} randomRotation sensitivity={180} sendToBackOnClick cards={featuredCards} mobileClickOnly onChange={setCurrent} />
         </div>
-        <div className="hero-visual-bottom"><span>Different essentials. One friendly store.</span><span className="hero-edition">BESUT, TERENGGANU</span></div>
+        <div className="hero-stack-details">
+          <div aria-live="polite" aria-atomic="true"><span className="hero-stack-category">{product.categoryLabel} · {product.variants.length > 1 ? "From " : ""}{money(product.variants[0].price)}</span><Link href={`/product/${product.id}`} className="hero-stack-product-link">{product.name}<ArrowUpRight size={18} aria-hidden="true" /></Link>{product.id === "motul-5100" && <span className="hero-stack-size-note">Price for 1 Litre · 4L bottle shown</span>}</div>
+          <button type="button" className="hero-stack-next" aria-label="Next featured product" onClick={() => stackRef.current?.next()}><ArrowRight size={20} aria-hidden="true" /></button>
+        </div>
+        <div className="hero-stack-help"><span><span className="hero-stack-desktop-hint">Click or drag the photo to explore</span><span className="hero-stack-mobile-hint">Tap the photo to explore</span></span><span>{String(current + 1).padStart(2, "0")} / 04</span></div>
       </div>
     </section>
   );

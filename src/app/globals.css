@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-body);
   --color-background: var(--paper);
   --color-foreground: var(--ink);
   --color-border: var(--line);
@@ -22,7 +22,6 @@
   --color-card: var(--surface);
   --color-card-foreground: var(--ink);
   --radius: var(--shell-radius);
-  --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -54,9 +53,9 @@
   --surface: #fffdf9;
   --surface-raised: #f1ece2;
   --ink: #262a2d;
-  --muted: oklch(0.97 0 0);
+  --muted: #676b70;
   --line: #e1ddd4;
-  --accent: oklch(0.97 0 0);
+  --accent: #2b648e;
   --lime: #e4edf7;
   --lilac: #dfe9ff;
   --peach: #f5e7db;
@@ -318,23 +317,7 @@ summary::-webkit-details-marker { display: none; }
 .placeholder-bottom { position: absolute; bottom: 15px; font-size: 6px; letter-spacing: 1px; opacity: .85; }
 .compact-art .placeholder-icon { margin-top: 0; }.compact-art .placeholder-icon svg { width: 32px; height: 32px; }.compact-art .placeholder-decoration { display: none; }
 
-/* Local story, team, and contact */
-.about-section { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 8%; padding-top: 30px; padding-bottom: 80px; }
-.about-art { min-height: 480px; background: var(--lilac); color: var(--tech-ink); border-radius: var(--core-radius); padding: 35px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
-.about-art>.eyebrow { font-size: 8px; }
-.about-sparkle { position: absolute; top: 38px; right: 30px; }
-.about-art-title { font: 550 clamp(36px,4.1vw,62px)/1.12 var(--heading); letter-spacing: -2.7px; margin: 45px 0 35px; }
-.about-art-title>span { font-weight: 800; }
-.about-art-caption { display: flex; gap: 10px; align-items: center; font-size: 10px; }
-.about-copy h2 { margin: 16px 0 20px; }
-.about-copy>p { color: var(--muted); font-size: 12px; margin-bottom: 14px; }
-.team-block { border-top: 1px solid var(--line); margin-top: 24px; padding-top: 20px; }
-.team-block h3 { font-size: 12px; letter-spacing: 0; }
-.team-list { list-style: none; margin: 17px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 18px; }
-.team-member { display: flex; align-items: center; gap: 8px; font-size: 10px; }
-.team-avatar { display: grid; place-items: center; height: 33px; width: 33px; flex-shrink: 0; border-radius: 50%; background: var(--lime); color: var(--on-accent); font-size: 9px; font-weight: 600; }
-.team-member:nth-child(2) .team-avatar { background: var(--lilac); color: var(--tech-ink); }.team-member:nth-child(3) .team-avatar { background: var(--peach); color: var(--treats-ink); }
-.team-member small { display: block; margin-top: 3px; font-size: 8px; color: var(--muted); }
+/* Contact */
 .contact-section { padding-top: 65px; padding-bottom: 65px; border-top: 1px solid var(--line); }
 .contact-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
 .contact-card { border-radius: var(--shell-radius); padding: 28px; border: 1px solid var(--shell-line); background: var(--surface); box-shadow: var(--ambient), var(--core-highlight); transition: transform .7s var(--ease-haptic), box-shadow .7s var(--ease-haptic); }
@@ -409,17 +392,7 @@ summary::-webkit-details-marker { display: none; }
 .hero-section { min-height: min(780px, calc(100svh - 30px)); }
 .catalog-section { position: relative; z-index: 2; background: var(--paper); border-radius: 22px 22px 0 0; margin-top: -66px; box-shadow: 0 -22px 45px #142b4b0c; }
 .catalog-section::before { content: ""; position: absolute; top: 16px; left: calc(50% - 27px); width: 54px; height: 3px; border-radius: 10px; background: var(--accent); opacity: .35; }
-/* The story panel is the page's deepest object: dark core seated in a light tray. */
-.story-screen { min-height: 480px; padding: var(--shell-pad); background: var(--shell-bg); border: 1px solid var(--shell-line); border-radius: var(--shell-radius); box-shadow: var(--ambient); }
-.story-screen .about-art { height: 100%; }
-@media(prefers-reduced-motion:no-preference) {
-  .story-screen { clip-path: inset(49% 0 49% 0 round var(--shell-radius)); filter: brightness(1.35); transform: scaleX(.78); transform-origin: center; transition: clip-path .85s var(--ease-haptic), filter .85s ease, transform .85s var(--ease-haptic); }
-  .about-section.story-on .story-screen { clip-path: inset(0 0 0 0 round var(--shell-radius)); filter: brightness(1); transform: scaleX(1); }
-  .about-section.story-on .about-art-title { animation: story-copy-in .65s .35s both; }
-  @keyframes story-copy-in { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: none; } }
-}
-@media(max-width:800px) { .story-screen { min-height: 448px; } }
-@media(max-width:600px) { .hero-section { min-height: auto; padding-bottom: 95px; }.catalog-section { margin-top: -42px; border-radius: 18px 18px 0 0; }.story-screen { min-height: 377px; } }
+@media(max-width:600px) { .hero-section { min-height: auto; padding-bottom: 95px; }.catalog-section { margin-top: -42px; border-radius: 18px 18px 0 0; } }
 /* Shop sheet rises over a sticky homepage that gaussian-blurs away underneath.
    The blur tracks scroll 1:1 via --hero-exit (0..1, set per-frame and eased),
    so filter carries no transition lag. Layout stays in normal flow: the
@@ -431,7 +404,8 @@ summary::-webkit-details-marker { display: none; }
 }
 @media(max-width:800px) and (prefers-reduced-motion:no-preference) { .curtain-stage .hero-section { top: 78px; } }
 @media(max-width:600px) and (prefers-reduced-motion:no-preference) { .curtain-stage .hero-section { top: 72px; } }
-.curtain-stage .hero-section { opacity: calc(1 - var(--hero-exit, 0) * .92); transform: translateY(calc(var(--hero-exit, 0) * -40px)) scale(calc(1 - var(--hero-exit, 0) * .02)); filter: blur(calc(var(--hero-exit, 0) * 16px)); }
+.curtain-stage .hero-section { opacity: calc(1 - var(--hero-exit, 0) * .92); transform: translateY(calc(var(--hero-exit, 0) * -40px)) scale(calc(1 - var(--hero-exit, 0) * .02)); filter: blur(calc(var(--hero-exit, 0) * 10px)); }
+.curtain-stage .hero-section:not(.hero-exit) { opacity: 1; transform: none; filter: none; will-change: auto; }
 .curtain-stage .catalog-section { margin-top: 0; z-index: 2; }
 .curtain-stage .hero-section.hero-exit { pointer-events: none; }
 @media(max-width:600px){.curtain-stage .catalog-section{margin-top:0}}
@@ -448,10 +422,6 @@ body { font-size: 15px; }
 @media(max-width:800px) { .hero-subtitle,.section-intro,.about-copy>p { font-size: 12px; } }
 @media(max-width:600px) { .hero-subtitle,.section-intro,.about-copy>p,.contact-card address,.contact-card>p { font-size: 13px; }.catalog-card:not(:has(.catalog-card-controls)) .catalog-card-body h3 { font-size: 20px; } }
 
-.glow-panel{--glow-x:50%;--glow-y:50%;isolation:isolate}
-.glow-panel::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;background:radial-gradient(ellipse 170px 125px at var(--glow-x) var(--glow-y),#84d8ff 0%,#aebfff 48%,transparent 100%),radial-gradient(ellipse 115px 175px at calc(var(--glow-x) + 40px) calc(var(--glow-y) - 20px),#5d8effbb 0%,transparent 100%);filter:blur(18px);transition:opacity .45s ease;animation:glow-flow 5s ease-in-out infinite alternate;transform-origin:var(--glow-x) var(--glow-y)}
-.glow-panel:hover::before{opacity:.85}
-.glow-panel>*{position:relative;z-index:1}
 .hero-section.hero-galaxy{overflow:hidden;isolation:isolate;background:linear-gradient(160deg,#0a1424 0%,#10233d 55%,#162c48 100%);color:#eef5ff}
 .hero-section.hero-galaxy>.galaxy-backdrop{position:absolute;inset:0;z-index:0}
 .hero-section.hero-galaxy>*:not(.galaxy-backdrop){position:relative;z-index:1}
@@ -464,8 +434,6 @@ body { font-size: 15px; }
 /* Full-bleed hero: backdrop runs edge to edge, copy stays on the grid. */
 .hero-section.hero-galaxy{width:100%;max-width:none;margin:0;padding-left:max(3.5%,calc((100% - 1760px)/2 + 3.5%));padding-right:max(3.5%,calc((100% - 1760px)/2 + 3.5%))}
 @media(max-width:600px){.hero-section.hero-galaxy{padding-left:6%;padding-right:6%}}
-@keyframes glow-flow{0%{transform:scale(1,.85) rotate(-12deg);filter:blur(16px)}35%{transform:scale(.85,1.16) rotate(10deg);filter:blur(22px)}70%{transform:scale(1.18,.9) rotate(-6deg);filter:blur(18px)}100%{transform:scale(.93,1.12) rotate(13deg);filter:blur(24px)}}
-@media(prefers-reduced-motion:reduce){.glow-panel::before{display:none}}
 
 /* USB campaign art: flat studio composition, with the real transparent cutout front and centre. */
 .art-tech:has(img){isolation:isolate;background:#d7eafb;color:#173e70}
@@ -554,13 +522,11 @@ html[data-theme='dark'] .art-tech:has(img)::after{border-color:#bedcff3b}
 .home-motion .footer-banner.footer-spotlight.is-visible>* { animation: none; }
 /* Macro-whitespace: the homepage breathes harder than the utility pages. */
 .home-motion .catalog-section { padding-top: 104px; padding-bottom: 104px; }
-.home-motion .about-section { padding-top: 56px; padding-bottom: 112px; }
 .home-motion .contact-section { padding-top: 96px; padding-bottom: 96px; }
 .home-motion .faq-section { padding-top: 72px; padding-bottom: 112px; }
 .home-motion .section-heading { margin-bottom: 48px; }
 @media(max-width:800px) {
   .home-motion .catalog-section { padding-top: 68px; padding-bottom: 68px; }
-  .home-motion .about-section { padding-top: 36px; padding-bottom: 76px; }
   .home-motion .contact-section { padding-top: 64px; padding-bottom: 64px; }
   .home-motion .faq-section { padding-top: 48px; padding-bottom: 76px; }
   .home-motion .section-heading { margin-bottom: 32px; }
@@ -574,8 +540,6 @@ html[data-theme='dark'] .art-tech:has(img)::after{border-color:#bedcff3b}
   .home-motion .hero-visual.is-visible .hero-category { animation-duration: 1s; }
   .home-motion .hero-visual.is-visible .hero-category:nth-child(2) { animation-delay: .15s; }
   .home-motion .hero-visual.is-visible .hero-category:nth-child(3) { animation-delay: .3s; }
-  .home-motion .story-screen { transition-duration: 1.5s; }
-  .home-motion .about-section.story-on .about-art-title { animation-duration: 1.1s; animation-delay: .5s; }
   .home-motion .footer-banner.footer-spotlight.is-visible>* { animation-duration: 1.1s; }
 }
 

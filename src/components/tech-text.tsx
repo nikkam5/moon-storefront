@@ -509,7 +509,7 @@ const TechText = ({
       ctx.fillStyle = rgba(s.accentColor, 0.95 * a);
       ctx.fill();
 
-      if (s.specks > 0) {
+      if (s.specks > 0 && dragging < 0) {
         ctx.lineWidth = 1;
         drawSpecks(s, a);
       }
@@ -535,8 +535,10 @@ const TechText = ({
       // Any pointer interaction or drag resumes full rate immediately.
       tickCount++;
       const idleSweep = s.sweep && !reducedMotion && !pointer.inside && dragging < 0;
-      if (idleSweep && tickCount % 4 !== 0) {
-        last = now;
+      const returning = glyphs.some(({ offset, velocity }) =>
+        Math.hypot(offset.x, offset.y) > 0.05 || Math.hypot(velocity.x, velocity.y) > 0.5,
+      );
+      if (idleSweep && !returning && tickCount % 4 !== 0) {
         if (visible && alive) raf = requestAnimationFrame(tick);
         return;
       }
@@ -546,7 +548,7 @@ const TechText = ({
 
       const sweeping = s.sweep && !reducedMotion && !pointer.inside && dragging < 0;
       if (sweeping) clock += dt * s.speed;
-      pulse += dt;
+      if (dragging < 0) pulse += dt;
       let targetX = pointer.x;
       let targetY = pointer.y;
       if (sweeping) {
@@ -569,8 +571,9 @@ const TechText = ({
       let moving = false;
       glyphs.forEach((glyph, i) => {
         if (i === dragging) {
-          glyph.offset.x = approach(glyph.offset.x, pointer.x - grab.x, dt, 0.03);
-          glyph.offset.y = approach(glyph.offset.y, pointer.y - grab.y, dt, 0.03);
+          // 1:1 tracking while held: no smoothing lag between pointer and ink.
+          glyph.offset.x = pointer.x - grab.x;
+          glyph.offset.y = pointer.y - grab.y;
           glyph.velocity.x = 0;
           glyph.velocity.y = 0;
           moving = true;
@@ -614,6 +617,7 @@ const TechText = ({
       frame.alpha = approach(frame.alpha, focus >= 0 && s.selection ? 1 : 0, dt, 0.1);
 
       glyphs.forEach((glyph, i) => {
+        if (i === dragging) return;
         const target = s.reveal === 'letter' && i === focus && i !== dragging ? 1 : 0;
         glyph.outline = approach(glyph.outline, target, dt, 0.09);
         if (Math.abs(glyph.outline - target) > 0.002) moving = true;
@@ -644,7 +648,9 @@ const TechText = ({
         }
         ctx.globalAlpha = 1;
       }
-      if (presence > 0.001) drawReveal(s);
+      // The reveal compositing is the costliest pass: skip it while a letter
+      // is held so drags stay fluid. It resumes on release.
+      if (presence > 0.001 && dragging < 0) drawReveal(s);
       drawFrame(s);
 
       const settling =
@@ -691,6 +697,7 @@ const TechText = ({
       wake();
     };
     const onDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      if ((e.target as Element).closest('a,button,input,summary,[role="button"],#hero-heading')) return;
       locate(e);
       pointer.inside = true;
       const s = settingsRef.current;
@@ -701,20 +708,24 @@ const TechText = ({
           grab.x = pointer.x - glyphs[index].offset.x;
           grab.y = pointer.y - glyphs[index].offset.y;
           container.setPointerCapture(e.pointerId);
+          // Don't start a text selection under the dragged letter.
+          e.preventDefault();
         }
       }
       wake();
     };
     const onUp = (e: React.PointerEvent<HTMLDivElement>) => {
       if (dragging >= 0) {
+        locate(e);
+        glyphs[dragging].offset.x = pointer.x - grab.x;
+        glyphs[dragging].offset.y = pointer.y - grab.y;
         dragging = -1;
-        container.releasePointerCapture(e.pointerId);
+        if (container.hasPointerCapture(e.pointerId)) container.releasePointerCapture(e.pointerId);
         const rect = container.getBoundingClientRect();
         pointer.inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
       }
       wake();
     };
-
     container.addEventListener('pointermove', onMove as unknown as EventListener, { passive: true });
     container.addEventListener('pointerenter', onMove as unknown as EventListener, { passive: true });
     container.addEventListener('pointerdown', onDown as unknown as EventListener, { passive: false });

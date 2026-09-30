@@ -1,0 +1,6 @@
+.decrypted-text { display: inline; white-space: pre-wrap; }
+.decrypted-text__word { display: inline-block; white-space: nowrap; }
+.decrypted-text__char { position: relative; display: inline-block; }
+.decrypted-text__measure { visibility: hidden; }
+.decrypted-text__glyph { position: absolute; inset: 0; overflow: visible; }
+@media (prefers-reduced-motion: reduce) { .decrypted-text__glyph { transition: none; } }

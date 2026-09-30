@@ -7,10 +7,8 @@
   user-select: none;
 }
 
-/* Drag field: the canvas extends well beyond the word's layout box so
-   grabbed letters stay visible anywhere they are dragged (clipped only by
-   ancestors such as the hero). It never intercepts pointer input; grabs
-   start on the small layout box and continue via pointer capture. */
+/* Canvas extends beyond the word box. Pointer input on scattered letters
+   is handled by the hero, so the expanded art never blocks links. */
 .tech-text-canvas {
   display: block;
   position: absolute;

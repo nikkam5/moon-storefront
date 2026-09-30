@@ -53,14 +53,14 @@ export default function GalaxyBackdrop() {
       {mounted && (
         <Galaxy
           paused={!visible}
-          density={0.9}
-          glowIntensity={0.45}
-          saturation={0.55}
+          density={0.4}
+          glowIntensity={0.2}
+          saturation={0.4}
           hueShift={215}
-          starSpeed={0.35}
-          speed={0.8}
+          starSpeed={0.25}
+          speed={0.65}
           rotationSpeed={0.05}
-          twinkleIntensity={0.35}
+          twinkleIntensity={0.16}
           mouseInteraction={false}
           mouseRepulsion={false}
           transparent

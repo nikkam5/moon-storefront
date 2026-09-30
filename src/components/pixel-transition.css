@@ -1,0 +1,6 @@
+.pixel-transition { position: relative; width: 100%; overflow: hidden; border-radius: inherit; background: #1a3551; cursor: pointer; }
+.pixel-transition:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.pixel-transition__default, .pixel-transition__active, .pixel-transition__grid { position: absolute; inset: 0; }
+.pixel-transition__active { z-index: 1; }
+.pixel-transition__grid { z-index: 2; pointer-events: none; }
+.pixel-transition__pixel { position: absolute; opacity: 0; pointer-events: none; }

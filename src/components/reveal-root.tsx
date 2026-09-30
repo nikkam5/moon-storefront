@@ -20,14 +20,12 @@ export default function RevealRoot({ children }: { children: React.ReactNode }) 
         if (media.matches || entry.isIntersecting) {
           element.classList.remove("reveal-pending");
           element.classList.add("is-visible");
-          if (element.id === "about" && !media.matches) element.classList.add("story-on");
         } else if (element.hasAttribute("data-fade-both") || entry.boundingClientRect.top > window.innerHeight - 50) {
           // data-fade-both fades out whenever it leaves the viewport (either
           // direction) so it fades back in when scrolled back into view.
           // Other sections below the viewport reset too; content above stays readable.
           element.classList.remove("is-visible");
           element.classList.add("reveal-pending");
-          if (element.id === "about") element.classList.remove("story-on");
         }
       }
     }, { threshold: 0, rootMargin: "0px 0px -35px 0px" });
@@ -56,7 +54,7 @@ export default function RevealRoot({ children }: { children: React.ReactNode }) 
       progressTick = false;
       if (!home || !shop || media.matches) return;
       const top = shop.getBoundingClientRect().top;
-      const start = window.innerHeight;
+      const start = window.innerHeight * 0.6;
       const end = 150;
       const raw = Math.min(1, Math.max(0, (start - top) / (start - end)));
       const eased = raw * raw * (3 - 2 * raw);
@@ -78,7 +76,7 @@ export default function RevealRoot({ children }: { children: React.ReactNode }) 
       if (elements.has(element)) return;
       elements.add(element);
       const rect = element.getBoundingClientRect();
-      if (media.matches || rect.top < window.innerHeight - 35) { element.classList.add("is-visible"); if (element.id === "about" && !media.matches) element.classList.add("story-on"); }
+      if (media.matches || rect.top < window.innerHeight - 35) element.classList.add("is-visible");
       else element.classList.add("reveal-pending");
       observer.observe(element);
     }
@@ -86,7 +84,7 @@ export default function RevealRoot({ children }: { children: React.ReactNode }) 
     if (shop) curtain.observe(shop);
     const mutation = new MutationObserver((changes) => { for (const change of changes) for (const node of change.addedNodes) if (node instanceof HTMLElement) { if (node.matches("[data-reveal]")) watch(node); node.querySelectorAll<HTMLElement>("[data-reveal]").forEach(watch); } });
     mutation.observe(document.body, { childList: true, subtree: true });
-    function revealAll() { elements.forEach((element) => { element.classList.remove("reveal-pending"); element.classList.add("is-visible"); if (element.id === "about") element.classList.remove("story-on"); }); home?.classList.remove("hero-exit"); home?.style.removeProperty("--hero-exit"); }
+    function revealAll() { elements.forEach((element) => { element.classList.remove("reveal-pending"); element.classList.add("is-visible"); }); home?.classList.remove("hero-exit"); home?.style.removeProperty("--hero-exit"); }
     function motionChange() { if (media.matches) revealAll(); }
     function focusReveal(event: FocusEvent) { if (event.target instanceof Element) { const element = event.target.closest<HTMLElement>(".reveal-pending"); if (element) { element.classList.remove("reveal-pending"); element.classList.add("is-visible"); } } }
     media.addEventListener("change", motionChange);

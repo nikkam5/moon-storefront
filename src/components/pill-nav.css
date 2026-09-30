@@ -1,0 +1,84 @@
+/* Brand and controls keep their own columns; the four links sit at the
+   physical center of the header regardless of their widths. */
+.site-header .header-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+}
+.site-header .header-inner > .header-logo { grid-column: 1; grid-row: 1; justify-self: start; }
+.site-header .header-inner > .pill-nav-container { grid-column: 2; grid-row: 1; justify-self: center; }
+.site-header .header-inner > .header-actions { grid-column: 3; grid-row: 1; justify-self: end; }
+
+.pill-nav-container {
+  --pill-base: #e4edf7;
+  --pill-bg: #fffdf9;
+  --pill-text: #173b62;
+  --pill-hover-bg: #24547e;
+  --pill-hover-text: #f7fbff;
+  --pill-indicator: #24547e;
+  position: relative;
+  min-width: 0;
+}
+html[data-theme='dark'] .pill-nav-container {
+  --pill-base: #081d33;
+  --pill-bg: #203957;
+  --pill-text: #eff7ff;
+  --pill-hover-bg: #cfe5ff;
+  --pill-hover-text: #11263e;
+  --pill-indicator: #a9d4ff;
+}
+.pill-nav { --nav-h: 42px; display: flex; align-items: center; }
+.pill-nav-items { position: relative; height: var(--nav-h); border-radius: 999px; background: var(--pill-base); }
+.pill-list { list-style: none; display: flex; gap: 3px; height: 100%; margin: 0; padding: 3px; }
+.pill-list li { display: flex; height: 100%; }
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-width: 76px;
+  padding: 0 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pill .hover-circle { position: absolute; left: 50%; bottom: 0; display: block; border-radius: 50%; background: var(--pill-hover-bg); pointer-events: none; }
+.label-stack { position: relative; z-index: 2; display: inline-block; line-height: 1; }
+.pill-label, .pill-label-hover { display: inline-block; line-height: 1; }
+.pill-label-hover { position: absolute; inset: 0 auto auto 0; color: var(--pill-hover-text); opacity: 0; }
+.pill-active-indicator {
+  position: absolute;
+  bottom: -10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pill-indicator);
+  transform: translateX(-50%);
+  transition: left .4s cubic-bezier(.32,.72,0,1), opacity .2s ease;
+  pointer-events: none;
+}
+.pill-mobile-toggle, .pill-mobile-popover { display: none; }
+
+@media (max-width: 800px) {
+  .site-header .header-inner { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .site-header .header-inner > .header-actions { grid-column: 2; }
+  .site-header .header-inner > .pill-nav-container { grid-column: 3; justify-self: end; }
+  .pill-nav-items { display: none; }
+  .pill-mobile-toggle { width: 42px; height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 0; border: 0; border-radius: 50%; background: var(--pill-base); }
+  .pill-mobile-toggle span { width: 17px; height: 2px; border-radius: 2px; background: var(--pill-text); }
+  .pill-mobile-popover { position: absolute; top: 52px; right: 0; z-index: 30; width: min(280px, calc(100vw - 28px)); flex-direction: column; gap: 3px; padding: 3px; border-radius: 22px; background: var(--pill-base); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease, visibility .22s ease; }
+  .pill-mobile-popover.is-open { display: flex; opacity: 1; visibility: visible; transform: none; }
+  .pill-mobile-popover a { padding: 13px 16px; border-radius: 999px; background: var(--pill-bg); color: var(--pill-text); font-size: 12px; font-weight: 650; text-transform: uppercase; }
+  .pill-mobile-popover a.is-active, .pill-mobile-popover a:hover { background: var(--pill-hover-bg); color: var(--pill-hover-text); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill .hover-circle, .pill .pill-label-hover { display: none; }
+  .pill-active-indicator, .pill-mobile-popover { transition: none; }
+}

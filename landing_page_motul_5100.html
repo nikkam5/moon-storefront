@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promosi Motul 5100 4T 10W-40 - RM50 Sebotol</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        motulRed: '#E30613',
+                        motulRedDark: '#B8000A',
+                        motulDark: '#0D0D0D',
+                        motulCard: '#181818',
+                        motulBorder: '#2A2A2A',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-pattern {
+            background-color: #0D0D0D;
+            background-image: radial-gradient(#E30613 0.75px, transparent 0.75px), radial-gradient(#E30613 0.75px, #0D0D0D 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+        .pulse-btn {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); }
+            70% { box-shadow: 0 0 0 18px rgba(227, 6, 19, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); }
+        }
+        .motul-slant {
+            transform: skewX(-12deg);
+        }
+    </style>
+</head>
+<body class="bg-motulDark font-sans text-gray-200 antialiased selection:bg-motulRed selection:text-white">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-motulDark/95 border-b border-motulBorder sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-motulRed text-white font-heading font-black text-2xl tracking-tighter px-4 py-1.5 rounded-sm italic motul-slant shadow-lg shadow-motulRed/30">
+                        MOTUL
+                    </div>
+                    <div class="hidden sm:block border-l border-gray-700 pl-3">
+                        <span class="text-white text-xs font-bold tracking-widest uppercase block">PENGEDAR SAH</span>
+                        <span class="text-xs text-motulRed font-semibold">USAHAWAN TEMPATAN</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wide">
+                    <a href="#kelebihan" class="hover:text-motulRed transition duration-200">KELEBIHAN</a>
+                    <a href="#spesifikasi" class="hover:text-motulRed transition duration-200">SPESIFIKASI</a>
+                    <a href="#tempah" class="hover:text-motulRed transition duration-200">TEMPAH NOW</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div>
+                    <a href="#tempah" class="bg-motulRed hover:bg-motulRedDark text-white font-bold py-2.5 px-5 rounded-lg text-sm transition shadow-lg flex items-center space-x-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>BELI RM50</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative py-12 lg:py-20 overflow-hidden border-b border-motulBorder hero-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Text Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-motulRed/10 border border-motulRed/30 px-3.5 py-1.5 rounded-full text-motulRed text-xs sm:text-sm font-bold tracking-wide">
+                        <span class="flex h-2 w-2 rounded-full bg-motulRed animate-ping"></span>
+                        <span>PROMOSI BUMIPUTERA - STOK READY</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-heading font-black text-white leading-tight uppercase">
+                        PRESTASI MAX <br class="hidden sm:inline"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-motulRed via-red-500 to-yellow-500">MOTUL 5100</span> 10W-40
+                    </h1>
+
+                    <!-- Price Card Header -->
+                    <div class="inline-flex items-baseline space-x-3 bg-motulCard border border-motulRed/50 p-4 rounded-xl shadow-2xl">
+                        <span class="text-gray-400 text-sm uppercase font-semibold">Harga Terus Usahawan:</span>
+                        <span class="text-3xl sm:text-4xl font-heading font-black text-white">RM 50</span>
+                        <span class="text-xs text-green-400 bg-green-950/60 px-2.5 py-1 rounded border border-green-800">1 Liter (100% Original)</span>
+                    </div>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        Minyak enjin motosikal 4-Trok **Technosynthese® Ester** gred premium. Penukaran gear lebih lembut, enjin lebih sejuk, dan perlindungan maksima untuk motor harian atau touring anda!
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#tempah" class="pulse-btn bg-motulRed hover:bg-motulRedDark text-white font-heading font-black text-lg px-8 py-4 rounded-xl text-center shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>TEMPAH SEKARANG - RM50</span>
+                        </a>
+                        <a href="#whatsapp" onclick="sendWhatsAppDirect()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-6 py-4 rounded-xl text-center shadow-xl transition flex items-center justify-center space-x-2">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                            <span>Chat WhatsApp</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="grid grid-cols-3 gap-2 pt-4 border-t border-motulBorder/80 max-w-md mx-auto lg:mx-0 text-xs text-gray-400 font-medium">
+                        <div class="flex items-center space-x-1.5 justify-center lg:justify-start">
+                            <i class="fa-solid fa-shield-check text-motulRed text-sm"></i>
+                            <span>100% Original</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 justify-center lg:justify-start">
+                            <i class="fa-solid fa-truck-fast text-motulRed text-sm"></i>
+                            <span>Hantar Pantas</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 justify-center lg:justify-start">
+                            <i class="fa-solid fa-hand-holding-dollar text-motulRed text-sm"></i>
+                            <span>Boleh COD / Pos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Product Display Card (High Resolution 3D Image) -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-motulRed to-amber-600 rounded-3xl blur-xl opacity-40 animate-pulse"></div>
+                    
+                    <div class="relative bg-motulCard border-2 border-motulRed/80 rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl overflow-hidden">
+                        
+                        <!-- Floating Price Tag Badge -->
+                        <div class="absolute top-4 right-4 bg-motulRed text-white font-heading font-black px-4 py-1.5 rounded-full text-sm shadow-xl tracking-wider italic motul-slant border border-white/20 z-10">
+                            RM 50 / BTL
+                        </div>
+
+                        <!-- Product 3D Image Display Area -->
+                        <div class="relative flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black p-4 rounded-2xl border border-motulBorder group">
+                            
+                            <!-- 3D Botol Motul 5100 Image -->
+                            <div class="w-full h-88 sm:h-96 flex items-center justify-center overflow-hidden rounded-xl">
+                                <img src="MOTUL.jpg" 
+                                     alt="Minyak Hitam Motul 5100 4T 10W-40 Realistik 3D" 
+                                     class="max-h-full w-auto object-contain filter drop-shadow-[0_15px_25px_rgba(227,6,19,0.35)] transition duration-500 group-hover:scale-105">
+                            </div>
+
+                            <div class="mt-4 text-center">
+                                <h3 class="font-heading font-bold text-white text-lg tracking-wide">MOTUL 5100 4T 10W-40</h3>
+                                <p class="text-xs text-gray-400">Pek 1 Liter • Ester Technosynthese®</p>
+                            </div>
+                        </div>
+
+                        <!-- Features Quick Bar -->
+                        <div class="mt-4 grid grid-cols-2 gap-2 text-center text-xs font-semibold">
+                            <div class="bg-gray-900/90 border border-motulBorder p-2.5 rounded-lg text-gray-300">
+                                <i class="fa-solid fa-gauge text-motulRed mr-1"></i> Gear Lebih Smooth
+                            </div>
+                            <div class="bg-gray-900/90 border border-motulBorder p-2.5 rounded-lg text-gray-300">
+                                <i class="fa-solid fa-temperature-arrow-down text-motulRed mr-1"></i> Enjin Kurang Panas
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="kelebihan" class="py-16 bg-motulCard border-b border-motulBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl sm:text-4xl font-heading font-black text-white uppercase tracking-tight">
+                    KENAPA PENUNGGANG PILIH <span class="text-motulRed">MOTUL 5100</span>?
+                </h2>
+                <div class="h-1 w-20 bg-motulRed mx-auto mt-3 rounded-full"></div>
+                <p class="mt-4 text-gray-400 text-sm sm:text-base">
+                    Diformulasikan khas untuk perlindungan maksimum enjin motosikal tempatan dalam cuaca panas Malaysia.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-motulDark p-6 rounded-2xl border border-motulBorder hover:border-motulRed transition duration-300">
+                    <div class="w-12 h-12 bg-motulRed/10 border border-motulRed/30 rounded-xl flex items-center justify-center text-motulRed text-2xl mb-4">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Asas Ester & Technosynthese</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Campuran sintetik premium berkualiti tinggi dengan teknologi Ester mengurangkan geseran dan aus komponen enjin secara berkesan.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-motulDark p-6 rounded-2xl border border-motulBorder hover:border-motulRed transition duration-300">
+                    <div class="w-12 h-12 bg-motulRed/10 border border-motulRed/30 rounded-xl flex items-center justify-center text-motulRed text-2xl mb-4">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Penukaran Gear Lancar</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Sijil piawaian JASO MA2 memastikan cengkaman klac basah sempurna. Tiada isu klac menggelongsor (clutch slip).
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-motulDark p-6 rounded-2xl border border-motulBorder hover:border-motulRed transition duration-300">
+                    <div class="w-12 h-12 bg-motulRed/10 border border-motulRed/30 rounded-xl flex items-center justify-center text-motulRed text-2xl mb-4">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Kawalan Suhu Tinggi</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Kelikatan 10W-40 stabil walaupun dalam kesesakan lalu lintas atau pemanduan jarak jauh yang berterusan.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-motulDark p-6 rounded-2xl border border-motulBorder hover:border-motulRed transition duration-300">
+                    <div class="w-12 h-12 bg-motulRed/10 border border-motulRed/30 rounded-xl flex items-center justify-center text-motulRed text-2xl mb-4">
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Sesuai Pelbagai Moto</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Sangat ideal untuk pelbagai motosikal seperti Y15ZR, RS150, NVX, LC135, R15, VF3i, Scooter & Streetbike.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specification Section -->
+    <section id="spesifikasi" class="py-16 bg-motulDark border-b border-motulBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <div>
+                    <h2 class="text-3xl font-heading font-black text-white uppercase border-l-4 border-motulRed pl-4">
+                        SPESIFIKASI TEKNIKAL
+                    </h2>
+                    <p class="mt-4 text-gray-400 text-sm">
+                        Produk Motul 5100 memenuhi piawaian tertinggi pengeluar motosikal antarabangsa:
+                    </p>
+
+                    <div class="mt-6 space-y-3">
+                        <div class="flex justify-between items-center p-3.5 bg-motulCard rounded-lg border border-motulBorder">
+                            <span class="text-gray-400 text-sm font-medium">Harga Sebotol:</span>
+                            <span class="text-motulRed font-heading font-black text-lg">RM 50.00</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3.5 bg-motulCard rounded-lg border border-motulBorder">
+                            <span class="text-gray-400 text-sm font-medium">Jenis Minyak:</span>
+                            <span class="text-white font-bold text-sm">Technosynthese® Ester</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3.5 bg-motulCard rounded-lg border border-motulBorder">
+                            <span class="text-gray-400 text-sm font-medium">Gred Kelikatan:</span>
+                            <span class="text-white font-bold text-sm">SAE 10W-40</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3.5 bg-motulCard rounded-lg border border-motulBorder">
+                            <span class="text-gray-400 text-sm font-medium">Piawaian API:</span>
+                            <span class="text-white font-bold text-sm">API SP / SM / SL</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3.5 bg-motulCard rounded-lg border border-motulBorder">
+                            <span class="text-gray-400 text-sm font-medium">Piawaian JASO:</span>
+                            <span class="text-white font-bold text-sm">JASO MA2</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3.5 bg-motulCard rounded-lg border border-motulBorder">
+                            <span class="text-gray-400 text-sm font-medium">Isipadu Botol:</span>
+                            <span class="text-white font-bold text-sm">1.0 Liter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Showcase Showcase Card with 3D Image -->
+                <div class="bg-motulCard p-8 rounded-3xl border border-motulBorder text-center relative overflow-hidden flex flex-col items-center">
+                    <div class="absolute -top-12 -right-12 w-40 h-40 bg-motulRed/20 rounded-full blur-2xl"></div>
+                    
+                    <img src="watermarked_img_15187641680549109482.jpg" 
+                         alt="Motul 5100 3D Bottle Showcase" 
+                         class="h-64 sm:h-72 object-contain mb-4 drop-shadow-[0_10px_20px_rgba(227,6,19,0.3)]">
+                    
+                    <h3 class="text-2xl font-heading font-black text-white uppercase mb-1">100% DIJAMIN ORIGINAL</h3>
+                    <p class="text-gray-400 text-xs max-w-md mx-auto mb-4">
+                        Kami adalah usahawan tempatan yang membekalkan minyak Motul tulen terus daripada pengedar sah.
+                    </p>
+                    <div class="inline-block bg-motulRed text-white font-heading font-extrabold text-2xl px-6 py-2 rounded-xl shadow-xl">
+                        Cuma RM 50 / Botol
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Form Section -->
+    <section id="tempah" class="py-16 bg-gradient-to-b from-motulDark via-motulCard to-motulDark">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6">
+            <div class="bg-motulCard rounded-3xl border-2 border-motulRed/80 shadow-2xl overflow-hidden">
+                
+                <div class="bg-gradient-to-r from-motulRed to-motulRedDark text-white p-6 sm:p-8 text-center">
+                    <h2 class="text-2xl sm:text-4xl font-heading font-black uppercase tracking-tight">BORANG TEMPAHAN PROMOSI</h2>
+                    <p class="text-red-100 text-xs sm:text-sm mt-1">Minyak Hitam Motul 5100 4T 10W-40 (1 Litre)</p>
+                </div>
+
+                <form id="orderForm" onsubmit="submitOrder(event)" class="p-6 sm:p-10 space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Nama Penuh *</label>
+                        <input type="text" id="nama" required placeholder="Contoh: Muhammad Ammar" 
+                            class="w-full bg-motulDark border border-motulBorder rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-motulRed transition">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">No. WhatsApp *</label>
+                            <input type="tel" id="whatsapp" required placeholder="Contoh: 0123456789" 
+                                class="w-full bg-motulDark border border-motulBorder rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-motulRed transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Kuantiti Botol *</label>
+                            <select id="kuantiti" onchange="calculateTotal()" class="w-full bg-motulDark border border-motulBorder rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-motulRed transition font-bold">
+                                <option value="1">1 Botol (RM 50)</option>
+                                <option value="2">2 Botol (RM 100)</option>
+                                <option value="3">3 Botol (RM 150)</option>
+                                <option value="4">4 Botol (RM 200)</option>
+                                <option value="6">6 Botol (RM 300)</option>
+                                <option value="12">1 Karton / 12 Botol (RM 600)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Price Calculation Display -->
+                    <div class="bg-motulDark p-4 rounded-2xl border border-motulBorder flex justify-between items-center">
+                        <div>
+                            <span class="text-xs text-gray-400 block font-semibold">JUMLAH HARGA:</span>
+                            <span class="text-xs text-emerald-400">Harga Tetap RM50/sebotol</span>
+                        </div>
+                        <div id="totalDisplay" class="text-3xl font-heading font-black text-motulRed">
+                            RM 50.00
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Model Motosikal & Lokasi Penghantaran *</label>
+                        <textarea id="lokasi" rows="3" required placeholder="Contoh: Motor Y15ZR, COD kawasan Shah Alam / Pos ke Kuantan Pahang" 
+                            class="w-full bg-motulDark border border-motulBorder rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-motulRed transition"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-black text-lg py-4 rounded-xl shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        <span>HANTAR TEMPAHAN KE WHATSAPP</span>
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-motulBorder text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <div class="inline-block bg-motulRed text-white font-heading font-black text-xl px-3 py-1 italic motul-slant">
+                MOTUL
+            </div>
+            <p>© 2026 Kedai Usahawan Minyak Hitam Motosikal Tempatan. Hak Cipta Terpelihara.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Functions -->
+    <script>
+        const HARGA_PER_BOTOL = 50;
+        const NO_PHONE_USAHAWAN = '60123456789'; // Gantikan dengan nombor WhatsApp anda
+
+        function calculateTotal() {
+            const qty = parseInt(document.getElementById('kuantiti').value) || 1;
+            const total = qty * HARGA_PER_BOTOL;
+            document.getElementById('totalDisplay').innerText = `RM ${total}.00`;
+        }
+
+        function sendWhatsAppDirect() {
+            const text = encodeURIComponent("Salam usahawan, saya berminat nak beli Minyak Hitam Motul 5100 (RM50 sebotol). Boleh bantu saya?");
+            window.open(`https://wa.me/${NO_PHONE_USAHAWAN}?text=${text}`, '_blank');
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            const nama = document.getElementById('nama').value;
+            const phone = document.getElementById('whatsapp').value;
+            const qty = parseInt(document.getElementById('kuantiti').value);
+            const lokasi = document.getElementById('lokasi').value;
+            const total = qty * HARGA_PER_BOTOL;
+
+            const msg = `Salam Usahawan Motul,%0A%0ASaya nak buat tempahan *Motul 5100 4T 10W-40*:%0A` +
+                        `----------------------------------%0A` +
+                        `👤 *Nama:* ${nama}%0A` +
+                        `📞 *No Tel:* ${phone}%0A` +
+                        `🍾 *Kuantiti:* ${qty} Botol%0A` +
+                        `💰 *Jumlah Bayaran:* RM ${total}.00%0A` +
+                        `🏍️ *Motor & Lokasi:* ${lokasi}%0A` +
+                        `----------------------------------%0A` +
+                        `Mohon beri maklumat akaun bank untuk pembayaran. Terima kasih!`;
+
+            window.open(`https://wa.me/${NO_PHONE_USAHAWAN}?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>

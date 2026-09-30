@@ -1,4 +1,4 @@
-export type ProductId = "kingston-dtxg2" | "motul-7100" | "motul-5100" | "popia-nestum" | "honey-cornflakes";
+export type ProductId = "kingston-dtxg2" | "motul-5100" | "popia-nestum" | "honey-cornflakes";
 export type Category = "tech" | "motor" | "treats";
 export type Variant = { id: string; label: string; detail: string; price: number; color?: string };
 export type Product = {
@@ -27,25 +27,13 @@ export const products: Product[] = [
     tagline: "Ultra-portable, high-speed everyday data transfer.",
     description: "Keep work, memories and your next big idea close. A plug-and-play USB flash drive with a protective snap cap and a handy keyring loop.",
     specs: [["Connection", "USB 3.2 Gen 1 · USB Type-A"], ["Design", "Protective snap cap · keyring loop"], ["Setup", "Plug and play"], ["Warranty", "5-year official warranty"]],
-    image: "/products/usb.png",
+    image: "/products/usb-3.2.jpg",
     variants: [
       { id: "64gb", label: "64GB", detail: "Matte Black", price: 35, color: "#27272b" },
       { id: "128gb", label: "128GB", detail: "Sky Blue", price: 55, color: "#66b4e8" },
       { id: "256gb", label: "256GB", detail: "Lime Green", price: 95, color: "#a9ce45" },
       { id: "512gb", label: "512GB", detail: "Deep Purple", price: 165, color: "#6945a6" },
     ],
-  },
-  {
-    id: "motul-7100",
-    name: "Motul 7100 4T 10W-40",
-    orderName: "Motul 7100 4T 10W-40",
-    category: "motor",
-    categoryLabel: "Motor Care",
-    tagline: "Factory-grade shear stability and clutch response for sport and track machines.",
-    description: "100% synthetic motorcycle oil with Ester technology, for high-revving single and multi-cylinder engines and demanding rides.",
-    specs: [["Bottle", "1 Litre"], ["Formulation", "100% synthetic with Ester"], ["Standards", "API SP / SN · JASO MA2"], ["Applications", "Sport and track motorcycles, including Ducati Panigale, Yamaha R-Series and Honda CBR, where this grade is specified"]],
-    note: "Check your vehicle manual for the required viscosity and specifications before ordering; compatibility varies by model and year.",
-    variants: [{ id: "1-litre", label: "1 Litre", detail: "100% Synthetic", price: 150 }],
   },
   {
     id: "motul-5100",
@@ -57,6 +45,8 @@ export const products: Product[] = [
     description: "Technosynthese synthetic-ester blend for everyday maintenance. An option for kapcai, standard road bikes and scooters whose manuals specify this oil grade.",
     specs: [["Bottle", "1 Litre"], ["Formulation", "Technosynthese synthetic-ester blend"], ["Standards", "API SM / SL · JASO MA2"], ["Applications", "Underbone mopeds, standard naked road bikes and compatible scooters"]],
     note: "Not universal for all scooters. Check your vehicle manual for the required viscosity and JASO standard before ordering.",
+    image: "/products/motul-5100-10w-40.jpg",
+    images: ["/products/motul-5100-10w-40.jpg", "/products/motul-5100-4t.jpg"],
     variants: [{ id: "1-litre", label: "1 Litre", detail: "Technosynthese", price: 55 }],
   },
   {

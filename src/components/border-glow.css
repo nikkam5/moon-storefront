@@ -1,0 +1,32 @@
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --glow-x: 50%;
+  --glow-y: 50%;
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--line, #405470);
+  border-radius: var(--glow-radius);
+  background: var(--glow-surface);
+}
+.border-glow-card::before, .border-glow-card::after { content: ""; position: absolute; pointer-events: none; border-radius: inherit; transition: opacity .22s ease-out; }
+.border-glow-card::before {
+  inset: -1px;
+  z-index: 2;
+  padding: 2px;
+  background: radial-gradient(circle at var(--glow-x) var(--glow-y), var(--glow-one) 0%, var(--glow-two) var(--glow-cone), var(--glow-three) calc(var(--glow-cone) + 12%), transparent calc(var(--glow-cone) + 32%));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: calc(var(--edge-proximity) * var(--glow-intensity));
+}
+.border-glow-card::after {
+  inset: calc(var(--glow-outer) * -.45);
+  z-index: 0;
+  background: radial-gradient(ellipse 45% 48% at var(--glow-x) var(--glow-y), var(--glow-color), transparent 88%);
+  filter: blur(calc(var(--glow-outer) * .45));
+  opacity: calc(var(--edge-proximity) * var(--glow-intensity) * .55);
+}
+.border-glow-inner { position: relative; z-index: 1; border-radius: inherit; }
+@media (prefers-reduced-motion: reduce) { .border-glow-card::before, .border-glow-card::after { opacity: 0; transition: none; } }

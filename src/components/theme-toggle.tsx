@@ -4,17 +4,13 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   useEffect(() => {
-    const media = matchMedia("(prefers-color-scheme: dark)");
     let selected: "light" | "dark" | null = null;
-    try { const saved = localStorage.getItem("moonstore-theme"); if (saved === "light" || saved === "dark") selected = saved; } catch { /* System preference is the fallback. */ }
+    try { const saved = localStorage.getItem("moonstore-theme"); if (saved === "light" || saved === "dark") selected = saved; } catch { /* Dark is the fallback. */ }
     function apply(value: "light" | "dark") { document.documentElement.dataset.theme = value; setTheme(value); }
-    apply(selected ?? (media.matches ? "dark" : "light"));
-    const onSystemChange = () => { if (!document.documentElement.dataset.themeOverride) apply(media.matches ? "dark" : "light"); };
+    apply(selected ?? "dark");
     if (selected) document.documentElement.dataset.themeOverride = "true";
-    media.addEventListener("change", onSystemChange);
-    return () => media.removeEventListener("change", onSystemChange);
   }, []);
   function toggle() {
     const next = theme === "light" ? "dark" : "light";

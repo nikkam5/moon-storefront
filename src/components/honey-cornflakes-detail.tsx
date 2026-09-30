@@ -118,7 +118,7 @@ export default function HoneyCornflakesDetail({ product }: { product: Product })
             <li><a href="/#home">Home <span>↗</span></a></li>
             <li><a href="/#shop">Explore catalog <span>↗</span></a></li>
             <li><a href="/#about">Our story <span>↗</span></a></li>
-            <li><a href="/#contact">Get in touch <span></span></a></li>
+             <li><a href="/#feedback">Customer feedback <span></span></a></li>
           </ul>
         </div>
         <div className="footer-col">
