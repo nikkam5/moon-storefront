@@ -40,7 +40,7 @@ export default function CustomerFeedback() {
         <p>Tried something from Moon Store? Tell us what you loved or what we can improve. We read every message.</p>
         <span className="feedback-signoff">A little note from you. A better store for everyone.</span>
       </div>
-      <BorderGlow className="feedback-glow" borderRadius={20} glowRadius={28} glowIntensity={.7}>
+      <BorderGlow className="feedback-glow" borderRadius={20} glowRadius={28} glowIntensity={.5} glowColor="268 35 67" colors={["var(--accent)", "var(--lilac)", "var(--accent)"]}>
         <form className="feedback-form" onSubmit={prepareFeedback}>
           <div className="feedback-form-heading"><span>SHARE YOUR THOUGHTS</span><MessageCircle size={22} aria-hidden="true" /></div>
           <label htmlFor="feedback-name">Your name <span>(optional)</span></label>
@@ -53,7 +53,7 @@ export default function CustomerFeedback() {
             count={5}
             shape="star"
             labels={["Poor", "Fair", "Good", "Great", "Superb"]}
-            activeColor="#5673d3"
+            activeColor="var(--accent)"
             idleColor="#52525b"
             tipColor="#27272a"
             tipTextColor="#f5f5f5"

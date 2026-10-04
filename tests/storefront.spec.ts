@@ -371,7 +371,7 @@ test("homepage product opens its own details and adds the chosen variant", async
   await openPreviewProduct(page, "Kingston DataTraveler Exodia G2");
   await expect(page).toHaveURL(/\/product\/kingston-dtxg2$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kingston DataTraveler Exodia G2");
-  await expect(page.locator(".product-gallery img")).toHaveAttribute("src", "/products/usb-3.2.jpg");
+  await expect(page.locator(".usb-product-photo")).toHaveAttribute("src", "/products/usb-3.2.jpg");
   await expect(page.getByText("5-year official warranty")).toBeVisible();
   await page.getByRole("button", { name: /128GB/ }).click();
   await expect(page.locator(".detail-price")).toContainText("RM 60.00");
@@ -487,14 +487,14 @@ test("customer feedback opens a reviewable WhatsApp draft", async ({ page, conte
   await feedback.getByLabel("Your name").fill("Amin");
   const rating = feedback.getByRole("radiogroup", { name: "How was your experience? (optional)" });
   const fourthStar = rating.getByRole("radio", { name: "4 of 5, Great" });
-  await expect(rating).toHaveCSS("--pr-active", "#5673d3");
+  await expect(rating).toHaveCSS("--pr-active", "#c2b4eb");
   if (testInfo.project.name === "desktop") {
     await fourthStar.hover();
     await expect(rating.locator(".peek-rating__tip")).toHaveText("Great");
   }
   await fourthStar.click();
   await expect(fourthStar).toHaveAttribute("aria-checked", "true");
-  await expect(fourthStar.locator(".peek-rating__glyph")).toHaveCSS("color", "rgb(86, 115, 211)");
+  await expect(fourthStar.locator(".peek-rating__glyph")).toHaveCSS("color", "rgb(194, 180, 235)");
   await feedback.getByLabel("Your feedback").fill("Fast pickup and helpful service.");
   await context.route("https://wa.me/**", (route) => route.fulfill({ contentType: "text/html", body: "<h1>WhatsApp review</h1>" }));
   const popupPromise = page.waitForEvent("popup");

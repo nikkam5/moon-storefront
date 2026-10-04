@@ -59,3 +59,13 @@ A manual browser check verified the rebuilt homepage, saved catalog return, a mi
 The only unresolved source-asset issue from the audit is the supplied Motul photography: genuine 1L photographs were not available. The site continues to clearly identify the photographed 4L packaging and the sold 1L variant. Confirmed catalog ingredient wording is reused; a complete ingredient list still needs the store's own information.
 
 Native Safari, low-end physical devices, field Core Web Vitals and the eventual deployed hosting settings require verification on those systems. The current local source is newer than the live deployment.
+
+## Approved palette and team update
+
+The later approved color sample is now applied to the main website and Kingston USB page: warm ivory, charcoal and muted lavender. The existing layouts and interactive model remain in place. Scoped CSS and a server-rendered route marker preserve the original Popia, Cornflakes and Motul palettes, including their shared header, footer and cart, with and without JavaScript.
+
+All four supplied portraits are now optimized WebP assets in `public/team`, including Luqman's new photo. The team message panel has identical dimensions for each member at a given responsive breakpoint. Malay messages use the available width and natural sentence wrapping.
+
+The final type check and production build passed. The complete desktop/mobile browser run recorded **227 passed, 11 intentionally skipped, 0 failed and 0 flaky**. It includes light/dark route switching, protected teammate colors, team panel dimensions and photo loading, cart flows, the USB model, reduced motion and animation lifecycle coverage. Results and screenshots are stored outside the repository in the chat's `verification-palette` artifacts.
+
+An import and asset audit found no unused source modules, public assets or declared dependencies. After verification, cleanup removed `.next/cache` (614,394,061 bytes) and `test-results` (900,274 bytes), about 587 MiB combined. The active development output, Next route types, installed dependencies and current production export remain available locally; all are excluded from Git. No push or deployment was performed.

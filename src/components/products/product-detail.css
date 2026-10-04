@@ -1,0 +1,158 @@
+.usb-page.product-detail-page { position: relative; background: var(--paper); color: var(--ink); padding: 26px 0 0; animation: none; }
+.usb-page-inner { width: min(1280px, 92%); margin-inline: auto; }
+.usb-back { display: inline-flex; align-items: center; gap: 9px; padding: 9px 0; color: var(--muted); font-size: 12px; }
+.usb-back:hover { color: var(--ink); }
+.usb-hero { display: grid; grid-template-columns: minmax(0, 1.13fr) minmax(0, 1fr); align-items: center; gap: clamp(35px, 6vw, 90px); padding: 22px 0 60px; }
+.usb-scene { position: relative; isolation: isolate; display: grid; align-items: center; min-height: 510px; border-radius: 8px; overflow: hidden; background: #e5eef7; color: #20476d; }
+html[data-theme="dark"] .usb-scene { background: #101f34; color: #c5dfff; }
+.usb-ambient { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+.usb-ambient-sweep { position: absolute; width: 95%; height: 150%; top: -25%; left: -45%; background: linear-gradient(110deg, transparent 20%, #8eb9e55c 50%, transparent 75%); transform: rotate(-12deg); }
+.usb-ambient-halo { position: absolute; width: 100%; height: 90%; right: -35%; bottom: -25%; background: radial-gradient(ellipse at center, #70a7db42, transparent 66%); }
+html[data-theme="dark"] .usb-ambient-sweep { background: linear-gradient(110deg, transparent 20%, #3774b24a 50%, transparent 75%); }
+html[data-theme="dark"] .usb-ambient-halo { background: radial-gradient(ellipse at center, #4a82bc38, transparent 66%); }
+.usb-stage-capacity { position: absolute; top: 26px; left: 30px; display: flex; align-items: baseline; gap: 8px; pointer-events: none; color: #224e771a; }
+html[data-theme="dark"] .usb-stage-capacity { color: #d4eaff1f; }
+.usb-capacity-value { position: relative; display: grid; width: 3.1ch; font: 800 clamp(130px, 13.7vw, 190px)/.92 var(--heading); letter-spacing: -.08em; }
+.usb-capacity-value > span { grid-area: 1 / 1; }
+.usb-capacity-unit { font: 750 25px/1 var(--heading); letter-spacing: -.05em; color: #20476d8c; }
+html[data-theme="dark"] .usb-capacity-unit { color: #c5dfff85; }
+.usb-model-viewer { position: relative; width: 100%; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+.usb-product-orbit { position: relative; width: 100%; height: 430px; margin: 0 auto 95px; }
+.usb-product-studio { position: absolute; width: min(68%, 355px); aspect-ratio: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%; background: #fff; box-shadow: 0 20px 38px #122b421a; }
+html[data-theme="dark"] .usb-product-studio { box-shadow: 0 24px 40px #030e1c4d; }
+.usb-product-photo { display: block; width: 95%; height: 95%; object-fit: contain; border-radius: 50%; transform: rotate(-15deg); user-select: none; }
+.usb-model-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; opacity: 0; pointer-events: none; touch-action: pan-y; user-select: none; }
+.usb-model-viewer[data-status="ready"] .usb-model-canvas { opacity: 1; pointer-events: auto; cursor: grab; }
+.usb-model-viewer[data-status="ready"] .usb-product-studio { visibility: hidden; }
+.usb-model-canvas[data-dragging="true"] { cursor: grabbing; }
+.usb-model-shadow { position: absolute; left: 38%; right: 38%; bottom: 11%; height: 10px; border-radius: 50%; background: #071629; filter: blur(12px); opacity: 0; pointer-events: none; }
+.usb-model-viewer[data-status="ready"] .usb-model-shadow { opacity: .14; }
+.usb-model-toolbar { position: absolute; left: 22px; right: 22px; bottom: 47px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.usb-model-hint { font-size: 10px; color: #456784; }
+html[data-theme="dark"] .usb-model-hint { color: #b0c9e4; }
+.usb-model-controls { display: flex; align-items: center; gap: 3px; }
+.usb-model-controls[hidden] { display: none; }
+.usb-model-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; min-width: 40px; padding: 8px 10px; border: 1px solid #20476d20; border-radius: 5px; background: #f5faff80; color: #20476d; font-size: 10px; }
+.usb-model-controls button:hover { background: #fff; }
+.usb-model-controls button[aria-pressed="true"] { border-color: #20476d; }
+html[data-theme="dark"] .usb-model-controls button { background: #152b43b3; border-color: #c5dfff26; color: #c5dfff; }
+html[data-theme="dark"] .usb-model-controls button:hover { background: #223c58; }
+html[data-theme="dark"] .usb-model-controls button[aria-pressed="true"] { border-color: #c5dfff; }
+.usb-photo-fallback { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 22px; color: #20476d; font-size: 12px; text-align: center; }
+.usb-scene-bottom { position: absolute; right: 22px; bottom: 20px; left: 22px; display: flex; justify-content: space-between; gap: 12px; font-size: 10px; color: #456784; }
+html[data-theme="dark"] .usb-scene-bottom { color: #b0c9e4; }
+.usb-buying-panel { min-width: 0; padding: 5px 0; }
+.usb-buying-panel h1 { margin: 0; font-family: var(--heading); }
+.usb-title-brand { display: block; margin-bottom: 10px; color: var(--muted); font-size: 16px; font-weight: 550; letter-spacing: -.02em; }
+.usb-title-model { display: block; font-size: clamp(44px, 5vw, 69px); font-weight: 800; line-height: 1.06; letter-spacing: -.065em; }
+.usb-title-model::after { content: "."; color: var(--accent); }
+.usb-intro { margin-top: 16px; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.usb-selection-summary { margin: 28px 0 22px; }
+.usb-selected-option { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 550; }
+.usb-colour-dot { width: 11px; height: 11px; flex-shrink: 0; border-radius: 50%; background: var(--option-colour); box-shadow: 0 0 0 1px var(--line); }
+.usb-price.detail-price { display: flex; align-items: baseline; gap: 13px; min-height: 55px; margin: 8px 0 0; }
+.usb-price strong { display: inline-block; min-width: 8.1ch; font: 600 clamp(34px, 3.1vw, 44px)/1.2 var(--heading); letter-spacing: -.055em; }
+.usb-price > span { margin: 0; color: var(--muted); font-size: 11px; letter-spacing: 0; }
+.usb-capacities.detail-variants { padding: 0; margin: 0; border: 0; min-width: 0; }
+.usb-capacities legend { padding: 0; margin-bottom: 10px; font-size: 12px; font-weight: 600; }
+.usb-capacities .usb-capacity-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 4px; border: 1px solid var(--line); border-radius: 8px; gap: 0; margin: 0; }
+.usb-capacities .usb-capacity-options > button { position: relative; isolation: isolate; min-height: 66px; padding: 10px 4px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); text-align: center; }
+.usb-capacity-options > button:disabled { cursor: wait; }
+.usb-capacities .usb-capacity-options > button[aria-pressed="true"] { color: var(--ink); background: transparent; }
+.usb-capacity-options > button strong { position: relative; display: block; font: 700 16px/1.4 var(--heading); }
+.usb-capacity-options > button small { position: relative; display: block; margin-top: 3px; font-size: 10px; }
+.usb-capacity-highlight { position: absolute; inset: 0; z-index: -1; border: 1px solid var(--accent); border-radius: inherit; background: var(--tech-bg); }
+.usb-purchase { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; margin-top: 18px; }
+.usb-quantity { display: grid; grid-template-columns: 1fr 32px 1fr; align-items: center; min-height: 52px; border: 1px solid var(--line); border-radius: 8px; }
+.usb-quantity button { align-self: stretch; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: var(--ink); }
+.usb-quantity span { font-size: 13px; text-align: center; }
+.usb-quantity button:disabled { opacity: .4; cursor: default; }
+.usb-add { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 52px; padding: 14px 21px; border: 1px solid transparent; border-radius: 8px; background: #224f7b; color: #f3f9ff; font: 650 14px/1.2 var(--body); white-space: nowrap; }
+html[data-theme="dark"] .usb-add { background: #c1ddfa; color: #143454; }
+.usb-add:hover:not(:disabled) { background: #1a4065; }
+html[data-theme="dark"] .usb-add:hover:not(:disabled) { background: #daebfc; }
+.usb-add:disabled { opacity: .45; cursor: not-allowed; }
+.usb-add[data-added="true"] { background: #255c48; color: #f2fff7; }
+.usb-order-note { min-height: 34px; margin-top: 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.usb-details-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-size: 12px; }
+.usb-details-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.usb-details { padding: 72px 0 90px; border-top: 1px solid var(--line); scroll-margin-top: 100px; }
+.usb-details-heading { max-width: 600px; }
+.usb-details-heading h2 { font: 750 clamp(34px, 4.1vw, 54px)/1.12 var(--heading); letter-spacing: -.055em; }
+.usb-details-heading > p { max-width: 52ch; margin-top: 20px; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.usb-detail-columns { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12%; margin-top: 46px; }
+.usb-specifications { display: grid; gap: 25px; margin: 0; }
+.usb-specifications > div { display: grid; grid-template-columns: 100px minmax(0, 1fr); align-items: baseline; gap: 20px; }
+.usb-specifications dt { color: var(--muted); font-size: 12px; }
+.usb-specifications dd { margin: 0; font-size: 17px; line-height: 1.55; }
+.usb-warranty { display: flex; align-items: center; gap: 27px; padding-left: 40px; border-left: 1px solid var(--line); }
+.usb-warranty-number { display: flex; flex-direction: column; color: var(--accent); font: 650 100px/.85 var(--heading); letter-spacing: -.07em; }
+.usb-warranty-number > span { margin-top: 14px; font: 600 12px/1.3 var(--body); letter-spacing: 0; }
+.usb-warranty h3 { margin: 0; font: 650 21px/1.3 var(--heading); letter-spacing: -.04em; }
+.usb-warranty p { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.usb-mobile-purchase { display: none; }
+.usb-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.usb-page button:focus-visible, .usb-page a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+@media (prefers-reduced-motion: no-preference) {
+  .usb-title-brand { animation: usb-title-enter .65s var(--ease-settle) both; }
+  .usb-title-model { animation: usb-title-enter .8s .12s var(--ease-settle) both; }
+  .usb-product-orbit { animation: usb-product-enter 1s .08s var(--ease-settle) both; }
+  .usb-ambient-sweep { animation: usb-light-sweep 12s ease-in-out infinite alternate; animation-play-state: paused; }
+  .usb-ambient-halo { animation: usb-halo-shift 16s ease-in-out infinite alternate; animation-play-state: paused; }
+  .usb-scene[data-motion="running"] .usb-ambient-sweep, .usb-scene[data-motion="running"] .usb-ambient-halo { animation-play-state: running; }
+  .usb-capacity-options > button, .usb-add { transition: background-color .2s, color .2s, opacity .2s; }
+}
+@keyframes usb-title-enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes usb-product-enter { from { opacity: 0; transform: translateY(20px) rotate(5deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
+@keyframes usb-light-sweep { from { transform: translateX(-15%) rotate(-12deg); opacity: .45; } to { transform: translateX(95%) rotate(-12deg); opacity: .95; } }
+@keyframes usb-halo-shift { from { transform: translate(-5%, 5%) scale(.9); } to { transform: translate(8%, -8%) scale(1.1); } }
+@media (max-width: 1050px) {
+  .usb-hero { gap: 35px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .usb-scene { min-height: 485px; }
+  .usb-title-model { font-size: clamp(40px, 5.5vw, 58px); }
+  .usb-stage-capacity { left: 20px; }
+  .usb-capacity-value { font-size: 140px; }
+  .usb-scene-bottom { flex-direction: column; gap: 4px; font-size: 9px; }
+  .usb-detail-columns { gap: 7%; }
+  .usb-warranty { padding-left: 25px; gap: 20px; }
+}
+@media (max-width: 760px) {
+  .usb-page.product-detail-page { padding-top: 14px; }
+  .usb-page-inner { width: 90%; }
+  .usb-hero { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 17px 0 42px; }
+  .usb-scene { min-height: 335px; }
+  .usb-stage-capacity { top: 17px; left: 22px; }
+  .usb-capacity-value { width: 3ch; font-size: clamp(110px, 24vw, 155px); }
+  .usb-capacity-unit { font-size: 20px; }
+  .usb-product-orbit { height: 270px; margin-bottom: 90px; }
+  .usb-product-studio { width: min(58%, 245px); }
+  .usb-model-toolbar { left: 16px; right: 16px; bottom: 44px; }
+  .usb-model-controls button { min-height: 44px; min-width: 44px; padding-inline: 8px; }
+  .usb-scene-bottom { flex-direction: row; gap: 8px; right: 16px; bottom: 16px; left: 16px; }
+  .usb-title-brand { font-size: 14px; margin-bottom: 8px; }
+  .usb-title-model { font-size: clamp(42px, 10vw, 66px); }
+  .usb-intro { margin-top: 12px; font-size: 14px; }
+  .usb-selection-summary { margin-top: 23px; }
+  .usb-price.detail-price { min-height: 49px; }
+  .usb-price strong { font-size: 36px; }
+  .usb-capacity-options > button strong { font-size: 15px; }
+  .usb-capacity-options > button small { font-size: 9px; }
+  .usb-purchase { grid-template-columns: 105px minmax(0, 1fr); gap: 10px; }
+  .usb-add { padding-inline: 17px; font-size: 13px; }
+  .usb-details { padding: 45px 0 65px; }
+  .usb-details-heading h2 { font-size: clamp(32px, 8vw, 42px); }
+  .usb-details-heading > p { font-size: 13px; }
+  .usb-detail-columns { grid-template-columns: minmax(0, 1fr); gap: 35px; margin-top: 34px; }
+  .usb-specifications { gap: 20px; }
+  .usb-specifications > div { grid-template-columns: 75px minmax(0, 1fr); gap: 16px; }
+  .usb-specifications dd { font-size: 15px; }
+  .usb-warranty { padding: 28px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .usb-warranty-number { font-size: 80px; }
+  .usb-mobile-purchase { position: fixed; z-index: 15; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 5% max(12px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--surface); box-shadow: 0 -6px 24px #071b3210; }
+  .usb-mobile-purchase > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .usb-mobile-purchase strong { font-size: 17px; font-weight: 700; letter-spacing: -.03em; }
+  .usb-mobile-purchase > div > span { font-size: 10px; color: var(--muted); }
+  .usb-mobile-purchase .usb-add { min-height: 44px; padding: 12px 15px; flex-shrink: 0; }
+  .usb-page:has(.usb-mobile-purchase) { padding-bottom: 85px; }
+}
+@media (max-width: 360px) { .usb-scene { min-height: 310px; } .usb-title-model { font-size: 41px; } .usb-purchase { grid-template-columns: 99px minmax(0, 1fr); gap: 8px; } .usb-add { padding-inline: 13px; } .usb-scene-bottom > span:last-child { display: none; } }

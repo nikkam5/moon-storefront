@@ -16,9 +16,20 @@ const featuredCards = featured.map((product, index) => <div key={product.id} cla
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
+  const [colors, setColors] = useState({ ink: "#f2f0e9", accent: "#c2b4eb" });
   const stackRef = useRef<StackHandle>(null);
   const heroRef = useRef<HTMLElement>(null);
   const product = featured[current];
+  useEffect(() => {
+    const sync = () => {
+      const style = getComputedStyle(document.documentElement);
+      setColors({ ink: style.getPropertyValue("--ink").trim(), accent: style.getPropertyValue("--accent").trim() });
+    };
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    sync();
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -42,8 +53,8 @@ export default function Hero() {
             fontWeight={800}
             fontSize={90}
             letterSpacing={0.02}
-            color="#eff7ff"
-            accentColor="#99caff"
+            color={colors.ink}
+            accentColor={colors.accent}
             reveal="area"
             reach={220}
             softness={0.5}
@@ -62,7 +73,7 @@ export default function Hero() {
           <span className="moonstore-static" aria-hidden="true">MOONSTORE</span>
           <noscript><style>{`.moonstore-word .moonstore-tech{display:none}.moonstore-word .moonstore-static{display:block}`}</style></noscript>
         </div>
-        <h1 id="hero-heading"><ShinyText text="Good finds, close to home." color="#d8eaff" shineColor="#ffffff" speed={3.4} spread={120} direction="left" /></h1>
+        <h1 id="hero-heading"><ShinyText text="Good finds, close to home." color="var(--ink)" shineColor="var(--accent)" speed={3.4} spread={120} direction="left" /></h1>
         <p className="hero-subtitle">Tech storage, motor care and homemade treats. Explore the collection and order with our team in Besut on WhatsApp.</p>
         <div className="hero-actions">
           <Link href="#shop" className="button button-dark hero-button">Explore Catalog <span className="button-icon"><ArrowUpRight size={16} aria-hidden="true" /></span></Link>

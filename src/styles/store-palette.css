@@ -1,0 +1,123 @@
+/* The marker is server-rendered on teammate product routes. This also protects
+   their shared header, footer and cart, including without JavaScript. */
+html:not(:has(#main > .teammate-palette)) {
+  --paper: #f5f1e8;
+  --surface: #fffdf8;
+  --surface-raised: #eee9df;
+  --ink: #24252b;
+  --muted: #64616b;
+  --line: #ddd7cc;
+  --accent: #65518b;
+  --accent-ink: #fffdf8;
+  --lime: #eae3f2;
+  --lilac: #eae3f2;
+  --peach: #eee9df;
+  --tech-bg: #eae3f2;
+  --tech-ink: #65518b;
+  --motor-bg: #eee9df;
+  --motor-ink: #24252b;
+  --treats-bg: #eee9df;
+  --treats-ink: #24252b;
+  --on-accent: #443753;
+  --moon-night: var(--paper);
+  --moon-surface: var(--surface);
+  --moon-raised: var(--surface-raised);
+  --moon-accent: var(--accent);
+  --moon-ink: var(--ink);
+  --moon-muted: var(--muted);
+  --shadow: 0 18px 45px #24252b12;
+  --shell-bg: #65518b08;
+  --shell-line: #65518b18;
+  --ambient: 0 2px 4px #24252b0a, 0 12px 28px #24252b0f, 0 34px 60px #24252b0d;
+  --ambient-lift: 0 3px 6px #24252b0d, 0 18px 38px #24252b14, 0 46px 80px #24252b12;
+}
+html[data-theme="dark"]:not(:has(#main > .teammate-palette)) {
+  --paper: #15161a;
+  --surface: #22242b;
+  --surface-raised: #2c2d35;
+  --ink: #f2f0e9;
+  --muted: #b2b0bd;
+  --line: #3c3d45;
+  --accent: #c2b4eb;
+  --accent-ink: #24252b;
+  --lime: #302c3c;
+  --lilac: #302c3c;
+  --peach: #2c2d35;
+  --tech-bg: #302c3c;
+  --tech-ink: #c2b4eb;
+  --motor-bg: #2c2d35;
+  --motor-ink: #f2f0e9;
+  --treats-bg: #2c2d35;
+  --treats-ink: #f2f0e9;
+  --on-accent: #e4ddf3;
+  --shadow: 0 18px 45px #0002;
+  --shell-bg: #ffffff0a;
+  --shell-line: #ffffff1c;
+  --ambient: 0 2px 4px #00000026, 0 14px 30px #0000002e, 0 38px 66px #00000026;
+  --ambient-lift: 0 3px 8px #0000002e, 0 20px 42px #00000038, 0 50px 88px #0000002e;
+}
+html:not(:has(#main > .teammate-palette)) .pill-nav-container {
+  --pill-base: var(--surface-raised);
+  --pill-bg: var(--surface);
+  --pill-text: var(--ink);
+  --pill-hover-bg: var(--accent);
+  --pill-hover-text: var(--accent-ink);
+  --pill-indicator: var(--accent);
+}
+html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy,
+html:not(:has(#main > .teammate-palette)) .curtain-stage .hero-section.hero-galaxy {
+  background: var(--paper);
+  color: var(--ink);
+}
+html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy .hero-copy h1,
+html:not(:has(#main > .teammate-palette)) .moonstore-static { color: var(--ink); }
+html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy .hero-subtitle { color: var(--muted); }
+html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy .hero-actions .underlined-link { color: var(--accent); }
+html:not(:has(#main > .teammate-palette)) .galaxy-backdrop { opacity: .38; }
+html[data-theme="light"]:not(:has(#main > .teammate-palette)) .galaxy-backdrop { opacity: .15; }
+html:not(:has(#main > .teammate-palette)) .button-dark,
+html:not(:has(#main > .teammate-palette)) .add-button,
+html:not(:has(#main > .teammate-palette)) .feedback-submit,
+html:not(:has(#main > .teammate-palette)) .usb-add {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+html:not(:has(#main > .teammate-palette)) .button-dark:hover:not(:disabled),
+html:not(:has(#main > .teammate-palette)) .add-button:hover:not(:disabled),
+html:not(:has(#main > .teammate-palette)) .feedback-submit:hover,
+html:not(:has(#main > .teammate-palette)) .usb-add:hover:not(:disabled),
+html:not(:has(#main > .teammate-palette)) .usb-add[data-added="true"] {
+  background: color-mix(in srgb, var(--accent) 88%, var(--ink));
+  color: var(--accent-ink);
+}
+html:not(:has(#main > .teammate-palette)) .feedback-form input::placeholder,
+html:not(:has(#main > .teammate-palette)) .feedback-form textarea::placeholder { opacity: 1; }
+html:not(:has(#main > .teammate-palette)) .feedback-error { color: #a83243; }
+html[data-theme="dark"]:not(:has(#main > .teammate-palette)) .feedback-error { color: #f19baa; }
+html:not(:has(#main > .teammate-palette)) .art-tech:has(img) { background: var(--surface-raised); color: var(--ink); }
+html:not(:has(#main > .teammate-palette)) .art-tech:has(img)::before {
+  background: linear-gradient(115deg, transparent 0 56%, var(--lilac) 56% 70%, var(--surface) 70%);
+}
+html:not(:has(#main > .teammate-palette)) .art-tech:has(img)::after { border-color: var(--line); }
+html:not(:has(#main > .teammate-palette)) .team-position,
+html:not(:has(#main > .teammate-palette)) .pixel-transition { background: var(--surface-raised); color: var(--ink); }
+html:not(:has(#main > .teammate-palette)) .team-position > span { color: var(--accent); }
+html:not(:has(#main > .teammate-palette)) .usb-scene { background: var(--surface); color: var(--ink); }
+html:not(:has(#main > .teammate-palette)) .usb-ambient-sweep {
+  background: linear-gradient(110deg, transparent 20%, color-mix(in srgb, var(--accent) 15%, transparent) 50%, transparent 75%);
+}
+html:not(:has(#main > .teammate-palette)) .usb-ambient-halo {
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 12%, transparent), transparent 66%);
+}
+html:not(:has(#main > .teammate-palette)) .usb-stage-capacity { color: color-mix(in srgb, var(--ink) 12%, transparent); }
+html:not(:has(#main > .teammate-palette)) .usb-capacity-unit,
+html:not(:has(#main > .teammate-palette)) .usb-model-hint,
+html:not(:has(#main > .teammate-palette)) .usb-scene-bottom { color: var(--muted); }
+html:not(:has(#main > .teammate-palette)) .usb-model-controls button {
+  background: var(--surface-raised);
+  color: var(--ink);
+  border-color: var(--line);
+}
+html:not(:has(#main > .teammate-palette)) .usb-model-controls button:hover { background: var(--lilac); }
+html:not(:has(#main > .teammate-palette)) .usb-model-controls button[aria-pressed="true"] { border-color: var(--accent); }
+html:not(:has(#main > .teammate-palette)) .usb-photo-fallback { color: #24252b; }

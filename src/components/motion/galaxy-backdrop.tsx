@@ -69,8 +69,8 @@ export default function GalaxyBackdrop() {
           paused={!visible}
           density={0.4}
           glowIntensity={0.2}
-          saturation={0.4}
-          hueShift={215}
+          saturation={0.12}
+          hueShift={270}
           starSpeed={0.25}
           speed={0.65}
           rotationSpeed={0.05}

@@ -18,7 +18,8 @@
     "next": "^15.5.12",
     "ogl": "^1.0.11",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "three": "0.185.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.0",
@@ -26,6 +27,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "0.185.0",
     "postcss": "^8.5.28",
     "serve": "^14.2.6",
     "tailwindcss": "^4.3.3",

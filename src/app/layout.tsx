@@ -7,6 +7,7 @@ import { business } from "@/lib/business";
 import { publicUrl, siteUrl } from "@/lib/site";
 import "../styles/globals.css";
 import "../styles/storefront-refresh.css";
+import "../styles/store-palette.css";
 
 const bodyFont = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-body", display: "swap" });
 const headingFont = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-heading", display: "swap" });
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#faf7f0" }, { media: "(prefers-color-scheme: dark)", color: "#0c1729" }],
+  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#f5f1e8" }, { media: "(prefers-color-scheme: dark)", color: "#15161a" }],
 };
 
 const storeJsonLd = {

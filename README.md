@@ -1,6 +1,6 @@
 # Moon Store
 
-A responsive Next.js / React / TypeScript storefront for Moon Store in Besut, Terengganu. Colourful light/dark themes, a filterable catalog, variant-aware cart, and click-to-chat WhatsApp checkout. No payment gateway, backend order submission, or 3D models.
+A responsive Next.js / React / TypeScript storefront for Moon Store in Besut, Terengganu. Ivory, charcoal and lavender light/dark themes, a filterable catalog, an interactive USB model, a variant-aware cart, and click-to-chat WhatsApp checkout. Ordering uses a reviewable WhatsApp draft.
 
 ## Run
 
@@ -19,13 +19,15 @@ Open http://localhost:3000. Development output uses `.next-dev`; production buil
 - `src/components/layout/brand-logo.tsx` — SVG monogram; `src/app/icon.svg` — browser icon.
 - `src/styles/` — shared colour tokens, responsive layouts and storefront styles.
 - `docs/design-source/` — original teammate design references, including the Motul design adapted at `/product/motul-5100`.
-- `src/components/home/team-story.tsx` — the four members and their roles. Initials are intentional profile artwork until genuine portraits are available; unpublished messages are hidden.
+- `src/components/home/team-story.tsx` — the four members, their roles and short Malay messages. Supplied portraits for Nik Amir, Iman Asnawi, Luqman and Arish Haikal live in `public/team/`.
 
 The homepage contains `#home`, `#shop`, `#about` and `#feedback`. The feedback form prepares a WhatsApp draft for the customer to review and send. `/shop` also serves the complete catalog and `/cart` provides a full cart review. Filtering, variants and product detail expansion do not navigate away.
 
 The feedback heading uses TextType to type once when it enters view, with a blinking cursor. Reduced-motion and no-JavaScript visitors see the full heading. Every product's Back to catalog link restores the originating catalog and filter.
 
 The hero's four product photos use a React Bits Stack: click or press Enter to cycle, or drag a card on desktop. The product name below links to its details. Touch devices use tap-to-cycle so vertical page scrolling stays usable. The hero scrolls naturally on screens too short for the full composition.
+
+The USB detail page uses a coordinated title entrance, a moving light backdrop, animated capacity/price changes and the approved interactive Kingston 3D model. Drag horizontally to rotate, open the cap, or use the keyboard-accessible Rotate and Reset controls. Three.js loads only as the product stage approaches the viewport; rendering runs on demand, stops off-screen/in hidden tabs, and releases graphics resources when leaving the page. Touch gestures preserve vertical scrolling. Unsupported graphics, context loss and failed model loads show the original product photo. Its quantity selector respects the remaining cart limit for each capacity. On phones, a purchase bar appears after the main controls have been seen and scrolled away; its price reflects the selected quantity. The backdrop pauses off-screen and in hidden tabs, and motion respects live reduced-motion changes. The presentation is labelled as the blue 128GB model for every selection; capacity, colour, quantity and price in the buying panel determine the order. The 559 KiB GLB is served locally from public/models; its cap node is named Cap and its textures are embedded.
 
 The homepage catalog previews use 380 × 240px TearTickets in two desktop columns, scaling down on phones. Click or tap a picture to open its product, or pull a price stub fully free and release. Short pulls spring back; Escape or pointer cancellation restores the ticket. Picture links also work without JavaScript. Category and scroll position are saved for the return to the homepage catalog.
 
@@ -57,12 +59,20 @@ src/
     motion/             Reusable interactive animation components
   lib/                  Catalog, business, checkout, return state and site URL
   styles/               Global theme and responsive storefront styles
-public/products/        Assets actually used by the storefront
+public/products/        Product photographs
+public/models/          Approved 3D product assets
+public/team/            Optimized portraits for all four team members
 tests/                  Playwright functional and animation regressions
 docs/                   Design references, historical audit and maintenance notes
 ```
 
 Component styles stay beside their component. The root contains only documentation and required build/test/deployment configuration. `.agents/` and `skills-lock.json` are maintained development instructions. Dependencies, build output, caches and browser test artifacts are ignored by Git.
+
+### Store colors and team content
+
+The main website and Kingston USB page use warm ivory, charcoal and muted lavender in light/dark themes. `src/styles/store-palette.css` contains the scoped palette. A server-rendered marker keeps the Popia, Cornflakes and Motul product pages on their original colors, including shared navigation, cart and footer. Their product components and styles remain unchanged. The marker works without JavaScript and switches automatically during client navigation.
+
+All four team members have optimized WebP portraits. The message box keeps the same dimensions for every member at each responsive breakpoint; Malay messages use the available width and wrap as ordinary sentences. The original layouts, product colors, 3D model and interactions remain in place.
 
 ## Deployment and assets
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import ProductDetail from "@/components/products/product-detail";
 import PopiaNestumDetail from "@/components/products/popia-nestum-detail";
@@ -10,6 +10,14 @@ import "@/components/products/popia-nestum-detail.css";
 import "@/components/products/honey-cornflakes-detail.css";
 
 export function generateStaticParams() { return products.map((product) => ({ id: product.id })); }
+export async function generateViewport({ params }: { params: Promise<{ id: string }> }): Promise<Viewport> {
+  const { id } = await params;
+  const teammate = id !== "kingston-dtxg2";
+  return { themeColor: [
+    { media: "(prefers-color-scheme: light)", color: teammate ? "#faf7f0" : "#f5f1e8" },
+    { media: "(prefers-color-scheme: dark)", color: teammate ? "#0c1729" : "#15161a" },
+  ] };
+}
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   if (!isProductId(id)) return { title: "Product not found" };
@@ -48,5 +56,5 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       priceCurrency: "MYR",
     })),
   };
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />{id === "popia-nestum" ? <PopiaNestumDetail product={product} /> : id === "honey-cornflakes" ? <HoneyCornflakesDetail product={product} /> : id === "motul-5100" ? <Motul5100Detail product={product} /> : <section className="section-wrap product-page"><ProductDetail product={product} /></section>}</>;
+  return <>{id !== "kingston-dtxg2" && <span hidden className="teammate-palette" aria-hidden="true" />}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />{id === "popia-nestum" ? <PopiaNestumDetail product={product} /> : id === "honey-cornflakes" ? <HoneyCornflakesDetail product={product} /> : id === "motul-5100" ? <Motul5100Detail product={product} /> : <ProductDetail product={product} />}</>;
 }
