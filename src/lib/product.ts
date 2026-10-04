@@ -14,6 +14,9 @@ export type Product = {
   variants: Variant[];
   image?: string;
   images?: string[];
+  imageSrcSet?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 // Store-supplied catalog. Set image to a local /products/your-photo.jpg URL when photos arrive.
@@ -28,11 +31,13 @@ export const products: Product[] = [
     description: "Keep work, memories and your next big idea close. A plug-and-play USB flash drive with a protective snap cap and a handy keyring loop.",
     specs: [["Connection", "USB 3.2 Gen 1 · USB Type-A"], ["Design", "Protective snap cap · keyring loop"], ["Setup", "Plug and play"], ["Warranty", "5-year official warranty"]],
     image: "/products/usb-3.2.jpg",
+    imageWidth: 447,
+    imageHeight: 447,
     variants: [
-      { id: "64gb", label: "64GB", detail: "Matte Black", price: 35, color: "#27272b" },
-      { id: "128gb", label: "128GB", detail: "Sky Blue", price: 55, color: "#66b4e8" },
-      { id: "256gb", label: "256GB", detail: "Lime Green", price: 95, color: "#a9ce45" },
-      { id: "512gb", label: "512GB", detail: "Deep Purple", price: 165, color: "#6945a6" },
+      { id: "64gb", label: "64GB", detail: "Matte Black", price: 40, color: "#27272b" },
+      { id: "128gb", label: "128GB", detail: "Sky Blue", price: 60, color: "#66b4e8" },
+      { id: "256gb", label: "256GB", detail: "Lime Green", price: 100, color: "#a9ce45" },
+      { id: "512gb", label: "512GB", detail: "Deep Purple", price: 170, color: "#6945a6" },
     ],
   },
   {
@@ -46,6 +51,8 @@ export const products: Product[] = [
     specs: [["Bottle", "1 Litre"], ["Formulation", "Technosynthese synthetic-ester blend"], ["Standards", "API SM / SL · JASO MA2"], ["Applications", "Underbone mopeds, standard naked road bikes and compatible scooters"]],
     note: "Not universal for all scooters. Check your vehicle manual for the required viscosity and JASO standard before ordering.",
     image: "/products/motul-5100-10w-40.jpg",
+    imageWidth: 362,
+    imageHeight: 552,
     images: ["/products/motul-5100-10w-40.jpg", "/products/motul-5100-4t.jpg"],
     variants: [{ id: "1-litre", label: "1 Litre", detail: "Technosynthese", price: 55 }],
   },
@@ -59,7 +66,10 @@ export const products: Product[] = [
     description: "Our homemade, small-batch treat. Freshly baked and packed into an airtight tub, with zero added artificial preservatives and plenty of crunch.",
     specs: [["Net weight", "250g per jar"], ["Made", "Freshly baked in small batches"], ["Packaging", "Airtight seal tub"], ["Preservatives", "Zero added artificial preservatives"]],
     note: "Please ask us about ingredients and allergens before ordering if you have a food allergy.",
-    image: "/products/popia-nestum.png",
+    image: "/products/popia-nestum.webp",
+    imageSrcSet: "/products/popia-nestum-640.webp 640w, /products/popia-nestum.webp 1080w",
+    imageWidth: 1080,
+    imageHeight: 1083,
     variants: [{ id: "standard-jar", label: "Standard Jar", detail: "250g", price: 10 }],
   },
   {
@@ -73,6 +83,8 @@ export const products: Product[] = [
     specs: [["Net weight", "Approx. 300g per jar"], ["Glaze", "Pure golden honey and sweet butter"], ["Finish", "Delicate caramel · balanced sweetness"], ["Texture", "Toasted and crunchy"]],
     note: "Contains butter. Please ask us for the full ingredients and allergen information before ordering.",
     image: "/products/cornflakes-madu.jpeg",
+    imageWidth: 762,
+    imageHeight: 1016,
     variants: [{ id: "standard-jar", label: "Standard Jar", detail: "Approx. 300g", price: 15 }],
   },
 ];

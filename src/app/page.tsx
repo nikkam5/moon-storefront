@@ -1,7 +1,7 @@
-import Hero from "@/components/hero";
-import TeamStory from "@/components/team-story";
-import ShopCatalog from "@/components/shop-catalog";
-import CustomerFeedback from "@/components/customer-feedback";
+import Hero from "@/components/home/hero";
+import TeamStory from "@/components/home/team-story";
+import ShopCatalog from "@/components/catalog/shop-catalog";
+import CustomerFeedback from "@/components/home/customer-feedback";
 
 export default function Home() {
   return (

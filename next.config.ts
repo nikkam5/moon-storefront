@@ -7,6 +7,6 @@ export default function config(phase: string): NextConfig {
     return { distDir: ".next-dev" };
   }
   // Static export: Netlify serves `out/` directly, no Node server needed.
-  // All routes are prerendered (12/12 static), cart lives in localStorage.
+  // Public routes, robots and sitemap are prerendered; cart lives in localStorage.
   return { output: "export", images: { unoptimized: true } };
 }

@@ -1,0 +1,7 @@
+.text-type { display: inline-grid; white-space: pre-wrap; }
+.text-type__measure, .text-type__line { grid-area: 1 / 1; min-width: 0; }
+.text-type__measure { visibility: hidden; pointer-events: none; }
+.text-type__line { align-self: start; }
+.text-type__cursor { margin-left: .25rem; display: inline-block; opacity: 1; }
+.text-type__cursor--hidden { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .text-type__cursor { visibility: hidden; } }

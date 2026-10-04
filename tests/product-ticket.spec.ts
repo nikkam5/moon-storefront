@@ -46,7 +46,7 @@ test("homepage previews have larger tickets with picture links and prices", asyn
   await expect(cards.nth(0).getByRole("heading")).toHaveText("Signature Popia Nestum Rangup");
   await expect(cards.nth(0).getByRole("button")).toHaveAttribute("aria-label", /RM 10\.00/);
   await expect(cards.nth(1).getByRole("button")).toHaveAttribute("aria-label", /RM 15\.00/);
-  await expect(cards.nth(2).getByRole("button")).toHaveAttribute("aria-label", /From RM 35\.00/);
+  await expect(cards.nth(2).getByRole("button")).toHaveAttribute("aria-label", /From RM 40\.00/);
   await expect(cards.nth(3).getByRole("button")).toHaveAttribute("aria-label", /RM 55\.00/);
   await expect(cards.nth(3)).toContainText("1 Litre · 4L photo shown");
   for (const card of await cards.all()) {

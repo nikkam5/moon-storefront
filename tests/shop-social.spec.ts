@@ -139,11 +139,11 @@ test("compact shop keeps prices, capacities, details and add-to-cart usable", as
   }
   const usb = page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" });
   await usb.getByRole("button", { name: "128GB", exact: true }).click();
-  await expect(usb.locator(".product-price")).toHaveText("RM 55.00");
+  await expect(usb.locator(".product-price")).toHaveText("RM 60.00");
   await usb.locator("summary").click();
   await expect(usb.getByText("5-year official warranty")).toBeVisible();
   await usb.getByRole("button", { name: /Add .* to cart/ }).click();
-  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 55.00");
+  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 60.00");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 

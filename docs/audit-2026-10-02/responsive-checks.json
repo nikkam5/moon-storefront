@@ -1,0 +1,191 @@
+[
+  {
+    "route": "/",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": true,
+    "mainCount": 1,
+    "scrollWidth": 326
+  },
+  {
+    "route": "/shop",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": true,
+    "mainCount": 1,
+    "scrollWidth": 326
+  },
+  {
+    "route": "/cart",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": true,
+    "mainCount": 1,
+    "scrollWidth": 326
+  },
+  {
+    "route": "/product/kingston-dtxg2",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": true,
+    "mainCount": 1,
+    "scrollWidth": 326
+  },
+  {
+    "route": "/product/popia-nestum",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 305
+  },
+  {
+    "route": "/product/honey-cornflakes",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 2,
+    "scrollWidth": 305
+  },
+  {
+    "route": "/product/motul-5100",
+    "width": 320,
+    "height": 568,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 305
+  },
+  {
+    "route": "/",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/shop",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/cart",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/product/kingston-dtxg2",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/product/popia-nestum",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/product/honey-cornflakes",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 2,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/product/motul-5100",
+    "width": 768,
+    "height": 1024,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 753
+  },
+  {
+    "route": "/",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 1265
+  },
+  {
+    "route": "/shop",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 1265
+  },
+  {
+    "route": "/cart",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 1265
+  },
+  {
+    "route": "/product/kingston-dtxg2",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 1265
+  },
+  {
+    "route": "/product/popia-nestum",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 1265
+  },
+  {
+    "route": "/product/honey-cornflakes",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 2,
+    "scrollWidth": 1265
+  },
+  {
+    "route": "/product/motul-5100",
+    "width": 1280,
+    "height": 720,
+    "brokenLoadedImages": [],
+    "horizontalOverflow": false,
+    "mainCount": 1,
+    "scrollWidth": 1265
+  }
+]

@@ -226,7 +226,7 @@ test("catalog curtains over hero and team story stays navigable", async ({ page 
   const catalogTop = await catalog.evaluate((element) => element.getBoundingClientRect().top + scrollY);
   expect(catalogTop).toBeGreaterThanOrEqual(heroEnd - 1);
   await page.evaluate(() => window.scrollTo({ top: 220, behavior: "instant" }));
-  const heroHeight = await hero.evaluate((element) => element.offsetHeight);
+  const heroHeight = await hero.evaluate((element) => (element as HTMLElement).offsetHeight);
   await page.evaluate((height) => window.scrollTo({ top: 140 + height, behavior: "instant" }), heroHeight);
   await expect(hero).toHaveClass(/hero-exit/);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
@@ -374,7 +374,7 @@ test("homepage product opens its own details and adds the chosen variant", async
   await expect(page.locator(".product-gallery img")).toHaveAttribute("src", "/products/usb-3.2.jpg");
   await expect(page.getByText("5-year official warranty")).toBeVisible();
   await page.getByRole("button", { name: /128GB/ }).click();
-  await expect(page.locator(".detail-price")).toContainText("RM 55.00");
+  await expect(page.locator(".detail-price")).toContainText("RM 60.00");
   await page.getByRole("button", { name: "Add to cart", exact: true }).click();
   await expect(page.getByRole("dialog")).toContainText("128GB · Sky Blue");
   await page.getByRole("button", { name: "Close cart" }).click();
@@ -388,7 +388,7 @@ test("Popia detail preserves the supplied page with Moon Store header and workin
   await openPreviewProduct(page, "Signature Popia Nestum Rangup");
   await expect(page).toHaveURL(/\/product\/popia-nestum$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Rangup.Manis.Nestum.");
-  await expect(page.locator(".popia-page .photo img")).toHaveAttribute("src", "/products/popia-nestum.png");
+  await expect(page.locator(".popia-page .photo img")).toHaveAttribute("src", "/products/popia-nestum.webp");
   await expect(page.locator(".popia-page .price-row")).toContainText("RM10.00");
   await expect(page.locator(".popia-page .topbar")).toHaveText("Popia Nestum rangup • 250g • RM10 sahaja");
   await expect(page.locator(".popia-page .sticker")).toContainText("RM10");
@@ -404,7 +404,7 @@ test("Popia detail preserves the supplied page with Moon Store header and workin
   await page.getByRole("button", { name: "Increase quantity" }).click();
   await expect(page.locator(".popia-page .qty")).toContainText("2");
   await page.getByRole("button", { name: "Tambah ke Cart" }).click();
-  await expect(page.getByRole("dialog", { name: "Your Cart" }).locator(".total")).toContainText("RM20.00");
+  await expect(page.getByRole("dialog", { name: "Your Cart" }).locator(".subtotal")).toContainText("RM 20.00");
   await page.getByRole("button", { name: "Close cart" }).click();
   await page.getByRole("button", { name: "Open cart, 2 items" }).click();
   await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 20.00");
@@ -429,7 +429,7 @@ test("Cornflakes detail preserves the supplied page with Moon Store header and w
   await page.getByRole("button", { name: "Increase quantity" }).click();
   await expect(page.locator(".honey-page .qty")).toContainText("2");
   await page.getByRole("button", { name: "Add to cart" }).click();
-  await expect(page.getByRole("dialog", { name: "Your Cart" }).locator(".cart-total")).toContainText("RM30.00");
+  await expect(page.getByRole("dialog", { name: "Your Cart" }).locator(".subtotal")).toContainText("RM 30.00");
   await page.getByRole("button", { name: "Close cart" }).click();
   await page.getByRole("button", { name: "Open cart, 2 items" }).click();
   await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 30.00");
@@ -452,14 +452,14 @@ test("catalog filters, capacities, feedback and anchored navigation", async ({ p
   await filters.getByRole("button", { name: "Tech Storage" }).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
   const usb = page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" });
-  await expect(usb.getByRole("button", { name: /Tear to view/ })).toHaveAttribute("aria-label", /From RM 35\.00/);
+  await expect(usb.getByRole("button", { name: /Tear to view/ })).toHaveAttribute("aria-label", /From RM 40\.00/);
   await filters.getByRole("button", { name: "Motor Care" }).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
   await filters.getByRole("button", { name: "Sweet Treats" }).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(2);
   await filters.getByRole("button", { name: "All" }).click();
   await openPreviewProduct(page, "Kingston DataTraveler Exodia G2");
-  for (const [capacity, price] of [["64GB", "35.00"], ["128GB", "55.00"], ["256GB", "95.00"], ["512GB", "165.00"]]) {
+  for (const [capacity, price] of [["64GB", "40.00"], ["128GB", "60.00"], ["256GB", "100.00"], ["512GB", "170.00"]]) {
     await page.getByRole("button", { name: new RegExp(capacity) }).click();
     await expect(page.locator(".detail-price")).toContainText(`RM ${price}`);
   }
@@ -518,7 +518,7 @@ test("variant cart totals, persistence, and exact WhatsApp handoff", async ({ pa
   await usb.getByRole("button", { name: "128GB", exact: true }).click();
   await usb.getByRole("button", { name: /Add .* to cart/ }).click();
   const drawer = page.getByRole("dialog");
-  await expect(drawer.locator(".subtotal")).toHaveText("SubtotalRM 55.00");
+  await expect(drawer.locator(".subtotal")).toHaveText("SubtotalRM 60.00");
   await page.getByRole("button", { name: "Close cart" }).click();
   await expect(drawer).not.toBeVisible();
   await page.getByRole("article", { name: "Motul 5100 4T 10W-40" }).getByRole("button", { name: /Add .* to cart/ }).click();
@@ -526,11 +526,11 @@ test("variant cart totals, persistence, and exact WhatsApp handoff", async ({ pa
   await expect(drawer).not.toBeVisible();
   await page.getByRole("article", { name: "Signature Popia Nestum Rangup" }).getByRole("button", { name: /Add .* to cart/ }).click();
   await page.getByRole("button", { name: "Increase Signature Popia Nestum Standard Jar quantity" }).click();
-  await expect(drawer.locator(".subtotal")).toContainText("RM 130.00");
+  await expect(drawer.locator(".subtotal")).toContainText("RM 135.00");
   const checkout = drawer.getByRole("link", { name: "Order on WhatsApp" });
   const url = new URL((await checkout.getAttribute("href"))!);
   expect(url.origin + url.pathname).toBe("https://wa.me/601161647061");
-  expect(url.searchParams.get("text")).toBe("Hello Moon Store! I would like to place an order from your website:\n\n- 1x Kingston DTXG2 USB Flash Drive (128GB - Sky Blue) - RM 55.00\n- 1x Motul 5100 4T 10W-40 (1 Litre) - RM 55.00\n- 2x Signature Popia Nestum (Standard Jar) - RM 20.00\n\nTotal: RM 130.00\n\nDelivery / Pickup details:\nName: [Customer to fill]\nDelivery Address: [Customer to fill]");
+  expect(url.searchParams.get("text")).toBe("Hello Moon Store! I would like to place an order from your website:\n\n- 1x Kingston DTXG2 USB Flash Drive (128GB - Sky Blue) - RM 60.00\n- 1x Motul 5100 4T 10W-40 (1 Litre) - RM 55.00\n- 2x Signature Popia Nestum (Standard Jar) - RM 20.00\n\nTotal: RM 135.00\n\nDelivery / Pickup details:\nName: [Customer to fill]\nDelivery Address: [Customer to fill]");
   // Intercept externally: verify navigation without sending an order or contacting WhatsApp.
   await context.route("https://wa.me/**", (route) => route.fulfill({ contentType: "text/html", body: "<h1>WhatsApp handoff test</h1>" }));
   const popupPromise = page.waitForEvent("popup");
@@ -542,18 +542,18 @@ test("variant cart totals, persistence, and exact WhatsApp handoff", async ({ pa
   await page.getByRole("button", { name: "Close cart" }).click();
   await page.reload();
   await page.getByRole("button", { name: "Open cart, 4 items" }).click();
-  await expect(drawer.locator(".subtotal")).toContainText("RM 130.00");
+  await expect(drawer.locator(".subtotal")).toContainText("RM 135.00");
   await page.getByRole("button", { name: "Close cart" }).click();
   await usb.getByRole("button", { name: "64GB", exact: true }).click();
   await usb.getByRole("button", { name: /Add .* to cart/ }).click();
   await expect(drawer.locator(".cart-row")).toHaveCount(4);
-  await expect(drawer.locator(".subtotal")).toContainText("RM 165.00");
+  await expect(drawer.locator(".subtotal")).toContainText("RM 175.00");
   await page.getByRole("button", { name: "Remove Kingston DTXG2 USB Flash Drive 128GB", exact: true }).click();
-  await expect(drawer.locator(".subtotal")).toContainText("RM 110.00");
+  await expect(drawer.locator(".subtotal")).toContainText("RM 115.00");
   await page.getByRole("link", { name: "Review full cart" }).click();
   await expect(page).toHaveURL(/\/cart$/);
   await page.getByRole("button", { name: "Decrease Signature Popia Nestum Standard Jar quantity" }).click();
-  await expect(page.locator(".summary-total")).toContainText("RM 100.00");
+  await expect(page.locator(".summary-total")).toContainText("RM 105.00");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
@@ -566,8 +566,8 @@ test("light and dark themes persist and work on cart pages", async ({ page }) =>
   await page.goto("/cart");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.getByRole("button", { name: "Switch to light theme" }).click();
-  const light = await page.locator("body").evaluate((element) => getComputedStyle(element).backgroundColor);
-  expect(light).not.toBe(dark);
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect.poll(() => page.locator("body").evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(dark);
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });
@@ -604,7 +604,7 @@ test("cross-tab cart changes are synchronized", async ({ page, context }) => {
   await page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" }).getByRole("button", { name: /Add .* to cart/ }).click();
   await expect(second.getByRole("button", { name: "Open cart, 1 item" })).toBeVisible();
   await second.getByRole("article", { name: "Motul 5100 4T 10W-40" }).getByRole("button", { name: /Add .* to cart/ }).click();
-  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 90.00");
+  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 95.00");
   await expect(second.getByRole("dialog").locator(".cart-row")).toHaveCount(2);
   await second.close();
 });
@@ -614,14 +614,14 @@ test("landscape drawer allows quantity controls", async ({ page }) => {
   await page.goto("/shop");
   await page.getByRole("article", { name: "Kingston DataTraveler Exodia G2" }).getByRole("button", { name: /Add .* to cart/ }).click();
   await page.getByRole("button", { name: "Increase Kingston DTXG2 USB Flash Drive 64GB quantity" }).click();
-  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 70.00");
+  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 80.00");
 });
 
 test("cart parser rejects invalid values and uses catalog prices", () => {
   const cart = parseCart([null, {}, { productId: "kingston-dtxg2", variantId: "128gb", quantity: 1, price: 1 }, { productId: "kingston-dtxg2", variantId: "128gb", quantity: 5 }, { productId: "motul-7100", variantId: "1-litre", quantity: 1 }, { productId: "motul-5100", variantId: "1-litre", quantity: 1 }, { productId: "popia-nestum", variantId: "standard-jar", quantity: 2 }, { productId: "popia-nestum", variantId: "standard-jar", quantity: 1.2 }]);
   expect(cart).toHaveLength(3);
-  expect(cartTotal(cart)).toBe(130);
-  expect(orderMessage(cart)).toContain("Total: RM 130.00");
+  expect(cartTotal(cart)).toBe(135);
+  expect(orderMessage(cart)).toContain("Total: RM 135.00");
   expect(parseCart("not an array")).toEqual([]);
 });
 
@@ -634,7 +634,7 @@ test("cart remains usable when browser storage writes fail", async ({ page }) =>
   await page.getByRole("button", { name: "Close cart" }).click();
   await page.getByRole("article", { name: "Motul 5100 4T 10W-40" }).getByRole("button", { name: /Add .* to cart/ }).click();
   await expect(page.getByRole("dialog").locator(".cart-row")).toHaveCount(2);
-  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 90.00");
+  await expect(page.getByRole("dialog").locator(".subtotal")).toContainText("RM 95.00");
 });
 
 test("server-rendered content stays readable without JavaScript", async ({ browser }) => {
@@ -645,5 +645,6 @@ test("server-rendered content stays readable without JavaScript", async ({ brows
   await expect(page.locator("#about .team-story-noscript")).toContainText("Luqman");
   await expect(page.locator("#feedback")).toHaveCSS("opacity", "1");
   await expect(page.locator(".catalog-card")).toHaveCount(4);
+  await expect(page.locator("#feedback-heading .text-type__content")).toHaveText("Your voice makes us better.");
   await context.close();
 });

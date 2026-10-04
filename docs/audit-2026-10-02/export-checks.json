@@ -1,0 +1,82 @@
+{
+  "pages": [
+    {
+      "route": "/",
+      "title": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "canonical": "http://localhost:3000",
+      "openGraphTitle": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "openGraphImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "twitterImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "robots": "index, follow",
+      "mainElements": 1
+    },
+    {
+      "route": "/shop",
+      "title": "Shop the collection | Moon Store",
+      "canonical": "http://localhost:3000",
+      "openGraphTitle": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "openGraphImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "twitterImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "robots": "index, follow",
+      "mainElements": 1
+    },
+    {
+      "route": "/cart",
+      "title": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "canonical": "http://localhost:3000",
+      "openGraphTitle": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "openGraphImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "twitterImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "robots": "index, follow",
+      "mainElements": 1
+    },
+    {
+      "route": "/product/kingston-dtxg2",
+      "title": "Kingston DataTraveler Exodia G2 | Moon Store",
+      "canonical": "http://localhost:3000/product/kingston-dtxg2",
+      "openGraphTitle": "Kingston DataTraveler Exodia G2 | Moon Store",
+      "openGraphImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "twitterImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "robots": "index, follow",
+      "mainElements": 1
+    },
+    {
+      "route": "/product/motul-5100",
+      "title": "Motul 5100 4T 10W-40 | Moon Store",
+      "canonical": "http://localhost:3000/product/motul-5100",
+      "openGraphTitle": "Motul 5100 4T 10W-40 | Moon Store",
+      "openGraphImage": "http://localhost:3000/products/motul-5100-10w-40.jpg",
+      "twitterImage": "http://localhost:3000/products/motul-5100-10w-40.jpg",
+      "robots": "index, follow",
+      "mainElements": 1
+    },
+    {
+      "route": "/product/popia-nestum",
+      "title": "Popia Nestum - Rangup Sampai Habis | Moon Store",
+      "canonical": "http://localhost:3000/product/popia-nestum",
+      "openGraphTitle": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "openGraphImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "twitterImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "robots": "index, follow",
+      "mainElements": 1
+    },
+    {
+      "route": "/product/honey-cornflakes",
+      "title": "Cornflakes Madu - Moon Store | Moon Store",
+      "canonical": "http://localhost:3000/product/honey-cornflakes",
+      "openGraphTitle": "Moon Store - Tech, Motor Care &amp; Signature Treats",
+      "openGraphImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "twitterImage": "http://localhost:3000/products/usb-3.2.jpg",
+      "robots": "index, follow",
+      "mainElements": 2
+    }
+  ],
+  "popiaPhoto": {
+    "bytes": 2158257,
+    "width": 1080,
+    "height": 1083
+  },
+  "honeyDimTextContrastOnBase": 3.5057518114753545,
+  "hasSitemap": false,
+  "hasRobotsFile": false
+}

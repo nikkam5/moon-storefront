@@ -1,31 +1,32 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProductDetail from "@/components/product-detail";
-import PopiaNestumDetail from "@/components/popia-nestum-detail";
-import HoneyCornflakesDetail from "@/components/honey-cornflakes-detail";
-import Motul5100Detail from "@/components/motul-5100-detail";
+import ProductDetail from "@/components/products/product-detail";
+import PopiaNestumDetail from "@/components/products/popia-nestum-detail";
+import HoneyCornflakesDetail from "@/components/products/honey-cornflakes-detail";
+import Motul5100Detail from "@/components/products/motul-5100-detail";
 import { getProduct, isProductId, products } from "@/lib/product";
-import "@/components/popia-nestum-detail.css";
-import "@/components/honey-cornflakes-detail.css";
+import { publicUrl, siteUrl } from "@/lib/site";
+import "@/components/products/popia-nestum-detail.css";
+import "@/components/products/honey-cornflakes-detail.css";
 
 export function generateStaticParams() { return products.map((product) => ({ id: product.id })); }
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   if (!isProductId(id)) return { title: "Product not found" };
   const product = getProduct(id);
-  if (id === "popia-nestum") return { title: "Popia Nestum - Rangup Sampai Habis", description: product.description, alternates: { canonical: `/product/${id}` } };
-  if (id === "honey-cornflakes") return { title: "Cornflakes Madu - Moon Store", description: product.description, alternates: { canonical: `/product/${id}` } };
+  const title = id === "popia-nestum" ? "Popia Nestum - Rangup Sampai Habis" : id === "honey-cornflakes" ? "Cornflakes Madu" : product.name;
+  const image = product.image ? publicUrl(product.image) : undefined;
   return {
-    title: product.name,
+    title,
     description: `${product.tagline} ${product.description}`,
-    alternates: { canonical: `/product/${product.id}` },
+    alternates: siteUrl ? { canonical: `/product/${product.id}` } : undefined,
     openGraph: {
-      title: `${product.name} | Moon Store`,
+      title: `${title} | Moon Store`,
       description: product.tagline,
       type: "website",
-      images: product.image ? [{ url: product.image, alt: product.name }] : undefined,
+      images: image ? [{ url: image, alt: product.name }] : undefined,
     },
-    twitter: { card: product.image ? "summary_large_image" : "summary", title: `${product.name} | Moon Store`, description: product.tagline, images: product.image ? [product.image] : undefined },
+    twitter: { card: image ? "summary_large_image" : "summary", title: `${title} | Moon Store`, description: product.tagline, images: image ? [image] : undefined },
   };
 }
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -38,7 +39,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     name: product.name,
     description: product.description,
     category: product.categoryLabel,
-    image: product.images?.length ? product.images : product.image ? [product.image] : undefined,
+    image: siteUrl ? (product.images?.length ? product.images : product.image ? [product.image] : []).map((image) => publicUrl(image)) : undefined,
+    url: publicUrl(`/product/${product.id}`),
     offers: product.variants.map((variant) => ({
       "@type": "Offer",
       name: `${product.orderName} (${variant.label})`,
