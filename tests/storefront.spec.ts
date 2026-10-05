@@ -172,6 +172,7 @@ test("mobile header keeps its brand and opens section pills", async ({ page }) =
 test("dragged wordmark letter springs back after release", async ({ page }) => {
   test.setTimeout(90000);
   await page.goto("/");
+  await page.evaluate(async () => { await document.fonts.ready; });
   const wordmark = page.locator(".moonstore-word .tech-text");
   const bounds = await wordmark.boundingBox();
   expect(bounds).not.toBeNull();
@@ -190,6 +191,9 @@ test("dragged wordmark letter springs back after release", async ({ page }) => {
     for (let i = 3; i < image.length; i += 4) if (image[i] > 50) return true;
     return false;
   }, { x: clientX, y: clientY });
+  // The server renders the word box before the canvas and input handlers
+  // initialize. Wait for actual glyph pixels before starting the drag.
+  await expect.poll(() => visibleAt(x, y)).toBe(true);
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x + 90, y + 190);
@@ -421,8 +425,8 @@ test("Cornflakes detail preserves the supplied page with Moon Store header and w
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Cornflakes Madu");
   await expect(page.locator(".honey-page .product-image img")).toHaveAttribute("src", "/products/cornflakes-madu.jpeg");
   await expect(page.locator(".honey-page .price-row")).toContainText("RM 15.00");
-  await expect(page.locator(".honey-page .variant-row")).toContainText("Approx. 300g");
-  await expect(page.locator(".honey-page .details-table")).toContainText("Approx. 300g per jar");
+  await expect(page.locator(".honey-page .variant-row")).toContainText("Approx. 250g");
+  await expect(page.locator(".honey-page .details-table")).toContainText("Mini: approx. 150g · Standard: approx. 250g");
   await expect(page.locator(".site-footer")).toHaveCount(0);
   await expect(page.locator(".honey-page .footer")).toContainText("Good finds. A little closer to home.");
   await expect(page.getByRole("banner").getByRole("link", { name: "MOON STORE home" })).toBeVisible();

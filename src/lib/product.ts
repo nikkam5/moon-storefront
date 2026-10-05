@@ -78,14 +78,17 @@ export const products: Product[] = [
     orderName: "Golden Honey Cornflakes",
     category: "treats",
     categoryLabel: "Snacks & Treats",
-    tagline: "Toasted crunchy cornflakes glazed with pure golden honey and sweet butter.",
+    tagline: "Crunchy cornflakes coated in golden honey. From Hansflakes.",
     description: "Cornflakes Madu, the way a good treat should be: balanced sweetness, a delicate caramel finish, and a long-lasting crunch. Made for sharing (or not).",
-    specs: [["Net weight", "Approx. 300g per jar"], ["Glaze", "Pure golden honey and sweet butter"], ["Finish", "Delicate caramel · balanced sweetness"], ["Texture", "Toasted and crunchy"]],
+    specs: [["Net weight", "Mini: approx. 150g · Standard: approx. 250g"], ["Glaze", "Pure golden honey and sweet butter"], ["Finish", "Delicate caramel · balanced sweetness"], ["Texture", "Toasted and crunchy"]],
     note: "Contains butter. Please ask us for the full ingredients and allergen information before ordering.",
     image: "/products/cornflakes-madu.jpeg",
     imageWidth: 762,
     imageHeight: 1016,
-    variants: [{ id: "standard-jar", label: "Standard Jar", detail: "Approx. 300g", price: 15 }],
+    variants: [
+      { id: "mini-jar", label: "Mini Jar", detail: "Approx. 150g", price: 10 },
+      { id: "standard-jar", label: "Standard Jar", detail: "Approx. 250g", price: 15 },
+    ],
   },
 ];
 

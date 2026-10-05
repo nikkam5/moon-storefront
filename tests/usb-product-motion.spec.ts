@@ -19,12 +19,13 @@ test("USB capacities update together and retain the labelled blue 128GB presenta
   }
   await page.getByRole("button", { name: "Increase USB quantity" }).click();
   await page.getByRole("button", { name: "Add to cart", exact: true }).click();
+  // The confirmation resets after 2.5 seconds; inspect it before cart checks.
+  await expect(page.locator(".usb-add")).toContainText("Added to cart");
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText("512GB");
   await expect(dialog.locator(".subtotal")).toContainText("RM 340.00");
   await dialog.getByRole("button", { name: "Close cart" }).click();
-  await expect(page.getByRole("button", { name: "Add to cart", exact: true })).toContainText("Added to cart");
 });
 
 test("rapid capacity selection settles on one option and one visible price", async ({ page }) => {

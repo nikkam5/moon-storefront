@@ -1,0 +1,39 @@
+.feedback-proof { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); align-items: center; gap: 30px; max-width: 1280px; margin: 0 auto 65px; padding: 0 0 42px; border-bottom: 1px solid var(--line); }
+.feedback-proof-copy h2 { font-family: var(--font-heading), sans-serif; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.15; letter-spacing: -.045em; }
+.feedback-proof-copy p { max-width: 40ch; margin-top: 18px; color: var(--muted); font-size: 15px; line-height: 1.65; }
+.feedback-proof-copy > span { display: block; margin-top: 22px; color: var(--accent); font-size: 12px; }
+.feedback-gallery-dialog { position: fixed; inset: 0; margin: auto; width: min(1040px, calc(100% - 40px)); max-width: none; max-height: calc(100dvh - 40px); padding: 0; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); color: var(--ink); box-shadow: 0 24px 80px #0004; }
+.feedback-gallery-dialog::backdrop { background: #121118a6; backdrop-filter: blur(5px); }
+.feedback-gallery-shell { display: flex; flex-direction: column; max-height: calc(100dvh - 42px); }
+.feedback-gallery-header { display: flex; flex: none; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 28px; border-bottom: 1px solid var(--line); }
+.feedback-gallery-header h2 { font-size: clamp(22px, 3vw, 30px); font-family: var(--font-heading), sans-serif; letter-spacing: -.04em; }
+.feedback-gallery-header p { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.feedback-gallery-close, .feedback-viewer-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; min-height: 44px; min-width: 44px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--ink); cursor: pointer; }
+.feedback-gallery-dialog button:focus-visible, .feedback-noscript a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.feedback-image-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 28px; overflow-y: auto; min-height: 0; }
+.feedback-image-card { display: flex; flex-direction: column; padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); text-align: left; overflow: hidden; cursor: pointer; }
+.feedback-image-card:hover { border-color: var(--accent); }
+.feedback-image-frame { display: grid; place-items: center; width: 100%; aspect-ratio: 3 / 4; background: var(--surface-raised); }
+.feedback-image-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.feedback-image-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; padding: 14px; font-size: 12px; }
+.feedback-image-label > span { display: flex; align-items: center; gap: 6px; color: var(--accent); }
+.feedback-image-viewer { overflow-y: auto; min-height: 0; padding: 20px 28px 28px; }
+.feedback-viewer-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.feedback-viewer-controls button { font-size: 13px; }
+.feedback-viewer-controls > div { display: flex; gap: 8px; }
+.feedback-full-image { display: grid; place-items: center; min-height: 160px; background: var(--surface-raised); border-radius: 10px; }
+.feedback-full-image img { display: block; width: 100%; max-width: 900px; height: auto; }
+.feedback-image-error { display: block; padding: 16px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.feedback-noscript { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px; }
+@media (max-width: 900px) { .feedback-proof { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 16px; } .feedback-image-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .feedback-proof { grid-template-columns: 1fr; gap: 4px; margin-bottom: 42px; padding-bottom: 28px; }
+  .feedback-folder-trigger { justify-self: center; }
+  .feedback-proof-copy p { font-size: 14px; }
+  .feedback-proof-copy > span { margin-top: 14px; }
+  .feedback-gallery-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 20px); border-radius: 14px; }
+  .feedback-gallery-shell { max-height: calc(100dvh - 22px); }
+  .feedback-gallery-header { padding: 18px; }
+  .feedback-image-grid { grid-template-columns: 1fr; padding: 18px; gap: 18px; }
+  .feedback-image-viewer { padding: 18px; }
+}

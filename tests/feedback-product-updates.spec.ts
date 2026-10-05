@@ -26,8 +26,10 @@ test("feedback heading types on entry without shifting the form", async ({ page 
 
 test("feedback heading becomes static when reduced motion is enabled", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/#feedback");
+  await page.goto("/");
   const heading = page.locator("#feedback-heading");
+  await expect(heading).toHaveAttribute("data-typing-state", "waiting");
+  await heading.scrollIntoViewIfNeeded();
   await expect(heading).toHaveAttribute("data-typing-state", "typing");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(heading).toHaveAttribute("data-typing-state", "static");

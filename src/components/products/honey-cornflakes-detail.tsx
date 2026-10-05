@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { MAX_QUANTITY, Product } from "@/lib/product";
+import { Check, ShoppingBag } from "lucide-react";
+import { MAX_QUANTITY, money, type Product } from "@/lib/product";
 import { business } from "@/lib/business";
 import { readCatalogReturn } from "@/lib/catalog-return";
 import { useStore } from "../cart/store-provider";
@@ -10,21 +11,36 @@ import FooterSocial from "../layout/footer-social";
 
 export default function HoneyCornflakesDetail({ product }: { product: Product }) {
   const [selected, setSelected] = useState(1);
+  const [variantId, setVariantId] = useState("standard-jar");
+  const [motionActive, setMotionActive] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
   const { addMany, items, ready } = useStore();
   const [returnUrl, setReturnUrl] = useState("/#shop");
-  const variant = product.variants[0];
+  const variant = product.variants.find(item => item.id === variantId) ?? product.variants[0];
   const cartQty = items.find((item) => item.productId === product.id && item.variantId === variant.id)?.quantity ?? 0;
   const price = variant.price;
-  const remaining = MAX_QUANTITY - cartQty;
+  const remaining = Math.max(0, MAX_QUANTITY - cartQty);
+  const selectedQuantity = Math.min(selected, Math.max(1, remaining));
   useEffect(() => { setReturnUrl(readCatalogReturn()?.url || "/#shop"); }, []);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let visible = false;
+    const sync = () => setMotionActive(visible && !document.hidden && !media.matches);
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
+    if (root.current) observer.observe(root.current);
+    sync();
+    media.addEventListener("change", sync);
+    document.addEventListener("visibilitychange", sync);
+    return () => { observer.disconnect(); media.removeEventListener("change", sync); document.removeEventListener("visibilitychange", sync); };
+  }, []);
 
   function addCart() {
     if (!ready || cartQty >= MAX_QUANTITY) return;
-    addMany(product.id, variant.id, selected);
+    addMany(product.id, variant.id, selectedQuantity);
     setSelected(1);
   }
 
-  return <div className="honey-page">
+  return <div ref={root} className="honey-page" data-motion={motionActive ? "active" : "paused"}>
     <div className="hex-float" aria-hidden="true" />
     <div className="hex-float" aria-hidden="true" />
     <div className="hex-float" aria-hidden="true" />
@@ -50,26 +66,30 @@ export default function HoneyCornflakesDetail({ product }: { product: Product })
           <p className="product-subtitle">{product.tagline}</p>
 
           <div className="price-row">
-            <span className="price">RM {price.toFixed(2)}</span>
+            <span className="price" aria-live="polite">{money(price)}</span>
             <span className="price-label">{variant.label}</span>
           </div>
 
           <p className="product-desc">{product.description}</p>
 
-          <div className="variant-row">
-            <span className="check">✓</span>
-            <span>{variant.label} · {variant.detail}</span>
-          </div>
+          <fieldset className="honey-variants">
+            <legend>Choose your jar</legend>
+            <div className="honey-variant-options">{product.variants.map(option => <label key={option.id} className="honey-variant" data-selected={option.id === variant.id}>
+              <input type="radio" name="cornflakes-jar" value={option.id} checked={option.id === variant.id} onChange={() => { setVariantId(option.id); setSelected(1); }} />
+              <span><strong>{option.label}</strong><small>{option.detail}</small></span><span>{money(option.price)}</span>
+            </label>)}</div>
+          </fieldset>
+          <div className="variant-row" aria-live="polite"><Check className="check" size={17} aria-hidden="true" /><span>{variant.label} · {variant.detail}</span></div>
 
           <div className="qty-row">
             <div className="qty" role="group" aria-label="Quantity">
-              <button type="button" aria-label="Decrease quantity" disabled={selected <= 1} onClick={() => setSelected((quantity) => Math.max(1, quantity - 1))}>−</button>
-              <span aria-live="polite">{selected}</span>
-              <button type="button" aria-label="Increase quantity" disabled={selected >= remaining} onClick={() => setSelected((quantity) => Math.min(remaining, quantity + 1))}>+</button>
+              <button type="button" aria-label="Decrease quantity" disabled={selectedQuantity <= 1} onClick={() => setSelected(Math.max(1, selectedQuantity - 1))}>−</button>
+              <span aria-live="polite">{selectedQuantity}</span>
+              <button type="button" aria-label="Increase quantity" disabled={selectedQuantity >= remaining} onClick={() => setSelected(selectedQuantity + 1)}>+</button>
             </div>
-            <button className="add-to-cart" type="button" disabled={!ready || cartQty >= MAX_QUANTITY || selected > remaining} onClick={addCart}>
+            <button className="add-to-cart" type="button" disabled={!ready || remaining === 0} onClick={addCart}>
               Add to cart
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
+              <ShoppingBag size={20} aria-hidden="true" />
             </button>
           </div>
           {cartQty >= MAX_QUANTITY && <p className="allergy-note" role="status">Limit {MAX_QUANTITY} per option. Reduce the quantity in your cart to add more.</p>}

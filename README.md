@@ -13,7 +13,7 @@ Open http://localhost:3000. Development output uses `.next-dev`; production buil
 
 ## Catalog and business details
 
-- `src/lib/product.ts` — four products, seven purchasable options, store-supplied specifications and RM prices.
+- `src/lib/product.ts` — four products, eight purchasable options, store-supplied specifications and RM prices.
 - `src/lib/business.ts` — address, founders, phone, email, hours, maps and the Facebook, Instagram and WhatsApp destinations.
 - `src/lib/whatsapp.ts` — URL-encoded order message with variants, quantities, line totals and delivery/pickup placeholders.
 - `src/components/layout/brand-logo.tsx` — SVG monogram; `src/app/icon.svg` — browser icon.
@@ -24,6 +24,10 @@ Open http://localhost:3000. Development output uses `.next-dev`; production buil
 The homepage contains `#home`, `#shop`, `#about` and `#feedback`. The feedback form prepares a WhatsApp draft for the customer to review and send. `/shop` also serves the complete catalog and `/cart` provides a full cart review. Filtering, variants and product detail expansion do not navigate away.
 
 The feedback heading uses TextType to type once when it enters view, with a blinking cursor. Reduced-motion and no-JavaScript visitors see the full heading. Every product's Back to catalog link restores the originating catalog and filter.
+
+Above the feedback form, an animated React Bits Folder previews the first three customer screenshots. Opening it reveals the complete gallery in equal-sized frames, with the whole image fitted inside each frame. Select an image to enlarge it; the viewer supports Previous/Next and arrow keys. Escape returns to the gallery, then closes it and restores focus to the folder. Touch, light/dark themes, live reduced-motion changes and direct image links without JavaScript are supported. The gallery can contain more than three images: place additional screenshots in `public/feedback/` and add their paths, dimensions and descriptive alt text to `src/lib/customer-feedback.ts`. The three supplied WhatsApp screenshots are optimized WebP files at their original dimensions; their messages are preserved as images.
+
+Cornflakes Madu retains the supplied green-and-gold honeycomb design, with the 5 October reference saved in `docs/design-source/cornflakes-madu-update-2026-10-05.html`. Mini Jar (approx. 150g, RM 10.00) and Standard Jar (approx. 250g, RM 15.00) are selectable on the product and shop pages, with separate cart rows, quantity limits and WhatsApp order details. Standard Jar remains the product page's initial selection. The reference contains inconsistent weight ranges; the displayed weights follow its explicit Mini/Standard labels. The existing ingredient/allergen note is retained rather than adding unconfirmed wheat or preservative claims. Its referenced `Sweet Pixel Paradise.jpg` background was not supplied, so the existing CSS honeycomb remains in place.
 
 The hero's four product photos use a React Bits Stack: click or press Enter to cycle, or drag a card on desktop. The product name below links to its details. Touch devices use tap-to-cycle so vertical page scrolling stays usable. The hero scrolls naturally on screens too short for the full composition.
 
@@ -62,6 +66,7 @@ src/
 public/products/        Product photographs
 public/models/          Approved 3D product assets
 public/team/            Optimized portraits for all four team members
+public/feedback/        Customer feedback screenshots
 tests/                  Playwright functional and animation regressions
 docs/                   Design references, historical audit and maintenance notes
 ```
@@ -70,7 +75,7 @@ Component styles stay beside their component. The root contains only documentati
 
 ### Store colors and team content
 
-The main website and Kingston USB page use warm ivory, charcoal and muted lavender in light/dark themes. `src/styles/store-palette.css` contains the scoped palette. A server-rendered marker keeps the Popia, Cornflakes and Motul product pages on their original colors, including shared navigation, cart and footer. Their product components and styles remain unchanged. The marker works without JavaScript and switches automatically during client navigation.
+Every route uses warm ivory, charcoal and muted lavender for the shared store theme, including navigation, cart and the Moon Store footer. `src/styles/store-palette.css` contains this global palette. Product-specific styles remain scoped to their own components: Popia keeps its green and cream theme, Cornflakes keeps its dark green and honey-gold theme, and Motul keeps its black and red theme. The shared palette also works without JavaScript and stays consistent during client navigation.
 
 All four team members have optimized WebP portraits. The message box keeps the same dimensions for every member at each responsive breakpoint; Malay messages use the available width and wrap as ordinary sentences. The original layouts, product colors, 3D model and interactions remain in place.
 

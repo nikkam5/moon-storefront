@@ -69,3 +69,11 @@ All four supplied portraits are now optimized WebP assets in `public/team`, incl
 The final type check and production build passed. The complete desktop/mobile browser run recorded **227 passed, 11 intentionally skipped, 0 failed and 0 flaky**. It includes light/dark route switching, protected teammate colors, team panel dimensions and photo loading, cart flows, the USB model, reduced motion and animation lifecycle coverage. Results and screenshots are stored outside the repository in the chat's `verification-palette` artifacts.
 
 An import and asset audit found no unused source modules, public assets or declared dependencies. After verification, cleanup removed `.next/cache` (614,394,061 bytes) and `test-results` (900,274 bytes), about 587 MiB combined. The active development output, Next route types, installed dependencies and current production export remain available locally; all are excluded from Git. No push or deployment was performed.
+
+## Shared theme clarification — 5 October 2026
+
+The shared ivory, charcoal and lavender store theme now applies to every route. The earlier exemption for teammate product routes and their blue browser theme-color overrides have been removed. Headers, announcement bars and cart dialogs use the same store palette throughout. Pages that use the shared Moon Store footer inherit that palette; product-specific footers and content keep their original styling.
+
+Popia retains its green and cream colors, Cornflakes its dark green and honey-gold colors, and Motul its black and red colors. Their component and stylesheet files were not changed. The product routes now inherit browser theme colors from the root layout.
+
+Type checking and the final production build passed. The focused desktop/mobile run recorded **36 passed, 0 failed**, covering every route's shared palette in both themes, the original product colors, no-JavaScript rendering, client navigation, team portraits and dimensions, and product cart regressions. JSON results and preview screenshots are preserved outside the repository in `verification-palette-2026-10-05`. No push or deployment was performed.

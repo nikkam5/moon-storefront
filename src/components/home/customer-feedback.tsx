@@ -5,6 +5,7 @@ import { ArrowUpRight, MessageCircle } from "lucide-react";
 import BorderGlow from "../motion/border-glow";
 import PeekRating from "../motion/peek-rating";
 import TextType from "../motion/text-type";
+import FeedbackGallery from "./feedback-gallery";
 import { business } from "@/lib/business";
 import "./customer-feedback.css";
 
@@ -33,6 +34,7 @@ export default function CustomerFeedback() {
   }
 
   return <section id="feedback" className="customer-feedback section-wrap" aria-labelledby="feedback-heading">
+    <FeedbackGallery />
     <div className="customer-feedback-layout">
       <div className="customer-feedback-intro">
         <span className="feedback-eyebrow">MOON STORE / CUSTOMER FEEDBACK</span>

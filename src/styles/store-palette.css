@@ -1,6 +1,6 @@
-/* The marker is server-rendered on teammate product routes. This also protects
-   their shared header, footer and cart, including without JavaScript. */
-html:not(:has(#main > .teammate-palette)) {
+/* The store palette applies to every route. Product-specific palettes remain
+   scoped to their own page components. */
+html:has(#main) {
   --paper: #f5f1e8;
   --surface: #fffdf8;
   --surface-raised: #eee9df;
@@ -31,7 +31,7 @@ html:not(:has(#main > .teammate-palette)) {
   --ambient: 0 2px 4px #24252b0a, 0 12px 28px #24252b0f, 0 34px 60px #24252b0d;
   --ambient-lift: 0 3px 6px #24252b0d, 0 18px 38px #24252b14, 0 46px 80px #24252b12;
 }
-html[data-theme="dark"]:not(:has(#main > .teammate-palette)) {
+html[data-theme="dark"]:has(#main) {
   --paper: #15161a;
   --surface: #22242b;
   --surface-raised: #2c2d35;
@@ -56,7 +56,7 @@ html[data-theme="dark"]:not(:has(#main > .teammate-palette)) {
   --ambient: 0 2px 4px #00000026, 0 14px 30px #0000002e, 0 38px 66px #00000026;
   --ambient-lift: 0 3px 8px #0000002e, 0 20px 42px #00000038, 0 50px 88px #0000002e;
 }
-html:not(:has(#main > .teammate-palette)) .pill-nav-container {
+html:has(#main) .pill-nav-container {
   --pill-base: var(--surface-raised);
   --pill-bg: var(--surface);
   --pill-text: var(--ink);
@@ -64,60 +64,60 @@ html:not(:has(#main > .teammate-palette)) .pill-nav-container {
   --pill-hover-text: var(--accent-ink);
   --pill-indicator: var(--accent);
 }
-html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy,
-html:not(:has(#main > .teammate-palette)) .curtain-stage .hero-section.hero-galaxy {
+html:has(#main) .hero-section.hero-galaxy,
+html:has(#main) .curtain-stage .hero-section.hero-galaxy {
   background: var(--paper);
   color: var(--ink);
 }
-html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy .hero-copy h1,
-html:not(:has(#main > .teammate-palette)) .moonstore-static { color: var(--ink); }
-html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy .hero-subtitle { color: var(--muted); }
-html:not(:has(#main > .teammate-palette)) .hero-section.hero-galaxy .hero-actions .underlined-link { color: var(--accent); }
-html:not(:has(#main > .teammate-palette)) .galaxy-backdrop { opacity: .38; }
-html[data-theme="light"]:not(:has(#main > .teammate-palette)) .galaxy-backdrop { opacity: .15; }
-html:not(:has(#main > .teammate-palette)) .button-dark,
-html:not(:has(#main > .teammate-palette)) .add-button,
-html:not(:has(#main > .teammate-palette)) .feedback-submit,
-html:not(:has(#main > .teammate-palette)) .usb-add {
+html:has(#main) .hero-section.hero-galaxy .hero-copy h1,
+html:has(#main) .moonstore-static { color: var(--ink); }
+html:has(#main) .hero-section.hero-galaxy .hero-subtitle { color: var(--muted); }
+html:has(#main) .hero-section.hero-galaxy .hero-actions .underlined-link { color: var(--accent); }
+html:has(#main) .galaxy-backdrop { opacity: .38; }
+html[data-theme="light"]:has(#main) .galaxy-backdrop { opacity: .15; }
+html:has(#main) .button-dark,
+html:has(#main) .add-button,
+html:has(#main) .feedback-submit,
+html:has(#main) .usb-add {
   background: var(--accent);
   color: var(--accent-ink);
 }
-html:not(:has(#main > .teammate-palette)) .button-dark:hover:not(:disabled),
-html:not(:has(#main > .teammate-palette)) .add-button:hover:not(:disabled),
-html:not(:has(#main > .teammate-palette)) .feedback-submit:hover,
-html:not(:has(#main > .teammate-palette)) .usb-add:hover:not(:disabled),
-html:not(:has(#main > .teammate-palette)) .usb-add[data-added="true"] {
+html:has(#main) .button-dark:hover:not(:disabled),
+html:has(#main) .add-button:hover:not(:disabled),
+html:has(#main) .feedback-submit:hover,
+html:has(#main) .usb-add:hover:not(:disabled),
+html:has(#main) .usb-add[data-added="true"] {
   background: color-mix(in srgb, var(--accent) 88%, var(--ink));
   color: var(--accent-ink);
 }
-html:not(:has(#main > .teammate-palette)) .feedback-form input::placeholder,
-html:not(:has(#main > .teammate-palette)) .feedback-form textarea::placeholder { opacity: 1; }
-html:not(:has(#main > .teammate-palette)) .feedback-error { color: #a83243; }
-html[data-theme="dark"]:not(:has(#main > .teammate-palette)) .feedback-error { color: #f19baa; }
-html:not(:has(#main > .teammate-palette)) .art-tech:has(img) { background: var(--surface-raised); color: var(--ink); }
-html:not(:has(#main > .teammate-palette)) .art-tech:has(img)::before {
+html:has(#main) .feedback-form input::placeholder,
+html:has(#main) .feedback-form textarea::placeholder { opacity: 1; }
+html:has(#main) .feedback-error { color: #a83243; }
+html[data-theme="dark"]:has(#main) .feedback-error { color: #f19baa; }
+html:has(#main) .art-tech:has(img) { background: var(--surface-raised); color: var(--ink); }
+html:has(#main) .art-tech:has(img)::before {
   background: linear-gradient(115deg, transparent 0 56%, var(--lilac) 56% 70%, var(--surface) 70%);
 }
-html:not(:has(#main > .teammate-palette)) .art-tech:has(img)::after { border-color: var(--line); }
-html:not(:has(#main > .teammate-palette)) .team-position,
-html:not(:has(#main > .teammate-palette)) .pixel-transition { background: var(--surface-raised); color: var(--ink); }
-html:not(:has(#main > .teammate-palette)) .team-position > span { color: var(--accent); }
-html:not(:has(#main > .teammate-palette)) .usb-scene { background: var(--surface); color: var(--ink); }
-html:not(:has(#main > .teammate-palette)) .usb-ambient-sweep {
+html:has(#main) .art-tech:has(img)::after { border-color: var(--line); }
+html:has(#main) .team-position,
+html:has(#main) .pixel-transition { background: var(--surface-raised); color: var(--ink); }
+html:has(#main) .team-position > span { color: var(--accent); }
+html:has(#main) .usb-scene { background: var(--surface); color: var(--ink); }
+html:has(#main) .usb-ambient-sweep {
   background: linear-gradient(110deg, transparent 20%, color-mix(in srgb, var(--accent) 15%, transparent) 50%, transparent 75%);
 }
-html:not(:has(#main > .teammate-palette)) .usb-ambient-halo {
+html:has(#main) .usb-ambient-halo {
   background: radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 12%, transparent), transparent 66%);
 }
-html:not(:has(#main > .teammate-palette)) .usb-stage-capacity { color: color-mix(in srgb, var(--ink) 12%, transparent); }
-html:not(:has(#main > .teammate-palette)) .usb-capacity-unit,
-html:not(:has(#main > .teammate-palette)) .usb-model-hint,
-html:not(:has(#main > .teammate-palette)) .usb-scene-bottom { color: var(--muted); }
-html:not(:has(#main > .teammate-palette)) .usb-model-controls button {
+html:has(#main) .usb-stage-capacity { color: color-mix(in srgb, var(--ink) 12%, transparent); }
+html:has(#main) .usb-capacity-unit,
+html:has(#main) .usb-model-hint,
+html:has(#main) .usb-scene-bottom { color: var(--muted); }
+html:has(#main) .usb-model-controls button {
   background: var(--surface-raised);
   color: var(--ink);
   border-color: var(--line);
 }
-html:not(:has(#main > .teammate-palette)) .usb-model-controls button:hover { background: var(--lilac); }
-html:not(:has(#main > .teammate-palette)) .usb-model-controls button[aria-pressed="true"] { border-color: var(--accent); }
-html:not(:has(#main > .teammate-palette)) .usb-photo-fallback { color: #24252b; }
+html:has(#main) .usb-model-controls button:hover { background: var(--lilac); }
+html:has(#main) .usb-model-controls button[aria-pressed="true"] { border-color: var(--accent); }
+html:has(#main) .usb-photo-fallback { color: #24252b; }
