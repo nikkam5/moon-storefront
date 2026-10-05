@@ -27,3 +27,12 @@ The working tree already contained changes to README, the previous maintenance r
 - Updated existing price/weight expectations to match the supplied jar choices. Heading and wordmark checks wait for initialization; the USB confirmation check observes its 2.5-second message before inspecting the cart. The cross-tab check waits for the second tab to be ready and verifies its quantity before testing synchronization.
 - Earlier combined runs encountered timing-sensitive failures. The final complete desktop and mobile runs above were clean. This verification does not establish a guaranteed frame rate, native Safari support, or performance on lower-powered physical devices.
 - Final `git diff --check`: passed.
+
+## Follow-up: BounceCards preview
+
+- Replaced the folder with the supplied React Bits BounceCards design: three overlapping customer screenshots, equal 3:4 frames, ivory borders, a staggered elastic entrance and a hover/focus spread. The source screenshots remain complete with `object-fit: contain`.
+- The entrance starts when the preview enters view and plays once. Responsive offsets keep the cards inside the section. Motion pauses when hidden, off-screen or covered by the gallery; live reduced-motion changes settle the cards immediately. GSAP animations, observers and listeners clean up on unmount.
+- Each preview card opens its own enlarged screenshot. “View all screenshots” opens the complete gallery, which still supports any number of images. Escape, keyboard navigation, focus restoration and no-JavaScript image links remain available.
+- Removed the unused folder component, styles and opening timer. The project already has GSAP, so no dependency was added. Cornflakes and other product pages were not changed in this follow-up.
+- Type checking and the production build passed. All **28 focused desktop/mobile browser checks passed**, including the new card interactions and animation lifecycle, existing gallery behavior, feedback heading, Cornflakes cart flows and catalog return links. The full-suite totals above describe the earlier verification, not a rerun for this follow-up.
+- No changes were pushed or deployed.

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
-import Folder from "../motion/folder";
+import BounceCards from "../motion/bounce-cards";
 import { customerFeedback, type CustomerFeedbackImage } from "@/lib/customer-feedback";
 import "./feedback-gallery.css";
 
@@ -22,23 +22,12 @@ function keepGalleryFocus(event: KeyboardEvent<HTMLDialogElement>) {
 }
 
 export default function FeedbackGallery() {
-  const [opening, setOpening] = useState(false);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   const photoButtons = useRef<(HTMLButtonElement | null)[]>([]);
   const lastPhoto = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!opening) return;
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const reveal = () => { setOpen(true); setOpening(false); };
-    const timer = window.setTimeout(reveal, media.matches ? 0 : 420);
-    const sync = () => { if (media.matches) { window.clearTimeout(timer); reveal(); } };
-    media.addEventListener("change", sync);
-    return () => { window.clearTimeout(timer); media.removeEventListener("change", sync); };
-  }, [opening]);
 
   useEffect(() => {
     if (!open) return;
@@ -62,16 +51,19 @@ export default function FeedbackGallery() {
     lastPhoto.current = selected;
   }, [selected, open]);
 
-  function close() { setOpen(false); setOpening(false); setSelected(null); lastPhoto.current = null; }
+  function close() { setOpen(false); setSelected(null); lastPhoto.current = null; }
+  function show(index: number | null) { setSelected(index); setOpen(true); }
 
   if (!customerFeedback.length) return null;
   return <section className="feedback-proof" aria-labelledby="feedback-proof-heading">
     <div className="feedback-proof-copy">
       <h2 id="feedback-proof-heading">Customer Feedback</h2>
-      <p>Real messages from our customers. Open the folder to take a look.</p>
-      <span>{customerFeedback.length} customer screenshots</span>
+      <p>Real messages from our customers. Select a screenshot to read their feedback.</p>
     </div>
-    <Folder open={opening || open} onClick={() => { if (!opening && !open) setOpening(true); }} label="View All Feedback" controls="feedback-gallery" items={customerFeedback.slice(0, 3).map(photo => <FeedbackPhoto key={photo.id} photo={photo} preview />)} />
+    <div className="feedback-proof-preview">
+      <BounceCards expanded={open} controls="feedback-gallery" onSelect={show} items={customerFeedback.slice(0, 3).map((photo, index) => ({ id: photo.id, label: `Open customer feedback screenshot ${index + 1}`, content: <FeedbackPhoto photo={photo} preview /> }))} />
+      <button className="feedback-preview-link" type="button" aria-label="View All Feedback" aria-haspopup="dialog" aria-controls="feedback-gallery" aria-expanded={open} onClick={() => show(null)}>View all {customerFeedback.length} {customerFeedback.length === 1 ? "screenshot" : "screenshots"} <ArrowRight size={17} aria-hidden="true" /></button>
+    </div>
 
     <dialog id="feedback-gallery" ref={dialog} className="feedback-gallery-dialog" aria-labelledby="feedback-gallery-heading" onKeyDown={event => {
       keepGalleryFocus(event);
