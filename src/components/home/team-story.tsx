@@ -20,22 +20,22 @@ type Member = {
 const members: Member[] = [
   {
     name: "Nik Amir", initials: "NA", role: "Team lead · Management & administration", background: "#35313f",
-    image: { src: "/team/nik-amir.webp", width: 960, height: 1280, position: "50% 62%" },
+    image: { src: "/team/nik-amir.webp", width: 1080, height: 899, position: "50% 50%" },
     message: "Saya mahu Moon Store menjadi tempat anda membeli dengan yakin dan rasa dihargai.",
   },
   {
     name: "Iman Asnawi", initials: "IA", role: "Marketing executive", background: "#3b3646",
-    image: { src: "/team/iman-asnawi.webp", width: 872, height: 1160, position: "50% 60%" },
+    image: { src: "/team/iman-asnawi.webp", width: 1080, height: 899, position: "50% 50%" },
     message: "Setiap produk ada cerita. Saya mahu anda temui pilihan yang sesuai dengan keperluan anda.",
   },
   {
     name: "Luqman", initials: "L", role: "Operations executive", background: "#37343f",
-    image: { src: "/team/luqman.webp", width: 574, height: 1020, position: "50% 34%" },
+    image: { src: "/team/luqman.webp", width: 1080, height: 899, position: "50% 50%" },
     message: "Bagi saya, urusan yang lancar bermula dengan perhatian pada perkara kecil dan pesanan yang teliti.",
   },
   {
     name: "Arish Haikal", initials: "AH", role: "Accounts executive", background: "#34313c",
-    image: { src: "/team/arish-haikal.webp", width: 541, height: 338, position: "42% 50%" },
+    image: { src: "/team/arish-haikal.webp", width: 1080, height: 899, position: "50% 50%" },
     message: "Saya percaya kepercayaan pelanggan bermula dengan harga yang jelas dan urusan yang telus.",
   },
 ];
