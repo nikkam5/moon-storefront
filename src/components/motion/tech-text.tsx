@@ -28,6 +28,9 @@ export type TechTextProps = {
   draggable?: boolean;
   sweep?: boolean;
   speed?: number;
+  fractured?: boolean;
+  dragGlitch?: boolean;
+  bleed?: boolean;
   className?: string;
   style?: React.CSSProperties;
 };
@@ -42,6 +45,14 @@ const DAMPING = 22;
 // Generous so visible ink is easy to catch, but empty space never hijacks
 // clicks meant for surrounding content.
 const GRAB_SLOP = 56;
+// Blood timeline (seconds): letters fill from the top once per visit; then
+// each drip keeps cycling (grow, release a drop, retract to a residual stem,
+// rest) for as long as the wordmark is on screen.
+const POUR = 1.6;
+const POUR_STAGGER = 0.07;
+const RETRACT = 0.35;
+const RESIDUAL = 0.42;
+const BLEED_KEY = 'moonstore-bleed';
 
 const approach = (current: number, target: number, dt: number, seconds: number) =>
   current + (target - current) * (1 - Math.exp(-dt / seconds));
@@ -83,7 +94,11 @@ type Glyph = {
   index: number;
   fill: Sprite;
   dashes: Sprite;
+  signal: Sprite | null;
 };
+// Position is canvas space at the glyph's home; the glyph offset is added when drawn.
+// `released` is the last cycle whose drop has been handed to BloodFall.
+type Drip = { glyph: number; x: number; y: number; start: number; grow: number; rest: number; length: number; width: number; head: number; released: number };
 type WordView = {
   size: number;
   baseline: number;
@@ -114,6 +129,9 @@ const TechText = ({
   draggable = true,
   sweep = true,
   speed = 1,
+  fractured = false,
+  dragGlitch = false,
+  bleed = false,
   className = '',
   style,
 }: TechTextProps) => {
@@ -144,6 +162,9 @@ const TechText = ({
       draggable,
       sweep,
       speed,
+      fractured,
+      dragGlitch,
+      bleed,
     };
     wakeRef.current();
   });
@@ -154,6 +175,9 @@ const TechText = ({
     const ctx = canvas?.getContext('2d');
     const scratch = document.createElement('canvas');
     const scratchCtx = scratch.getContext('2d');
+    // Only the held glyph is recomposited here, never the full drag field.
+    const signalCanvas = document.createElement('canvas');
+    const signalCtx = signalCanvas.getContext('2d');
     if (!container || !canvas || !ctx || !scratchCtx) return undefined;
 
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -185,6 +209,13 @@ const TechText = ({
     let dragging = -1;
     let dragPointerId: number | null = null;
     let paintedBounds: Box | null = null;
+    let signalIndex = -1;
+    let signalStrength = 0;
+    let fontSettled = '';
+    // -1 waits for the font; Infinity is the finished, static blood.
+    let bleedT = -1;
+    let bleedPlaying = false;
+    let drips: Drip[] = [];
     const pointer = { x: 0, y: 0, inside: false };
     const grab = { x: 0, y: 0 };
     const lens = { x: 0, y: 0 };
@@ -224,7 +255,7 @@ const TechText = ({
         c.lineJoin = 'round';
         c.lineWidth = s.strokeWidth * 2;
         c.lineCap = 'butt';
-        c.strokeStyle = s.color;
+        c.strokeStyle = s.bleed ? '#ff3b47' : s.color;
         if (s.lineStyle !== 'solid') c.setLineDash([Math.max(1, s.dashLength), Math.max(1, s.dashGap)]);
         c.strokeText(glyph.char, glyph.x, view.baseline);
         c.setLineDash([]);
@@ -232,11 +263,56 @@ const TechText = ({
         c.fillStyle = '#000000';
         c.fillText(glyph.char, glyph.x, view.baseline);
         c.globalCompositeOperation = 'source-over';
+      } else if (s.bleed) {
+        const blood = c.createLinearGradient(0, glyph.box.y1, 0, glyph.box.y2);
+        blood.addColorStop(0, '#d0172a');
+        blood.addColorStop(0.5, '#c1121f');
+        blood.addColorStop(1, '#6b0510');
+        c.fillStyle = blood;
+        c.fillText(glyph.char, glyph.x, view.baseline);
+        // A thin hot rim inside the letter edge reads as wet.
+        c.globalCompositeOperation = 'source-atop';
+        c.lineWidth = 1.4;
+        c.strokeStyle = '#ff2a3a';
+        c.strokeText(glyph.char, glyph.x, view.baseline);
+        c.globalCompositeOperation = 'source-over';
       } else {
         c.fillStyle = s.color;
         c.fillText(glyph.char, glyph.x, view.baseline);
       }
+      if (s.fractured) {
+        const { x1, x2, y1, y2 } = glyph.box;
+        const chamfer = Math.max(1, Math.min((x2 - x1) * .12, (y2 - y1) * .08));
+        c.save();
+        c.globalCompositeOperation = 'destination-out';
+        c.beginPath();
+        c.moveTo(x1 - 1, y1 - 1); c.lineTo(x1 + chamfer, y1 - 1); c.lineTo(x1 - 1, y1 + chamfer); c.closePath();
+        c.moveTo(x2 + 1, y2 + 1); c.lineTo(x2 - chamfer, y2 + 1); c.lineTo(x2 + 1, y2 - chamfer); c.closePath();
+        c.fill();
+        if ('MNR'.includes(glyph.char)) {
+          const seam = () => {
+            c.beginPath(); c.moveTo(x1 - 1, y1 + (y2 - y1) * .64); c.lineTo(x2 + 1, y1 + (y2 - y1) * .38);
+          };
+          c.globalCompositeOperation = 'source-atop';
+          c.strokeStyle = '#a71930'; c.lineWidth = Math.max(1.8, view.size * .042); seam(); c.stroke();
+          c.globalCompositeOperation = 'destination-out';
+          c.lineWidth = Math.max(.75, view.size * .018); seam(); c.stroke();
+        }
+        c.restore();
+      }
       return { image, left, top };
+    };
+
+    const signalSprite = (art: Sprite): Sprite => {
+      const image = document.createElement('canvas');
+      image.width = art.image.width; image.height = art.image.height;
+      const c = image.getContext('2d');
+      if (c) {
+        c.drawImage(art.image, 0, 0);
+        c.globalCompositeOperation = 'source-in';
+        c.fillStyle = '#ff183b'; c.fillRect(0, 0, image.width, image.height);
+      }
+      return { ...art, image };
     };
 
     const ensureLayout = (s: Settings): WordView => {
@@ -251,6 +327,9 @@ const TechText = ({
         s.dashGap,
         s.strokeWidth,
         s.lineStyle,
+        s.fractured,
+        s.dragGlitch,
+        s.bleed,
         containerW,
         containerH,
         padX,
@@ -262,7 +341,8 @@ const TechText = ({
       const wanted = fontFor(s, 64);
       if (document.fonts && wanted !== requestedFont) {
         requestedFont = wanted;
-        document.fonts.load(wanted, s.text).then(refreshFonts, refreshFonts);
+        const settle = () => { fontSettled = wanted; refreshFonts(); };
+        document.fonts.load(wanted, s.text).then(settle, settle);
       }
 
       const probe = scratchCtx;
@@ -312,21 +392,212 @@ const TechText = ({
           },
         };
         const kept = previous[glyphs.length];
+        const fill = sprite(s, next, base, false);
         glyphs.push({
           ...base,
           offset: kept?.char === char ? kept.offset : { x: 0, y: 0 },
           velocity: { x: 0, y: 0 },
           outline: 0,
           index: i,
-          fill: sprite(s, next, base, false),
+          fill,
           dashes: sprite(s, next, base, true),
+          signal: s.dragGlitch ? signalSprite(fill) : null,
         });
       });
+      drips = s.bleed ? planDrips(next) : [];
+      // Re-planned after a resize: drops that already fell are not released again.
+      drips.forEach((drip) => { drip.released = latestRelease(drip); });
       dragging = -1;
+      signalIndex = -1;
+      signalStrength = 0;
       if (dragPointerId !== null && container.hasPointerCapture(dragPointerId)) container.releasePointerCapture(dragPointerId);
       dragPointerId = null;
       frame.index = -1;
       return next;
+    };
+
+    // Drips leave only from a letter's base: runs of columns whose lowest ink
+    // sits on the glyph's floor (stems, serifs, the bottom of round letters).
+    const planDrips = (view: WordView): Drip[] => {
+      const planned: Drip[] = [];
+      glyphs.forEach((glyph, g) => {
+        if (noise(glyph.index, 31) < 0.15) return;
+        const art = glyph.fill;
+        const c = art.image.getContext('2d');
+        if (!c) return;
+        const { width: w, height: h } = art.image;
+        const alpha = c.getImageData(0, 0, w, h).data;
+        const lows = new Int32Array(w).fill(-1);
+        let floor = -1;
+        for (let x = 0; x < w; x++) {
+          for (let y = h - 1; y >= 0; y--) {
+            if (alpha[(y * w + x) * 4 + 3] > 160) { lows[x] = y; floor = Math.max(floor, y); break; }
+          }
+        }
+        if (floor < 0) return;
+        const runs: [number, number][] = [];
+        for (let x = 0; x < w; x++) {
+          if (lows[x] < 0 || floor - lows[x] > 2.5 * dpr) continue;
+          const run = runs[runs.length - 1];
+          if (run && run[1] === x - 1) run[1] = x;
+          else runs.push([x, x]);
+        }
+        runs.sort((a, b) => b[1] - b[0] - (a[1] - a[0]));
+        runs.slice(0, noise(glyph.index, 37) > 0.6 ? 2 : 1).forEach(([from, to], k) => {
+          const n = (salt: number) => noise(glyph.index, k, salt);
+          planned.push({
+            glyph: g,
+            x: art.left + (from + (to - from) * (0.3 + n(3) * 0.4)) / dpr,
+            y: art.top + floor / dpr,
+            start: POUR * 0.75 + g * POUR_STAGGER + n(1) * 2.6,
+            grow: 1.6 + n(2) * 1.2,
+            rest: 0.6 + n(7) * 2.4,
+            length: view.size * (0.32 + n(4) * 0.26),
+            width: Math.max(1.4, view.size * (0.022 + n(5) * 0.016)),
+            head: Math.max(3, view.size * (0.06 + n(6) * 0.03)),
+            released: -1,
+          });
+        });
+      });
+      return planned;
+    };
+
+    const pourEnd = () => POUR + glyphs.length * POUR_STAGGER;
+    const cycleOf = (drip: Drip) => drip.grow + RETRACT + drip.rest;
+    // Seconds into the drip's current cycle; null before it first starts.
+    const phaseOf = (drip: Drip) => {
+      const local = bleedT - drip.start;
+      return local > 0 && Number.isFinite(local) ? local % cycleOf(drip) : null;
+    };
+    const latestRelease = (drip: Drip) => {
+      const local = bleedT - drip.start - drip.grow;
+      return local < 0 ? -1 : Math.floor(local / cycleOf(drip));
+    };
+
+    // Reduced motion (bleedT = Infinity) shows the residual stems, still.
+    const dripLength = (drip: Drip) => {
+      if (!Number.isFinite(bleedT)) return drip.length * RESIDUAL;
+      const p = phaseOf(drip);
+      if (p === null) return 0;
+      const base = bleedT - drip.start >= cycleOf(drip) ? drip.length * RESIDUAL : 0;
+      if (p < drip.grow) {
+        const t = p / drip.grow;
+        return base + (drip.length - base) * t * t * (3 - 2 * t);
+      }
+      const q = Math.min(1, (p - drip.grow) / RETRACT);
+      return drip.length * (1 - (1 - RESIDUAL) * q);
+    };
+
+    const dripBounds = (): Box | null => {
+      let box: Box | null = null;
+      for (const drip of drips) {
+        const glyph = glyphs[drip.glyph];
+        const x = drip.x + glyph.offset.x;
+        const y = drip.y + glyph.offset.y;
+        const reach = Math.max(drip.head, drip.width * 2) + 2;
+        const next = clipBounds((x - reach) * dpr, (y - 2) * dpr, (x + reach) * dpr, (y + drip.length + 3) * dpr);
+        if (next) box = box ? { x1: Math.min(box.x1, next.x1), y1: Math.min(box.y1, next.y1), x2: Math.max(box.x2, next.x2), y2: Math.max(box.y2, next.y2) } : next;
+      }
+      return box;
+    };
+
+    const drawDrips = () => {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      for (const drip of drips) {
+        const length = dripLength(drip);
+        if (length < 1) continue;
+        const glyph = glyphs[drip.glyph];
+        const x = drip.x + glyph.offset.x;
+        const y = drip.y + glyph.offset.y - 1;
+        const p = phaseOf(drip);
+        const spent = !Number.isFinite(bleedT) || (p !== null && p >= drip.grow);
+        const r = Math.min(drip.head * (spent ? 0.7 : 1), length * 0.45);
+        const w = Math.min(drip.width, r);
+        const cy = y + length - r;
+        const body = ctx.createLinearGradient(0, y, 0, cy + r);
+        body.addColorStop(0, '#6b0510');
+        body.addColorStop(1, '#b3101e');
+        // A flared neck where it leaves the letter, a thin stem and a round head.
+        ctx.beginPath();
+        ctx.moveTo(x - w * 1.8, y);
+        ctx.bezierCurveTo(x - w * 0.6, y + 1, x - w, cy - r, x - r, cy);
+        ctx.arc(x, cy, r, Math.PI, 0, true);
+        ctx.bezierCurveTo(x + w, cy - r, x + w * 0.6, y + 1, x + w * 1.8, y);
+        ctx.closePath();
+        ctx.fillStyle = body;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x - r * 0.35, cy - r * 0.3, r * 0.28, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 150, 150, 0.5)';
+        ctx.fill();
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+    };
+
+    // Blood fills the letter from the top; the empty part keeps its outline.
+    const drawPoured = (glyph: Glyph, order: number) => {
+      const p = Math.min(1, Math.max(0, (bleedT - order * POUR_STAGGER) / POUR));
+      const level = p * p * (3 - 2 * p);
+      const ox = glyph.offset.x;
+      const oy = glyph.offset.y;
+      const alpha = ctx.globalAlpha;
+      ctx.globalAlpha = alpha * 0.7;
+      blit(ctx, glyph.dashes, ox, oy, 0, 0);
+      ctx.globalAlpha = alpha;
+      if (level <= 0) return;
+      const left = glyph.box.x1 - 8 + ox;
+      const right = glyph.box.x2 + 8 + ox;
+      const top = glyph.box.y1 - 6 + oy;
+      const surface = top + (glyph.box.y2 - glyph.box.y1 + 12) * level;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(left * dpr, top * dpr);
+      ctx.lineTo(right * dpr, top * dpr);
+      // An uneven leading edge, like liquid running down a wall.
+      for (let k = 0; k <= 6; k++) {
+        const run = Math.sin(k * 1.9 + glyph.index * 2.3 + bleedT * 5) * 3 + noise(glyph.index, k, 5) * 7;
+        ctx.lineTo((right - ((right - left) * k) / 6) * dpr, (surface + run) * dpr);
+      }
+      ctx.closePath();
+      ctx.clip();
+      blit(ctx, glyph.fill, ox, oy, 0, 0);
+      ctx.restore();
+    };
+
+    const advanceBleed = (s: Settings, dt: number) => {
+      if (!s.bleed) { container.dataset.bleed = 'off'; return; }
+      if (bleedT < 0 && (fontSettled === requestedFont || !document.fonts)) {
+        let seen = false;
+        try {
+          seen = sessionStorage.getItem(BLEED_KEY) === 'done';
+          sessionStorage.setItem(BLEED_KEY, 'done');
+        } catch { /* Without storage it plays on each load. */ }
+        resumeBleed(seen);
+      } else if (bleedPlaying) {
+        // Only advances while the wordmark is on screen: scrolling away from
+        // Home stops the loop and coming back resumes it.
+        bleedT += dt;
+        const art = canvas.getBoundingClientRect();
+        for (const drip of drips) {
+          const cycle = latestRelease(drip);
+          if (cycle <= drip.released) continue;
+          drip.released = cycle;
+          const glyph = glyphs[drip.glyph];
+          // The falling drop is drawn by the page (BloodFall), behind the hero copy.
+          container.dispatchEvent(new CustomEvent('moonstore-bleed', {
+            bubbles: true,
+            detail: { x: art.left + drip.x + glyph.offset.x, y: art.top + drip.y + glyph.offset.y + drip.length - drip.head, radius: drip.head },
+          }));
+        }
+      }
+      container.dataset.bleed = bleedT < 0 ? 'waiting' : !bleedPlaying ? 'still' : bleedT < pourEnd() ? 'pouring' : 'dripping';
+    };
+
+    // A repeat visit skips the pour and goes straight to dripping.
+    const resumeBleed = (poured: boolean) => {
+      bleedPlaying = !reducedMotion;
+      bleedT = !bleedPlaying ? Infinity : poured ? pourEnd() : 0;
+      drips.forEach((drip) => { drip.released = latestRelease(drip); });
     };
 
     const glyphAt = (x: number, y: number) => {
@@ -373,6 +644,51 @@ const TechText = ({
       target.drawImage(art.image, Math.round((art.left + dx) * dpr - originX), Math.round((art.top + dy) * dpr - originY));
     };
 
+    const drawSignal = (glyph: Glyph, now: number) => {
+      if (!signalCtx || !glyph.signal) { blit(ctx, glyph.fill, glyph.offset.x, glyph.offset.y, 0, 0); return; }
+      const art = glyph.fill;
+      const margin = Math.ceil(16 * dpr);
+      const w = art.image.width;
+      const h = art.image.height;
+      if (signalCanvas.width !== w + margin * 2 || signalCanvas.height !== h) {
+        signalCanvas.width = w + margin * 2; signalCanvas.height = h;
+      }
+      signalCtx.clearRect(0, 0, signalCanvas.width, h);
+      signalCtx.globalAlpha = 1;
+      signalCtx.drawImage(art.image, margin, 0);
+      const distance = Math.hypot(glyph.offset.x, glyph.offset.y);
+      const strength = signalStrength * Math.min(1, .4 + distance / 140);
+      if (reducedMotion) {
+        signalCtx.globalAlpha = .85;
+        signalCtx.drawImage(glyph.signal.image, margin + Math.round(3 * dpr), 0);
+        signalCtx.globalAlpha = 1;
+        signalCtx.drawImage(art.image, margin, 0);
+      } else {
+        // Change spatial slices at ~22Hz. The ivory core stays visible; there
+        // is no whole-letter luminance flashing or full-screen interference.
+        const phase = Math.floor(now / 46);
+        for (let band = 0; band < 5; band++) {
+          const y = Math.floor((.08 + noise(glyph.index, phase, band, 1) * .8) * h);
+          const bandH = Math.min(h - y, Math.max(1, Math.round((1 + noise(glyph.index, phase, band, 2) * 2) * dpr)));
+          const displacement = Math.round((3 + noise(glyph.index, phase, band, 3) * 9) * strength * dpr) * (band % 2 ? -1 : 1);
+          signalCtx.clearRect(0, y, signalCanvas.width, bandH);
+          signalCtx.globalAlpha = .88 * signalStrength;
+          signalCtx.drawImage(glyph.signal.image, 0, y, w, bandH, margin - displacement, y, w, bandH);
+          signalCtx.globalAlpha = 1;
+          signalCtx.drawImage(art.image, 0, y, w, bandH, margin + displacement * .5, y, w, bandH);
+        }
+        signalCtx.globalAlpha = .65 * signalStrength;
+        signalCtx.fillStyle = '#ff183b';
+        for (let pixel = 0; pixel < 7; pixel++) {
+          const x = margin + noise(glyph.index, phase, pixel, 7) * w;
+          const y = noise(glyph.index, phase, pixel, 8) * h;
+          signalCtx.fillRect(Math.round(x), Math.round(y), Math.ceil((1 + noise(phase, pixel) * 3) * dpr), Math.ceil(dpr));
+        }
+      }
+      signalCtx.globalAlpha = 1;
+      ctx.drawImage(signalCanvas, Math.round((art.left + glyph.offset.x) * dpr) - margin, Math.round((art.top + glyph.offset.y) * dpr));
+    };
+
     const clipBounds = (x1: number, y1: number, x2: number, y2: number): Box | null => {
       const bounds = {
         x1: Math.max(0, Math.floor(x1)),
@@ -395,9 +711,10 @@ const TechText = ({
         const homeY = Math.round(art.top * dpr);
         const liveX = Math.round((art.left + glyph.offset.x) * dpr);
         const liveY = Math.round((art.top + glyph.offset.y) * dpr);
-        x1 = Math.min(x1, homeX, liveX);
+        const signalPad = glyph.index === signalIndex && signalStrength > .002 ? Math.ceil(16 * dpr) : 0;
+        x1 = Math.min(x1, homeX, liveX - signalPad);
         y1 = Math.min(y1, homeY, liveY);
-        x2 = Math.max(x2, homeX + art.image.width, liveX + art.image.width);
+        x2 = Math.max(x2, homeX + art.image.width, liveX + art.image.width + signalPad);
         y2 = Math.max(y2, homeY + art.image.height, liveY + art.image.height);
       }
       return clipBounds(x1, y1, x2, y2);
@@ -569,6 +886,16 @@ const TechText = ({
       const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
       last = now;
       const view = ensureLayout(s);
+      advanceBleed(s, dt);
+      if (dragging >= 0 && s.dragGlitch) {
+        signalIndex = glyphs[dragging].index;
+        signalStrength = 1;
+      } else {
+        signalStrength = reducedMotion ? 0 : approach(signalStrength, 0, dt, .045);
+        if (signalStrength < .002) { signalStrength = 0; signalIndex = -1; }
+      }
+      const signalActive = signalIndex >= 0 && signalStrength > .002;
+      container.dataset.signal = signalActive ? reducedMotion ? 'static' : 'drag' : 'idle';
 
       const sweeping = s.sweep && !reducedMotion && !pointer.inside && dragging < 0;
       if (sweeping) clock += dt * s.speed;
@@ -600,7 +927,7 @@ const TechText = ({
           glyph.offset.y = pointer.y - grab.y;
           glyph.velocity.x = 0;
           glyph.velocity.y = 0;
-          moving = true;
+          moving = !reducedMotion;
           return;
         }
         const { offset, velocity } = glyph;
@@ -639,6 +966,7 @@ const TechText = ({
         frame.index = focus;
       }
       frame.alpha = approach(frame.alpha, focus >= 0 && s.selection ? 1 : 0, dt, 0.1);
+      if (reducedMotion) frame.alpha = focus >= 0 && s.selection ? 1 : 0;
 
       glyphs.forEach((glyph, i) => {
         if (i === dragging) return;
@@ -648,12 +976,14 @@ const TechText = ({
         else glyph.outline = target;
       });
 
-      if (s.draggable) container.style.cursor = !reducedMotion && dragging >= 0 ? 'grabbing' : focus >= 0 && pointer.inside ? 'grab' : '';
+      if (s.draggable) container.style.cursor = dragging >= 0 ? 'grabbing' : focus >= 0 && pointer.inside ? 'grab' : '';
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.globalCompositeOperation = 'source-over';
       if (paintedBounds) ctx.clearRect(paintedBounds.x1, paintedBounds.y1, paintedBounds.x2 - paintedBounds.x1, paintedBounds.y2 - paintedBounds.y1);
-      const ink = inkBounds();
+      const letters = inkBounds();
+      const blood = drips.length ? dripBounds() : null;
+      const ink = letters && blood ? { x1: Math.min(letters.x1, blood.x1), y1: Math.min(letters.y1, blood.y1), x2: Math.max(letters.x2, blood.x2), y2: Math.max(letters.y2, blood.y2) } : letters ?? blood;
       let nextBounds = ink;
       if (frame.index >= 0 && frame.alpha >= 0.01) {
         // Include the brackets, labels, tether and scattered frame specks.
@@ -668,17 +998,20 @@ const TechText = ({
           ctx.globalAlpha = 1;
         }
       }
-      for (const glyph of glyphs) {
+      glyphs.forEach((glyph, order) => {
         if (glyph.outline < 0.999) {
           ctx.globalAlpha = 1 - glyph.outline;
-          blit(ctx, glyph.fill, glyph.offset.x, glyph.offset.y, 0, 0);
+          if (glyph.index === signalIndex && signalActive) drawSignal(glyph, now);
+          else if (s.bleed && bleedT < POUR + order * POUR_STAGGER) drawPoured(glyph, order);
+          else blit(ctx, glyph.fill, glyph.offset.x, glyph.offset.y, 0, 0);
         }
         if (glyph.outline > 0.001) {
           ctx.globalAlpha = glyph.outline;
           blit(ctx, glyph.dashes, glyph.offset.x, glyph.offset.y, 0, 0);
         }
         ctx.globalAlpha = 1;
-      }
+      });
+      if (drips.length) drawDrips();
       // The reveal compositing is the costliest pass: skip it while a letter
       // is held so drags stay fluid. It resumes on release.
       if (ink && presence > 0.001 && dragging < 0) drawReveal(s, ink);
@@ -686,7 +1019,7 @@ const TechText = ({
       paintedBounds = nextBounds;
 
       const settling =
-        moving || Math.abs(presence - (s.reveal === 'area' && active && dragging < 0 ? 1 : 0)) > 0.002 || (frame.alpha > 0.01 && frame.alpha < 0.99);
+        moving || bleedPlaying || (!reducedMotion && signalActive) || Math.abs(presence - (s.reveal === 'area' && active && dragging < 0 ? 1 : 0)) > 0.002 || (frame.alpha > 0.01 && frame.alpha < 0.99);
       if ((active || settling) && visible && alive) raf = requestAnimationFrame(tick);
     };
 
@@ -734,7 +1067,7 @@ const TechText = ({
       locate(e);
       pointer.inside = true;
       const s = settingsRef.current;
-      if (s?.draggable && !reducedMotion && dragPointerId === null && (e.pointerType !== 'mouse' || e.button === 0)) {
+      if (s?.draggable && (!reducedMotion || s.dragGlitch) && dragPointerId === null && (e.pointerType !== 'mouse' || e.button === 0)) {
         const index = glyphAt(pointer.x, pointer.y);
         if (index >= 0) {
           dragging = index;
@@ -754,6 +1087,7 @@ const TechText = ({
         locate(e);
         glyphs[dragging].offset.x = pointer.x - grab.x;
         glyphs[dragging].offset.y = pointer.y - grab.y;
+        if (reducedMotion) { glyphs[dragging].offset.x = 0; glyphs[dragging].offset.y = 0; signalStrength = 0; signalIndex = -1; }
         dragging = -1;
         dragPointerId = null;
         if (container.hasPointerCapture(e.pointerId)) container.releasePointerCapture(e.pointerId);
@@ -764,6 +1098,9 @@ const TechText = ({
     };
     const clearInteraction = () => {
       dragging = -1;
+      signalIndex = -1;
+      signalStrength = 0;
+      container.dataset.signal = 'idle';
       pointer.inside = false;
       const captured = dragPointerId;
       dragPointerId = null;
@@ -771,23 +1108,25 @@ const TechText = ({
       wake();
     };
     const onLostCapture = (event: PointerEvent) => { if (dragPointerId === event.pointerId) clearInteraction(); };
+    const onCancel = (event: PointerEvent) => { if (dragPointerId === event.pointerId) clearInteraction(); };
     const onMotionChange = () => {
       reducedMotion = motion.matches;
       if (reducedMotion) {
+        if (bleedPlaying) resumeBleed(true);
         clearInteraction();
         presence = 0;
         frame.alpha = 0;
         frame.index = -1;
         glyphs.forEach((glyph) => { glyph.offset.x = 0; glyph.offset.y = 0; glyph.velocity.x = 0; glyph.velocity.y = 0; glyph.outline = 0; });
         container.style.cursor = '';
-      }
+      } else if (bleedT === Infinity) resumeBleed(true);
       wake();
     };
     container.addEventListener('pointermove', onMove as unknown as EventListener, { passive: true });
     container.addEventListener('pointerenter', onMove as unknown as EventListener, { passive: true });
     container.addEventListener('pointerdown', onDown as unknown as EventListener, { passive: false });
     container.addEventListener('pointerup', onUp as unknown as EventListener, { passive: true });
-    container.addEventListener('pointercancel', onUp as unknown as EventListener, { passive: true });
+    container.addEventListener('pointercancel', onCancel, { passive: true });
     container.addEventListener('pointerleave', onLeave as unknown as EventListener, { passive: true });
     container.addEventListener('lostpointercapture', onLostCapture);
     window.addEventListener('blur', clearInteraction);
@@ -834,7 +1173,7 @@ const TechText = ({
       container.removeEventListener('pointerenter', onMove as unknown as EventListener);
       container.removeEventListener('pointerdown', onDown as unknown as EventListener);
       container.removeEventListener('pointerup', onUp as unknown as EventListener);
-      container.removeEventListener('pointercancel', onUp as unknown as EventListener);
+      container.removeEventListener('pointercancel', onCancel);
       container.removeEventListener('pointerleave', onLeave as unknown as EventListener);
     };
   }, []);

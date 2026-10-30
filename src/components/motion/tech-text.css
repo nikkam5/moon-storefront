@@ -31,4 +31,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tech-text { touch-action: auto; }
+  html[data-ember="true"] .moonstore-word .moonstore-tech { display: block; }
+  html[data-ember="true"] .moonstore-word .moonstore-static { display: none; }
 }

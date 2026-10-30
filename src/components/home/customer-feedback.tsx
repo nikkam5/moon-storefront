@@ -6,6 +6,7 @@ import BorderGlow from "../motion/border-glow";
 import PeekRating from "../motion/peek-rating";
 import TextType from "../motion/text-type";
 import FeedbackGallery from "./feedback-gallery";
+import EmberEnvironment from "../layout/ember-environment";
 import { business } from "@/lib/business";
 import "./customer-feedback.css";
 
@@ -33,7 +34,8 @@ export default function CustomerFeedback() {
     window.open(`${business.whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   }
 
-  return <section id="feedback" className="customer-feedback section-wrap" aria-labelledby="feedback-heading">
+  return <section id="feedback" className="customer-feedback section-wrap ember-section" aria-labelledby="feedback-heading">
+    <EmberEnvironment scene="quiet" look="void" />
     <FeedbackGallery />
     <div className="customer-feedback-layout">
       <div className="customer-feedback-intro">

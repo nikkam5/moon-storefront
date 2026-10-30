@@ -7,3 +7,4 @@ test-results/
 *.tsbuildinfo
 .env*.local
 .npm-cache/
+.claude/launch.json

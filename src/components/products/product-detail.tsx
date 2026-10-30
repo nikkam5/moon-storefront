@@ -8,6 +8,7 @@ import { MAX_QUANTITY, money, type Product } from "@/lib/product";
 import { readCatalogReturn } from "@/lib/catalog-return";
 import { useStore } from "../cart/store-provider";
 import UsbModelViewer from "./usb-model-viewer";
+import EmberEnvironment from "../layout/ember-environment";
 import "./product-detail.css";
 
 const settleEase = [.22, 1, .36, 1] as const;
@@ -68,7 +69,8 @@ export default function ProductDetail({ product }: { product: Product }) {
     feedbackTimer.current = setTimeout(() => { setAdded(false); feedbackTimer.current = null; }, 2500);
   }
 
-  return <article className="usb-page product-detail-page" aria-labelledby="usb-title">
+  return <article className="usb-page product-detail-page ember-section" aria-labelledby="usb-title">
+    <EmberEnvironment scene="threshold" look="grid-lava" />
     <div className="usb-page-inner">
       <Link href={returnUrl} className="usb-back back-link"><ArrowLeft size={16} aria-hidden="true" /> Back to catalog</Link>
       <div className="usb-hero">

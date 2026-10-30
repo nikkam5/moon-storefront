@@ -79,6 +79,28 @@ Every route uses warm ivory, charcoal and muted lavender for the shared store th
 
 All four team members have optimized WebP portraits. The message box keeps the same dimensions for every member at each responsive breakpoint; Malay messages use the available width and wrap as ordinary sentences. The original layouts, product colors, 3D model and interactions remain in place.
 
+### Ember theme
+
+The round blood-drop button beside the light/dark control enables the optional Ember theme: obsidian black with blood and lava red. Headings use Oswald, interface text (buttons, labels, prices, the cart badge) uses Rajdhani, body copy keeps DM Sans, and the MOONSTORE wordmark uses Cinzel as the logo. These three fonts load only for Ember. Buttons, the selected filter and the cart badge use dark blood fills with vibrant red edges. The Popia, Cornflakes and Motul product designs keep their own palettes and type.
+
+Hovering or focusing the drop button: after 0.1 s one drop forms under the rim and falls halfway while the button still looks normal. At 0.66 s the drop breaks into red and black slices and freezes like crashed code, and the whole button starts looping the theme switch's corruption (bands, blocks, static and scanlines on its face, a jittering red/black split and a torn rim). Leaving clears it. Reduced motion shows no drip or corruption.
+
+Switching to or from Ember plays a 600 ms crimson data corruption in four phases. First the header and on-screen headings tear sideways through an SVG displacement filter with a red ghost, while sections jump sideways in steps. Then come glitch bands, dark red blocks, static, corrupted strings and small ring sigils, then crimson/black overload frames that cover the screen while the theme swaps (at 52%). Finally the glitch decays as the headings on screen decode back into their real text. The tear filter is limited to small areas because Chrome renders it on the CPU. Both controls are locked until it ends, the scroll position is kept, hidden tabs finish immediately and reduced motion uses a short fade. `moonstore-theme` also accepts `ember`; `moonstore-standard-theme` remembers the appearance to restore. The saved appearance applies before hydration without replaying the switch.
+
+The Ember MOONSTORE wordmark is blood red. Blood pours into the letters once per visit (`moonstore-bleed` in session storage), then drips keep forming and releasing drops that fall behind the hero copy, stopping when you scroll away from Home and resuming when you return. The letter-drag glitch, sweep, hover reveal and spring return remain. Three small obsidian ring sigils behind the hero glitch crimson now and then. Reduced motion shows still blood and no falling drops.
+
+Each section has its own Ember background, painted on a canvas behind the content:
+
+- Hero, `/shop` and `/cart`: lava. Red-orange haze, dark land with lava flowing through its cracks, dark cubes with neon-red edges and rising embers.
+- Home catalog: a tilted neon grid of thin red seams, dust, sparks and faint ring glyphs.
+- Our story: a calmer grid, red and orange ember particles, and a dark lava mosaic when a team photo is hovered.
+- Feedback and footer: a dark void with a low crimson horizon glow and dark stone blocks with red-lit edges.
+- USB product page: the neon grid over lava.
+
+Seams and edges near a fine pointer brighten smoothly, scenes shift slightly with scroll and fade at section edges, and static layers are cached so the backgrounds paint at the display's frame rate. Drawing pauses when a scene is offscreen, covered, in a hidden tab or outside Ember. Reduced motion shows still scenes.
+
+In the Ember footer, the social sling buttons corrupt while dragged. After a 0.9 s hold a soft glitch appears, and past the arm point (where the band glows) it gets heavier the further you pull. An armed release plays a 0.35 s crimson burst, then opens the link. Back in its socket the button is "deleted": it thrashes, collapses to a line, leaves the socket empty and reboots. If the link took you to another tab, this plays when you return. A quick tap still opens immediately. The Cornflakes page's social buttons, the light/dark themes and reduced motion keep the original behaviour. The delayed link opening is allowed by Chrome, Edge and Firefox; older Safari may block a new tab opened after a delay, so test on Safari before relying on it.
+
 ## Deployment and assets
 
 The public site is `https://moonst0re.netlify.app`. Metadata uses `NEXT_PUBLIC_SITE_URL` when set, then Netlify's `URL`/`DEPLOY_PRIME_URL`, then that known public origin. Copy `.env.example` to `.env.local` to override it for a custom domain. Localhost metadata is rejected. `/shop` and each product have their own canonical URL, `/cart` is noindex, and the static export includes `/robots.txt` and `/sitemap.xml`.

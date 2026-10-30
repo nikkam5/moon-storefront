@@ -1,0 +1,307 @@
+/* Optional experiment. Existing light/dark styling and product identities stay
+   separate. Layers: atmosphere 5, existing header 20, transition veil 100. */
+.theme-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+/* A round blood drop that matches the sun/moon control beside it. Hover or
+   keyboard focus: 0.1s later one drop forms and falls halfway while the button
+   still looks normal; at .66s the drop breaks and freezes like crashed code,
+   and from that moment the whole button corrupts on repeat (the switch's own
+   corruption on the .ember-corrupt canvas, a jittering red/black split and a
+   torn rim). Leaving clears it all. */
+.ember-toggle.icon-button { position: relative; border: 1px solid var(--line); color: #8f1520; overflow: visible; transition: border-color .2s ease, background-color .2s ease, color .2s ease; }
+.ember-drop { width: 18px; height: 18px; }
+.ember-drop-shine { fill: none; stroke: #ffd6d0; stroke-width: 1.3; stroke-linecap: round; opacity: .5; }
+.ember-toggle[aria-pressed="true"] { color: #ff3b47; border-color: #8f1724; background: radial-gradient(circle at 50% 62%, #3d0a11, #140608 72%); box-shadow: inset 0 0 10px #ff1a1a38; }
+.ember-toggle[aria-pressed="true"] .ember-drop { filter: drop-shadow(0 0 4px #ff1a1a99); }
+.ember-toggle:focus-visible { outline: 2px solid #c94e5a; outline-offset: 3px; }
+@media (hover: hover) { .ember-toggle:hover { color: #d01f2c; } }
+.ember-corrupt { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; }
+.ember-drip { position: absolute; top: calc(100% - 4px); left: calc(50% - 3.5px); width: 7px; height: 9px; border-radius: 50% 50% 50% 50% / 62% 62% 40% 40%; background: radial-gradient(circle at 38% 62%, #ff5a5f, #b3101e 55%, #6b0510); opacity: 0; pointer-events: none; transform-origin: 50% 0; }
+/* Torn rows: a hot red scanline sticking out and a dead obsidian row cutting through. */
+.ember-drip::before, .ember-drip::after { content: ""; position: absolute; left: -1px; right: -1px; opacity: 0; }
+.ember-drip::before { top: 28%; height: 22%; background: #ff0033; }
+.ember-drip::after { top: 60%; height: 16%; background: #060508; }
+.ember-toggle[data-drip="on"] .ember-drip { animation: ember-drip .9s linear .1s forwards; }
+.ember-toggle[data-drip="on"] .ember-drip::before { animation: ember-drip-row-a .9s linear .1s forwards; }
+.ember-toggle[data-drip="on"] .ember-drip::after { animation: ember-drip-row-b .9s linear .1s forwards; }
+.ember-toggle[data-drip="on"] .ember-drop { animation: ember-drop-glitch .9s linear .1s forwards; }
+/* Continuous, on the switch's 600ms rhythm: stepped jitter with a red/black
+   split, a crimson/black flash at the overload, and a torn copy of the rim. */
+.ember-toggle::after { content: ""; position: absolute; inset: -1px; border: 1px solid #ff0033; border-radius: 50%; opacity: 0; pointer-events: none; }
+.ember-toggle[data-drip="on"] { animation: ember-toggle-corrupt .6s steps(1, end) .66s infinite; }
+.ember-toggle[data-drip="on"]::after { animation: ember-toggle-rim .6s steps(1, end) .66s infinite; }
+@keyframes ember-toggle-corrupt {
+  0% { translate: 2px 0; filter: drop-shadow(-2px 0 #060508) drop-shadow(2px 0 #ff0033); border-color: #ff0033; }
+  10% { translate: -2px 0; }
+  20% { translate: 3px 1px; filter: drop-shadow(-3px 0 #060508) drop-shadow(3px 0 #ff0033); }
+  30% { translate: -3px 0; }
+  38% { translate: 1px -1px; }
+  45% { translate: 3px 0; background: #9e001a; border-color: #ff0033; }
+  52% { translate: -2px 0; background: #060508; border-color: #9e001a; }
+  58% { translate: 1px 0; background: #1a0408; filter: drop-shadow(-1px 0 #060508) drop-shadow(2px 0 #ff003399); }
+  75% { translate: -1px 0; }
+  90% { translate: none; filter: drop-shadow(1px 0 #ff003366); }
+}
+@keyframes ember-toggle-rim {
+  0% { opacity: 1; translate: 3px 0; clip-path: inset(0 0 58% 0); }
+  15% { translate: -3px 1px; clip-path: inset(45% 0 0 0); }
+  30% { translate: 2px 0; clip-path: inset(20% 0 40% 0); }
+  45% { opacity: 0; }
+  58% { opacity: 1; translate: 4px 0; clip-path: inset(0 0 60% 0); }
+  75% { translate: -2px 0; clip-path: inset(50% 0 0 0); }
+  90% { translate: 1px 0; clip-path: inset(0 0 70% 0); }
+}
+html[data-page-hidden="true"] .ember-toggle,
+html[data-page-hidden="true"] .ember-toggle::after,
+html[data-page-hidden="true"] .ember-toggle :is(.ember-drip, .ember-drop),
+html[data-page-hidden="true"] .ember-toggle .ember-drip::before,
+html[data-page-hidden="true"] .ember-toggle .ember-drip::after { animation-play-state: paused; }
+@keyframes ember-drip {
+  0% { opacity: 0; transform: translateY(0) scale(.15); animation-timing-function: ease-out; }
+  14% { opacity: 1; }
+  42% { transform: translateY(1px) scale(.85, .9); animation-timing-function: ease-in-out; }
+  52% { transform: translateY(3px) scale(.95, 1.3); animation-timing-function: cubic-bezier(.55, 0, 1, .45); }
+  62% { opacity: 1; transform: translateY(9px) scale(.85, 1.15); filter: none; animation-timing-function: steps(1, end); }
+  66% { transform: translate(2px, 9px) scale(.85, 1.15) skewX(-8deg); filter: drop-shadow(-3px 0 #060508) drop-shadow(3px 0 #ff0033); animation-timing-function: steps(1, end); }
+  71% { transform: translate(-2px, 10px) scale(.85, 1.15); filter: drop-shadow(2px 0 #ff0033); animation-timing-function: steps(1, end); }
+  76% { transform: translate(1px, 9px) scale(.85, 1.15) skewX(6deg); filter: drop-shadow(-2px 0 #060508) drop-shadow(3px 0 #ff0033); animation-timing-function: steps(1, end); }
+  /* The frozen, broken frame it holds while hovered. */
+  82%, 100% { opacity: 1; transform: translate(1px, 9px) scale(.85, 1.15) skewX(-4deg); filter: drop-shadow(-2px 0 #060508) drop-shadow(2px 0 #ff0033); }
+}
+@keyframes ember-drip-row-a {
+  0%, 61% { opacity: 0; animation-timing-function: steps(1, end); }
+  62% { opacity: 1; translate: 5px 0; animation-timing-function: steps(1, end); }
+  71% { translate: -3px 0; animation-timing-function: steps(1, end); }
+  82%, 100% { opacity: 1; translate: 4px 0; }
+}
+@keyframes ember-drip-row-b {
+  0%, 63% { opacity: 0; animation-timing-function: steps(1, end); }
+  64% { opacity: 1; translate: -4px 0; animation-timing-function: steps(1, end); }
+  74% { translate: 2px 0; animation-timing-function: steps(1, end); }
+  82%, 100% { opacity: 1; translate: -2px 0; }
+}
+/* The icon shudders once, at the break. */
+@keyframes ember-drop-glitch {
+  0%, 62%, 82%, 100% { translate: none; }
+  64% { translate: -1.5px 0; animation-timing-function: steps(1, end); }
+  69% { translate: 1.5px 0; animation-timing-function: steps(1, end); }
+  75% { translate: -1px .5px; animation-timing-function: steps(1, end); }
+}
+
+html[data-ember="true"]:has(#main) {
+  --paper: #080808;
+  --surface: #120e10;
+  --surface-raised: #1b1114;
+  --ink: #f1e8de;
+  --muted: #c4b2ad;
+  --line: #4e1a22;
+  --accent: #ff3b47;
+  --accent-ink: #15090b;
+  --lime: #2d1016;
+  --lilac: #30090d;
+  --peach: #211519;
+  --tech-bg: #231014;
+  --tech-ink: #f1b3b5;
+  --motor-bg: #211519;
+  --motor-ink: #f1e8de;
+  --treats-bg: #211519;
+  --treats-ink: #f1e8de;
+  --on-accent: #f1b3b5;
+  --shadow: none;
+  --ambient: none;
+  --ambient-lift: none;
+  --shell-line: #4e1a22;
+  --core-highlight: none;
+}
+html[data-ember="true"] { color-scheme: dark; }
+/* Vibrant lines on dark fills: buttons keep a readable crimson fill and gain a hot edge. */
+html[data-ember="true"]:has(#main) :is(.button-dark, .add-button, .feedback-submit, .usb-add) { background: #6e101a; color: #fff4ec; box-shadow: 0 0 0 1px #b3202d, 0 0 16px #ff1a1a33; }
+html[data-ember="true"]:has(#main) :is(.button-dark, .add-button, .feedback-submit, .usb-add):hover:not(:disabled) { background: #580c15; color: #fff4ec; box-shadow: 0 0 0 1px #e0303c, 0 0 24px #ff1a1a59; }
+html[data-ember="true"] .bag-count { background: #d4111f; color: #fff4ec; box-shadow: 0 0 10px #ff1a1a8c; }
+html[data-ember="true"] .category-filters button:hover { border-color: #ff2a3a; }
+html[data-ember="true"] .category-filters button[aria-pressed="true"] { background: #6e101a; color: #fff4ec; box-shadow: 0 0 0 1px #b3202d, 0 0 12px #ff1a1a33; }
+html[data-ember="true"] :is(.section-heading h1, .section-heading h2, .team-story-intro h2, .feedback-proof-copy h2, .customer-feedback-intro h2) { text-shadow: 0 0 28px #ff1a1a47; }
+html[data-ember="true"] :is(.ticket-stub-price strong, .product-price, .cart-row-price strong, .summary-total strong) { color: #ff3b47; }
+html[data-ember="true"] .catalog-ticket { --ticket-edge: #6e1622; }
+html[data-ember="true"] .catalog-ticket:hover .tear-ticket__edge path { filter: drop-shadow(0 0 4px #ff1a1a99); }
+html[data-ember="true"] .team-words { box-shadow: inset 0 0 0 1px #ff2a3a8c, 0 0 30px #ff1a1a1f; }
+html[data-ember="true"] .site-header { border-bottom-color: #482028; }
+html[data-ember="true"] .theme-toggle { border-color: #563039; }
+html[data-ember="true"] .galaxy-backdrop { visibility: hidden; }
+html[data-ember="true"] .hero-section.hero-galaxy::before { background: none; }
+html[data-ember="true"] .shiny-text { background: none !important; color: var(--ink); -webkit-text-fill-color: var(--ink); }
+html[data-ember="true"] .border-glow-card::before, html[data-ember="true"] .border-glow-card::after { display: none; }
+html[data-ember="true"] .border-glow-card { box-shadow: none; }
+html[data-ember="true"] .story-particles { opacity: .9; }
+/* Team photo hover: a dark lava mosaic instead of flat accent red. */
+html[data-ember="true"] .team-story .pixel-transition__pixel { --team-pixel: #4a070c; }
+html[data-ember="true"] .team-story .pixel-transition__pixel:nth-child(3n) { --team-pixel: #6e0b13; }
+html[data-ember="true"] .team-story .pixel-transition__pixel:nth-child(7n + 2) { --team-pixel: #a3161a; }
+html[data-ember="true"] .team-story .pixel-transition__pixel:nth-child(11n + 5) { --team-pixel: #e0571c; }
+
+/* The environment belongs to the existing sections, beneath their content.
+   Isolation preserves the sticky hero, card gestures and dialog hit targets. */
+.ember-environment { display: none; }
+html[data-ember="true"] .ember-section { isolation: isolate; }
+html[data-ember="true"] .ember-section:not(.hero-section) { position: relative; }
+html[data-ember="true"] .ember-section > .ember-environment {
+  display: block; position: absolute; inset: 0; z-index: -1;
+  overflow: clip; pointer-events: none; contain: strict;
+  /* Scenes fade in and out at section edges instead of stopping on a hard line. */
+  -webkit-mask-image: linear-gradient(transparent, #000 96px, #000 calc(100% - 96px), transparent);
+  mask-image: linear-gradient(transparent, #000 96px, #000 calc(100% - 96px), transparent);
+}
+.ember-environment canvas { display: block; width: 100%; height: 100%; }
+/* Footer social pads (SlingButton with corrupt): a soft jitter after a long
+   hold, heavier past the arm point, a crimson burst before the link opens,
+   then the pad is "deleted" in its socket: it thrashes, collapses to a line,
+   leaves the socket empty, and reboots. Individual translate/scale properties
+   leave the pad's own press/arm transform alone. */
+html[data-ember="true"] .sling-button[data-corrupt="soft"] .sling-button__face { animation: sling-soft .6s steps(1, end) infinite; }
+html[data-ember="true"] .sling-button[data-corrupt="hard"] .sling-button__face { animation: sling-hard .3s steps(1, end) infinite; }
+html[data-ember="true"] .sling-button[data-corrupt="hard"] .sling-button__band--hot { stroke: #ff0033; }
+html[data-ember="true"] .sling-button[data-corrupt="burst"] .sling-button__face { animation: sling-burst .35s steps(1, end) forwards; }
+html[data-ember="true"] .sling-button[data-corrupt="delete"] .sling-button__face { animation: sling-deleted 1.05s steps(1, end) forwards; }
+@keyframes sling-soft {
+  0%, 70% { translate: none; filter: none; }
+  75% { translate: 1px 0; filter: drop-shadow(-1px 0 #060508) drop-shadow(1px 0 #ff003399); }
+  85% { translate: -1px 0; }
+  95% { translate: none; filter: none; }
+}
+@keyframes sling-hard {
+  0% { translate: 2px 0; filter: drop-shadow(-2px 0 #060508) drop-shadow(2px 0 #ff0033); }
+  25% { translate: -3px 1px; }
+  50% { translate: 1px -1px; filter: drop-shadow(3px 0 #ff0033); }
+  75% { translate: -2px 0; }
+}
+@keyframes sling-burst {
+  0% { translate: 3px 0; filter: drop-shadow(-3px 0 #060508) drop-shadow(3px 0 #ff0033) brightness(1.4); }
+  30% { translate: -4px 0; }
+  60% { translate: 2px 1px; filter: drop-shadow(4px 0 #ff0033); }
+  100% { translate: none; filter: none; }
+}
+@keyframes sling-deleted {
+  0% { opacity: 1; translate: 4px 0; scale: 1; filter: drop-shadow(-3px 0 #060508) drop-shadow(3px 0 #ff0033); }
+  8% { translate: -5px 0; }
+  16% { translate: 6px -1px; scale: 1.1 .9; }
+  24% { translate: -3px 0; filter: drop-shadow(4px 0 #ff0033) drop-shadow(-4px 0 #060508); }
+  32% { translate: 5px 1px; scale: .9 1.1; }
+  40% { translate: none; scale: 1; }
+  45% { scale: 1.15 .08; filter: brightness(2.2) drop-shadow(0 0 5px #ff0033); }
+  50% { scale: 0 .04; }
+  52%, 76% { opacity: 0; scale: 0; }
+  78% { opacity: 1; scale: 1 .05; filter: drop-shadow(0 0 4px #ff0033); }
+  84% { opacity: .35; scale: 1; }
+  88% { opacity: 1; }
+  92% { opacity: .5; }
+  100% { opacity: 1; translate: none; scale: 1; filter: none; }
+}
+/* Light corruption on Home: three small obsidian sigils behind the hero, each
+   glitching crimson for about a third of a second on its own rhythm. */
+.ember-sigil { display: none; }
+html[data-ember="true"] .ember-section > .ember-sigil {
+  display: block; position: absolute; z-index: -1; height: auto; pointer-events: none;
+  fill: none; stroke: #2a0c12; stroke-width: 10; stroke-linecap: round;
+  filter: drop-shadow(0 0 1px #ff1a1a80) drop-shadow(0 0 10px #ff1a1a26);
+}
+html[data-ember="true"] .ember-section > .ember-sigil-1 { left: 5%; top: 13%; width: 64px; animation-duration: 7s; }
+html[data-ember="true"] .ember-section > .ember-sigil-2 { left: 44%; top: 58%; width: 52px; animation-duration: 9s; animation-delay: -3s; }
+html[data-ember="true"] .ember-section > .ember-sigil-3 { right: 4%; top: 30%; width: 76px; animation-duration: 11s; animation-delay: -6s; }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-ember="true"] .ember-section > .ember-sigil { animation-name: ember-sigil-corrupt; animation-iteration-count: infinite; }
+}
+@keyframes ember-sigil-corrupt {
+  0%, 98%, 100% { transform: none; clip-path: inset(0); stroke: #2a0c12; filter: drop-shadow(0 0 1px #ff1a1a80) drop-shadow(0 0 10px #ff1a1a26); animation-timing-function: steps(1, end); }
+  92% { transform: translateX(-6px); clip-path: inset(0 0 55% 0); stroke: #380008; filter: drop-shadow(4px 0 #ff0033cc) drop-shadow(-3px 0 #060508); animation-timing-function: steps(1, end); }
+  93.5% { transform: translateX(7px); clip-path: inset(40% 0 0 0); stroke: #9e001a; filter: drop-shadow(-4px 0 #ff0033cc); animation-timing-function: steps(1, end); }
+  95% { transform: translateX(-3px); clip-path: inset(20% 0 35% 0); stroke: #380008; filter: drop-shadow(3px 0 #060508) drop-shadow(-2px 0 #ff0033); animation-timing-function: steps(1, end); }
+  96.5% { transform: none; clip-path: inset(0); stroke: #ff0033; filter: drop-shadow(0 0 8px #ff0033aa); animation-timing-function: steps(1, end); }
+}
+/* Falling MOONSTORE drops: above the scene, beneath the hero copy and photos. */
+html[data-ember="true"] .ember-section > .blood-fall { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; pointer-events: none; }
+html[data-ember="true"] .ember-section > .ember-environment::before {
+  content: ""; position: absolute; inset: 0; opacity: .3;
+  background: linear-gradient(132deg, transparent 0 13%, #9c1225 13.05%, transparent 13.15%), linear-gradient(48deg, transparent 0 91%, #bf1f2e 91.05%, transparent 91.15%);
+}
+html[data-ember="true"] .ember-environment[data-ready="true"]::before { display: none; }
+html[data-ember="true"] .ember-environment-suspended::before { transform: rotate(180deg); }
+html[data-ember="true"] .ember-environment-quiet::before { opacity: .15; }
+html[data-ember="true"] .curtain-stage .catalog-section { border-radius: 0; box-shadow: none; border-top: 1px solid #37151c; }
+html[data-ember="true"] :is(.team-story, .customer-feedback) { border-top-color: #2e171c; }
+/* Ember type: Oswald titles, Rajdhani interface, DM Sans for reading.
+   Product pages keep their own type; MOONSTORE stays Cinzel as the logo. */
+html[data-ember="true"] :is(.hero-section .hero-copy h1, .section-heading h1, .section-heading h2, .team-story-intro h2, .feedback-proof-copy h2, .customer-feedback-intro h2, .team-words h3, .cart-page > h1, .empty-cart h1, .order-summary h2, .drawer-heading h2, .footer-banner h2) { font-family: var(--font-ember-heading), var(--heading); font-weight: 600; text-transform: uppercase; letter-spacing: .01em; color: #f3e6d8; }
+html[data-ember="true"] .hero-section .hero-copy h1 { font-size: clamp(46px, 4.8vw, 70px); line-height: 1.04; }
+html[data-ember="true"] :is(.section-heading h1, .section-heading h2, .team-story-intro h2, .feedback-proof-copy h2) { font-size: clamp(34px, 3.6vw, 54px); line-height: 1.06; }
+html[data-ember="true"] .customer-feedback-intro h2 { font-size: clamp(38px, 4.4vw, 62px); line-height: 1.06; }
+html[data-ember="true"] :is(.button, .add-button, .feedback-submit, .category-filters button, .underlined-link, .eyebrow, .feedback-eyebrow, .feedback-form-heading, .team-words-kicker, .team-words-number, .hero-stack-category, .header-logo > span) { font-family: var(--font-ember-ui), var(--body); font-weight: 700; text-transform: uppercase; letter-spacing: .09em; }
+html[data-ember="true"] :is(.feedback-eyebrow, .feedback-form-heading, .team-words-kicker, .team-words-number, .eyebrow) { color: var(--accent); }
+html[data-ember="true"] :is(.ticket-stub-price strong, .product-price, .cart-row-price strong, .summary-total strong, .bag-count) { font-family: var(--font-ember-ui), var(--body); font-weight: 700; letter-spacing: .02em; }
+/* MOONSTORE reads as a logo above the Oswald headline: a little more air below it. */
+html[data-ember="true"] .hero-section .moonstore-word { margin-bottom: 34px; }
+html[data-ember="true"] .usb-ambient { display: none; }
+html[data-ember="true"] .usb-scene { border: 1px solid #391b23; }
+html[data-ember="true"] .usb-title-model { color: var(--ink); }
+html[data-ember="true"] .usb-buying-panel { position: relative; }
+@media (max-width: 600px) {
+  html[data-ember="true"] .hero-section .hero-copy h1 { font-size: clamp(40px, 11vw, 56px); }
+  html[data-ember="true"] .hero-section .moonstore-word { margin-bottom: 20px; }
+}
+
+.ember-atmosphere { display: none; position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: clip; contain: strict; }
+html[data-ember="true"] .ember-atmosphere { display: block; }
+.ember-aura { position: absolute; width: min(58vw, 820px); height: 115vh; top: 0; opacity: .7; }
+.ember-aura-left { left: -33vw; background: radial-gradient(ellipse at 30% 65%, #a608168c 0, #70091552 28%, #30090d26 49%, transparent 70%); transform-origin: left bottom; }
+.ember-aura-right { right: -32vw; top: -12vh; background: radial-gradient(ellipse at 70% 75%, #a6081694 0, #70091552 28%, #30090d26 49%, transparent 70%); transform-origin: right bottom; }
+.ember-fractures { position: absolute; inset: 0; opacity: .28; background: linear-gradient(123deg, transparent 0 8%, #a6081670 8.06%, transparent 8.14%), linear-gradient(54deg, transparent 0 94%, #f0182470 94.06%, transparent 94.14%), linear-gradient(110deg, transparent 0 97%, #a6081660 97.06%, transparent 97.14%); }
+.ember-sparks { position: absolute; inset: 0; mask-image: linear-gradient(to right, #000, transparent 34% 66%, #000); }
+.ember-sparks i { position: absolute; bottom: -12px; width: 2px; height: 3px; background: #c3323e; opacity: .45; transform: rotate(24deg); }
+.ember-sparks i:nth-child(3n) { width: 1px; height: 2px; background: #ed727b; }
+.ember-atmosphere[data-paused="true"] * { animation-play-state: paused !important; }
+
+html[data-theme-transition], html[data-theme-transition] body { overflow-anchor: none; }
+.ember-curtain { display: none; position: fixed; inset: 0; z-index: 100; overflow: hidden; pointer-events: none; }
+/* Corruption: the Blackwall glitch painted on a canvas by CorruptionCurtain.
+   The theme swaps under the crimson/black overload frames. Blocks on screen
+   tear through the SVG filter only while the switch is running. */
+html[data-theme-transition="corruption"] .ember-curtain { display: block; }
+.ember-glitch-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+[data-glitching] { filter: url(#crimson-glitch-filter); }
+[data-glitch-shift] { translate: var(--glitch-x, 0) 0; }
+.ember-curtain canvas { display: block; width: 100%; height: 100%; }
+/* Reduced motion: a short snapshot crossfade under a dark veil. */
+html[data-theme-transition="fade"]::view-transition-group(root) { animation-duration: var(--ember-transition-duration); }
+html[data-theme-transition="fade"]::view-transition-old(root), html[data-theme-transition="fade"]::view-transition-new(root) { mix-blend-mode: normal; animation-duration: var(--ember-transition-duration); animation-fill-mode: both; }
+html[data-theme-transition="fade"]::view-transition-old(root) { animation-name: ember-fade-out; }
+html[data-theme-transition="fade"]::view-transition-new(root) { animation-name: ember-fade-in; }
+html[data-theme-transition="fade"] .ember-curtain { display: block; background: #080808; animation: ember-interference var(--ember-transition-duration) ease both; }
+@keyframes ember-fade-out { to { opacity: 0; } }
+@keyframes ember-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ember-interference { 0%, 100% { opacity: 0; } 30%, 60% { opacity: .8; } }
+@keyframes ember-aura-breathe { from { transform: scale(.92) translateY(3%); opacity: .55; } to { transform: scale(1.08) translateY(-3%); opacity: .85; } }
+@keyframes ember-rise { 0% { transform: translate3d(0,0,0) rotate(24deg); opacity: 0; } 12% { opacity: .5; } 85% { opacity: .3; } 100% { transform: translate3d(24px,-105vh,0) rotate(70deg); opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-ember="true"] .ember-aura { animation: ember-aura-breathe 11s ease-in-out infinite alternate; }
+  html[data-ember="true"] .ember-aura-right { animation-delay: -5s; animation-duration: 14s; }
+  html[data-ember="true"] .ember-sparks i { animation-name: ember-rise; animation-timing-function: linear; animation-iteration-count: infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ember-drip, .ember-sparks { display: none; }
+  .ember-toggle, .ember-toggle::after, .ember-toggle .ember-drop { animation: none !important; }
+  .ember-corrupt { display: none; }
+}
+@media (max-width: 600px) {
+  .theme-controls { gap: 6px; }
+  .ember-toggle.icon-button { width: 33px; height: 33px; }
+  .header-actions { gap: 8px; }
+  .ember-aura { width: 78vw; }
+  .ember-aura-left { left: -49vw; }
+  .ember-aura-right { right: -49vw; }
+}
+@media (max-width: 380px) {
+  .site-header .header-inner { padding-inline: 4%; gap: 8px; }
+  .header-logo > span { font-size: 10px; padding-left: 6px; }
+  .header-logo { gap: 6px; }
+  .theme-controls { gap: 4px; }
+  .header-actions { gap: 5px; }
+  .bag-label { display: none; }
+}
