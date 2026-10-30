@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import BrandLogo from "./brand-logo";
 import FooterSocial from "./footer-social";
+import EmberEnvironment from "./ember-environment";
 import { business } from "@/lib/business";
 
 const quickLinks = [
@@ -19,11 +20,12 @@ export default function Footer() {
   if (pathname === "/product/popia-nestum" || pathname === "/product/honey-cornflakes" || pathname === "/product/motul-5100") return null;
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer ember-section">
+      <EmberEnvironment scene="quiet" look="void" />
       <div className="footer-top" data-reveal>
         <div className="footer-brand">
           <BrandLogo className="footer-logo" />
-          <FooterSocial />
+          <FooterSocial corrupt />
           <p>Tech for your day. Care for your ride.<br />Treats for your happy little moments.</p>
           <span className="footer-local"><MapPin size={16} aria-hidden="true" /> Locally fulfilled in Kampong Raja, Besut.</span>
         </div>

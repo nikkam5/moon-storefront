@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Manrope, Playfair_Display } from "next/font/google";
+import { Cinzel, DM_Sans, Manrope, Oswald, Playfair_Display, Rajdhani } from "next/font/google";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import EmberAtmosphere from "@/components/layout/ember-atmosphere";
 import StoreProvider, { RevealRoot } from "@/components/cart/store-provider";
 import { business } from "@/lib/business";
 import { publicUrl, siteUrl } from "@/lib/site";
 import "../styles/globals.css";
 import "../styles/storefront-refresh.css";
 import "../styles/store-palette.css";
+import "../styles/ember-theme.css";
 
 const bodyFont = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-body", display: "swap" });
 const headingFont = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-heading", display: "swap" });
 const serifFont = Playfair_Display({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-serif", display: "swap" });
+// Ember only (wordmark, titles, interface). Not preloaded, so other themes never download them.
+const displayFont = Cinzel({ subsets: ["latin"], weight: ["900"], variable: "--font-display", display: "swap", preload: false });
+const emberHeadingFont = Oswald({ subsets: ["latin"], weight: ["600"], variable: "--font-ember-heading", display: "swap", preload: false });
+const emberUiFont = Rajdhani({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-ember-ui", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -67,5 +73,5 @@ const storeJsonLd = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en-MY" suppressHydrationWarning className={`${bodyFont.variable} ${headingFont.variable} ${serifFont.variable}`}><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('moonstore-theme');var s=t==='light'||t==='dark';document.documentElement.dataset.theme=s?t:'dark';if(s)document.documentElement.dataset.themeOverride='true';}catch(e){document.documentElement.dataset.theme='dark';}})();` }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }} /></head><body><StoreProvider><RevealRoot><a href="#main" className="skip-link">Skip to content</a><Header /><main id="main">{children}</main><Footer /></RevealRoot></StoreProvider></body></html>;
+  return <html lang="en-MY" suppressHydrationWarning className={`${bodyFont.variable} ${headingFont.variable} ${serifFont.variable} ${displayFont.variable} ${emberHeadingFont.variable} ${emberUiFont.variable}`}><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('moonstore-theme');var s=t==='light'||t==='dark'||t==='ember';document.documentElement.dataset.theme=s&&t==='light'?'light':'dark';if(t==='ember')document.documentElement.dataset.ember='true';if(s)document.documentElement.dataset.themeOverride='true';}catch(e){document.documentElement.dataset.theme='dark';}})();` }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }} /></head><body><EmberAtmosphere /><StoreProvider><RevealRoot><a href="#main" className="skip-link">Skip to content</a><Header /><main id="main">{children}</main><Footer /></RevealRoot></StoreProvider></body></html>;
 }

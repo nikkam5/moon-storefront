@@ -7,7 +7,9 @@ import { getProduct, money } from "@/lib/product";
 import GalaxyBackdrop from "../motion/galaxy-backdrop";
 import ShinyText from "../motion/shiny-text";
 import TechText from "../motion/tech-text";
+import BloodFall from "../motion/blood-fall";
 import Stack, { type StackHandle } from "../motion/stack";
+import EmberEnvironment from "../layout/ember-environment";
 
 const featured = [getProduct("popia-nestum"), getProduct("kingston-dtxg2"), getProduct("honey-cornflakes"), getProduct("motul-5100")];
 const featuredCards = featured.map((product, index) => <div key={product.id} className={`hero-stack-photo hero-stack-${product.category}`}>
@@ -16,17 +18,17 @@ const featuredCards = featured.map((product, index) => <div key={product.id} cla
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
-  const [colors, setColors] = useState({ ink: "#f2f0e9", accent: "#c2b4eb" });
+  const [colors, setColors] = useState({ ink: "#f2f0e9", accent: "#c2b4eb", ember: false, display: "" });
   const stackRef = useRef<StackHandle>(null);
   const heroRef = useRef<HTMLElement>(null);
   const product = featured[current];
   useEffect(() => {
     const sync = () => {
       const style = getComputedStyle(document.documentElement);
-      setColors({ ink: style.getPropertyValue("--ink").trim(), accent: style.getPropertyValue("--accent").trim() });
+      setColors({ ink: style.getPropertyValue("--ink").trim(), accent: style.getPropertyValue("--accent").trim(), ember: document.documentElement.dataset.ember === "true", display: style.getPropertyValue("--font-display").trim() });
     };
     const observer = new MutationObserver(sync);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-ember"] });
     sync();
     return () => observer.disconnect();
   }, []);
@@ -44,15 +46,25 @@ export default function Hero() {
     return () => { resize.disconnect(); window.removeEventListener("resize", fit); };
   }, []);
   return (
-    <section ref={heroRef} id="home" className="hero-section hero-galaxy section-wrap" aria-labelledby="hero-heading">
+    <section ref={heroRef} id="home" className="hero-section hero-galaxy section-wrap ember-section" aria-labelledby="hero-heading">
+      <EmberEnvironment scene="threshold" look="lava" />
+      {colors.ember && <BloodFall />}
+      {/* Light corruption: three small obsidian sigils that glitch now and then (ember only). */}
+      {[1, 2, 3].map((n) => <svg key={n} className={`ember-sigil ember-sigil-${n}`} viewBox="-110 -110 220 220" aria-hidden="true">
+        <circle r="50" /><circle r="11" /><path d="M63.19 34.52A72 72 0 1 1 22.25 -68.48" />
+      </svg>)}
       <GalaxyBackdrop />
       <div className="hero-copy" data-reveal>
         <div className="moonstore-word">
           <TechText
             text="MOONSTORE"
-            fontWeight={800}
+            fractured={colors.ember}
+            dragGlitch={colors.ember}
+            bleed={colors.ember}
+            fontFamily={colors.ember ? colors.display : ""}
+            fontWeight={colors.ember ? 900 : 800}
             fontSize={90}
-            letterSpacing={0.02}
+            letterSpacing={colors.ember ? 0.06 : 0.02}
             color={colors.ink}
             accentColor={colors.accent}
             reveal="area"

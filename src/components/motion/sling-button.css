@@ -33,6 +33,8 @@
 .sling-button__pad[data-armed] .sling-button__face { transform: scale(1.04); }
 @media (hover: hover) and (pointer: fine) { .sling-button__pad:not([data-held]):not([aria-disabled="true"]):hover .sling-button__face { transform: scale(1.02); } }
 .sling-button__icon { display: inline-flex; will-change: transform; }
+.sling-button__face { position: relative; }
+.sling-button__corrupt { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; }
 .sling-button__dot { position: absolute; top: 50%; left: 50%; width: var(--sl-dot); height: var(--sl-dot); margin: calc(var(--sl-dot) / -2) 0 0 calc(var(--sl-dot) / -2); border-radius: 50%; background: var(--sl-accent); opacity: 0; pointer-events: none; }
 .sling-button__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .sling-button__face { transform: none !important; transition: none; } }

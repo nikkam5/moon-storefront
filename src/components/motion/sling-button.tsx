@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEv
 import { animate, motion, useMotionTemplate, useMotionValue, useMotionValueEvent, useReducedMotion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
+import { corruptionKit, paintCorruption, STEP_MS, type CorruptionKit } from "../layout/corruption-curtain";
 import "./sling-button.css";
 
 const GAP = 4;
@@ -14,6 +15,14 @@ const CANCEL = .5;
 const POWER_CAP = 1.5;
 const DOT_MS = 300;
 const EASE_OUT = "cubic-bezier(0.23, 1, 0.32, 1)";
+// Ember corruption (opt-in): a soft glitch creeps in after a long hold, grows
+// heavier past the arm point, bursts for a moment before the link opens, then
+// the pad is "deleted" once it is back in its socket and reboots.
+const HOLD_DELAY = 900;
+const BURST_MS = 350;
+const DELETE_AFTER = 450;
+const DELETE_MS = 1050;
+type Corrupt = "off" | "held" | "burst" | "delete";
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const rubberband = (offset: number, dimension: number, constant = .55) => (offset * dimension * constant) / (dimension + constant * Math.abs(offset));
 
@@ -38,6 +47,7 @@ type Props = {
   axis?: "any" | "horizontal" | "vertical";
   tapSends?: boolean;
   disabled?: boolean;
+  corrupt?: boolean;
   ariaLabel?: string;
   className?: string;
 };
@@ -53,7 +63,7 @@ type Grip = {
 };
 
 // React Bits SlingButton with TypeScript types and native-link support.
-export default function SlingButton({ children, onSend, href, padColor = "#f5f5f5", iconColor = "#18181b", accentColor = "#f5f5f5", wellColor = "#27272a", bandColor = "#52525b", size = 56, strokeWidth = 3, armAt = 48, maxPull = 160, launchSpeed = 2600, recoil = .2, flight = 120, particles = 14, spread = 60, axis = "any", tapSends = true, disabled = false, ariaLabel = "Send", className = "" }: Props) {
+export default function SlingButton({ children, onSend, href, padColor = "#f5f5f5", iconColor = "#18181b", accentColor = "#f5f5f5", wellColor = "#27272a", bandColor = "#52525b", size = 56, strokeWidth = 3, armAt = 48, maxPull = 160, launchSpeed = 2600, recoil = .2, flight = 120, particles = 14, spread = 60, axis = "any", tapSends = true, disabled = false, corrupt = false, ariaLabel = "Send", className = "" }: Props) {
   const reduce = useReducedMotion();
   const R = Math.max(1, maxPull);
   const ARM = Math.max(1, Math.min(armAt, .8 * R));
@@ -86,6 +96,10 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
   const skipClick = useRef(false);
   const resetGestureRef = useRef<() => void>(() => {});
   const hintId = useId();
+  const corruptRef = useRef<HTMLCanvasElement>(null);
+  const glitch = useRef<{ mode: Corrupt; since: number; pull: number; raf: number; kit: CorruptionKit | null; seed: number; timers: ReturnType<typeof setTimeout>[]; deleteOnReturn: boolean }>({ mode: "off", since: 0, pull: 0, raf: 0, kit: null, seed: 0, timers: [], deleteOnReturn: false });
+  // The delayed link is never cancelled by the glitch, so the link always opens.
+  const linkTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const px = useMotionValue(0);
   const py = useMotionValue(0);
   const padT = useMotionTemplate`translate(${px}px, ${py}px)`;
@@ -93,6 +107,61 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
   function send() {
     onSend?.();
     if (href) window.open(href, "_blank", "noopener,noreferrer");
+  }
+
+  // Corruption runs only when enabled, in Ember, with motion allowed.
+  const corruptOn = () => corrupt && document.documentElement.dataset.ember === "true" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function stopGlitch() {
+    const g = glitch.current;
+    cancelAnimationFrame(g.raf); g.raf = 0;
+    g.timers.forEach(clearTimeout); g.timers = [];
+    g.mode = "off";
+    if (rootRef.current) delete rootRef.current.dataset.corrupt;
+    const canvas = corruptRef.current;
+    canvas?.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function glitchTo(mode: Corrupt) {
+    const g = glitch.current, canvas = corruptRef.current, ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    if (!g.kit) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.ceil(canvas.clientWidth * dpr); canvas.height = Math.ceil(canvas.clientHeight * dpr);
+      g.kit = corruptionKit(ctx, .3);
+      g.seed = Math.floor(performance.now());
+    }
+    g.mode = mode; g.since = performance.now();
+    if (!g.raf) g.raf = requestAnimationFrame(frameGlitch);
+  }
+
+  // Drives the face canvas with the switch's own painter (phase p picks the
+  // look) and sets data-corrupt so CSS can jitter, split, collapse and reboot.
+  function frameGlitch(now: number) {
+    const g = glitch.current, canvas = corruptRef.current, ctx = canvas?.getContext("2d"), root = rootRef.current;
+    g.raf = 0;
+    if (!canvas || !ctx || !root || !g.kit || g.mode === "off") return;
+    const t = now - g.since;
+    let p = -1, level = "";
+    if (g.mode === "held") {
+      // Past the arm point it worsens with the pull; before it, a soft glitch after a long hold.
+      if (g.pull >= 1) { p = .14 + clamp((g.pull - 1) / Math.max(.01, R / ARM - 1), 0, 1) * .3; level = "hard"; }
+      else if (t > HOLD_DELAY) { p = .04 + .08 * clamp((t - HOLD_DELAY) / 800, 0, 1); level = "soft"; }
+    } else if (g.mode === "burst") {
+      p = .45 + clamp(t / BURST_MS, 0, 1) * .129;
+      level = "burst";
+    } else {
+      if (t >= DELETE_MS) { stopGlitch(); return; }
+      // Violent until the pad collapses to a line; after that there is nothing left to corrupt.
+      if (t < DELETE_MS * .45) p = .2 + ((t / 140) % 1) * .38;
+      level = "delete";
+    }
+    if ((root.dataset.corrupt ?? "") !== level) { if (level) root.dataset.corrupt = level; else delete root.dataset.corrupt; }
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.setTransform(canvas.width / w, 0, 0, canvas.height / h, 0, 0);
+    if (p < 0) ctx.clearRect(0, 0, w, h);
+    else paintCorruption(ctx, w, h, p, Math.floor(now / STEP_MS), g.seed, g.kit);
+    g.raf = requestAnimationFrame(frameGlitch);
   }
 
   function relaxIcon() {
@@ -171,7 +240,7 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
     arc.setAttribute("stroke-dasharray", `${p} ${1 - p}`);
     arc.setAttribute("stroke-dashoffset", String(p / 2));
     arc.style.opacity = p > .01 ? "1" : "0";
-    if (grip.current) aimIcon(ux, uy, distance);
+    if (grip.current) { aimIcon(ux, uy, distance); glitch.current.pull = distance / ARM; }
     arc.setAttribute("transform", `rotate(${Math.atan2(-uy, -ux) * 180 / Math.PI})`);
     if (dotPending.current && projection <= size / 4) launchDot();
   }
@@ -219,6 +288,10 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
     grip.current = { id: event.pointerId, startX: event.clientX, startY: event.clientY, scale, moved: false, hist: [], rawOrigin: distance > .5 ? { x: raw * x / distance, y: raw * y / distance } : { x: 0, y: 0 }, slop: event.pointerType === "touch" ? SLOP.coarse : SLOP.fine };
     try { event.currentTarget.setPointerCapture(event.pointerId); } catch {}
     setHeld(true);
+    stopGlitch();
+    glitch.current.deleteOnReturn = false;
+    glitch.current.pull = 0;
+    if (corruptOn()) glitchTo("held");
   }
 
   function onPointerMove(event: PointerEvent<HTMLElement>) {
@@ -272,6 +345,7 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
     const speed = Math.hypot(vx, vy);
     if (speed > FINGER_MAX) { vx *= FINGER_MAX / speed; vy *= FINGER_MAX / speed; }
     if (!g.moved) {
+      stopGlitch();
       relaxIcon();
       if (tapSends && !cancelled && !disabled) send();
       if (distance > .5) settle({ x: 0, y: 0 });
@@ -283,8 +357,15 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
       const magnitude = Math.hypot(v0x, v0y);
       if (magnitude > HAND_MAX) { v0x *= HAND_MAX / magnitude; v0y *= HAND_MAX / magnitude; }
       if (!fire) relaxIcon();
+      const corrupting = glitch.current.mode === "held";
+      if (!fire) stopGlitch();
       if (fire) {
-        send();
+        if (corrupting) {
+          glitchTo("burst");
+          clearTimeout(linkTimer.current);
+          linkTimer.current = setTimeout(send, BURST_MS);
+          glitch.current.timers.push(setTimeout(() => glitchTo("delete"), DELETE_AFTER));
+        } else send();
         if (reduce) {
           setSent(true);
           clearTimeout(sentTimer.current);
@@ -313,6 +394,7 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
       if (paintFrame.current !== null) cancelAnimationFrame(paintFrame.current);
       paintFrame.current = null;
       dotRefs.current.forEach((dot) => dot?.getAnimations().forEach((animation) => animation.cancel()));
+      stopGlitch();
     };
     const cancel = () => {
       const id = grip.current?.id;
@@ -331,14 +413,26 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
     resetGestureRef.current = cancel;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const motionChange = () => { if (media.matches) cancel(); };
-    const visibilityChange = () => { if (document.hidden) cancel(); };
-    window.addEventListener("blur", cancel);
+    const leave = () => {
+      if (glitch.current.mode === "burst" || glitch.current.mode === "delete") glitch.current.deleteOnReturn = true;
+      cancel();
+    };
+    const back = () => {
+      if (!glitch.current.deleteOnReturn || document.hidden) return;
+      glitch.current.deleteOnReturn = false;
+      if (corruptOn()) glitchTo("delete");
+    };
+    const visibilityChange = () => { if (document.hidden) leave(); else back(); };
+    window.addEventListener("blur", leave);
+    window.addEventListener("focus", back);
     document.addEventListener("visibilitychange", visibilityChange);
     media.addEventListener("change", motionChange);
     return () => {
       stopEffects();
+      clearTimeout(linkTimer.current);
       resetGestureRef.current = () => {};
-      window.removeEventListener("blur", cancel);
+      window.removeEventListener("blur", leave);
+      window.removeEventListener("focus", back);
       document.removeEventListener("visibilitychange", visibilityChange);
       media.removeEventListener("change", motionChange);
     };
@@ -378,7 +472,7 @@ export default function SlingButton({ children, onSend, href, padColor = "#f5f5f
         if (skipClick.current) { skipClick.current = false; return; }
         if (!disabled) send();
       }}>
-        <span className="sling-button__face"><span ref={iconRef} className="sling-button__icon">{children ?? <HugeiconsIcon icon={ArrowUp02Icon} size={Math.round(size * .4)} strokeWidth={2.2} />}</span></span>
+        <span className="sling-button__face"><span ref={iconRef} className="sling-button__icon">{children ?? <HugeiconsIcon icon={ArrowUp02Icon} size={Math.round(size * .4)} strokeWidth={2.2} />}</span>{corrupt && <canvas ref={corruptRef} className="sling-button__corrupt" aria-hidden="true" />}</span>
       </Pad>
     </motion.span>
     <span id={hintId} className="sling-button__sr">Press Enter to {href ? "open the link" : "send"}, or drag away and release.</span>

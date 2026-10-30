@@ -77,3 +77,59 @@ The shared ivory, charcoal and lavender store theme now applies to every route. 
 Popia retains its green and cream colors, Cornflakes its dark green and honey-gold colors, and Motul its black and red colors. Their component and stylesheet files were not changed. The product routes now inherit browser theme colors from the root layout.
 
 Type checking and the final production build passed. The focused desktop/mobile run recorded **36 passed, 0 failed**, covering every route's shared palette in both themes, the original product colors, no-JavaScript rendering, client navigation, team portraits and dimensions, and product cart regressions. JSON results and preview screenshots are preserved outside the repository in `verification-palette-2026-10-05`. No push or deployment was performed.
+
+## Optional Obsidian & Ember experiment — 21 October 2026
+
+Added a chamfered, solid-droplet control beside the existing light/dark toggle. Its visual face has a restrained intermittent glitch; pointer hover and keyboard focus reveal lower-edge crimson trails that retract on exit. Ember mode adds obsidian/burgundy surfaces, warm ivory text, sparse embers, edge-framed red aura and angular fractures. Glow is restricted to the requested aura and bleed. The user's full experiment-specific design restrictions are recorded in README.md.
+
+Activation uses a roughly 700 ms full-screen snapshot glitch, with a shorter exit and a reduced-motion fade. A guarded fallback handles unsupported/skipped snapshots; controls lock until completion, and timers and listeners clean up. Saved Ember selection applies before hydration; turning it off restores the previous normal theme. Hidden tabs pause ambience and settle pending transitions. Galaxy rendering pauses while its background is hidden by Ember mode. The three teammate product components and styles remain unchanged.
+
+Type checking and the production build passed. The final complete desktop/mobile suite recorded **265 passed, 11 intentional platform skips, 0 failed and 0 flaky**, including 18 new Ember cases. The focused palette/Ember run passed all 40 checks. Screenshot and JSON evidence is stored outside the repository in `ember-preview-2026-10-21`. No push or deployment was performed.
+
+## Ember wordmark interaction — 24 October 2026
+
+Updated only the homepage MOONSTORE wordmark for Ember mode with chamfered ivory letters and small crimson fractures. Dragged letters show red horizontal signal slices and sparse interference pixels that change rapidly and strengthen with displacement. The effect composites only the selected letter; the existing sweep, hover reveal, frame, tether and spring return remain in place. Normal light/dark wordmarks retain their original appearance. The broader environment and typography redesign remains pending.
+
+Release fades the signal promptly while the letter springs home. Cancellation, lost pointer capture and blur clear the signal and release capture. Reduced motion keeps a static red offset while held, returns immediately, and responds to live preference changes.
+
+Type checking and the production build passed. The final focused desktop/mobile browser run recorded **34 passed, 2 intentional desktop exclusions for touch-only cases, 0 failed and 0 flaky**. Checks cover actual changing red canvas pixels, clean spring return, touch release/cancellation, lost capture, blur, reduced motion, normal-theme dragging, rendering cadence and existing animation regressions. JSON results and preview screenshots are saved outside the repository in `wordmark-preview-2026-10-24`. The production preview is available locally on port 3100. No push or deployment was performed.
+
+## Completed Ember environment — 24 October 2026
+
+Completed the wider atmosphere plan after the isolated wordmark update. A shared canvas renderer paints distinct threshold, fault, suspended and quiet compositions beneath the existing sections. Angular obsidian planes, broken crimson edges, branching seams and sparse flat fragments share the same visual vocabulary. Slow autonomous drift, shallow scroll displacement and restrained nearby pointer response add movement without moving content or controls. Perimeter flame aura supplies the requested burning red light. Dark reading areas protect text contrast.
+
+The environment also appears on the standalone shop, cart, USB product page and shared footer. The three teammate product components and styles remain untouched. Ember-only type scale and spacing retain the existing Manrope/DM Sans families, with system monospace labels. The MOONSTORE drag glitch, theme control, full-screen switch, model and shopping functions remain.
+
+Scenes limit raster area to about two million pixels and painting to roughly 30 fps. Intersection, tab visibility, theme and curtain observers stop drawing when inactive or covered. Reduced motion paints a static scene without pointer or scroll movement and responds to live preference changes. All observers, subscriptions and handlers clean up on unmount. No dependencies, stock images or decorative 3D assets were introduced.
+
+The full desktop/mobile run recorded **289 passed, 13 intentional platform skips and 2 failures**, exposing a small scroll-anchor shift when Ember's type metrics changed. The final transition disables scroll anchoring while active and preserves the current viewport during the swap. The subsequent environment/wordmark/theme run passed 42 cases with 2 platform skips; its two exit assertions required the same actual-pointerdown baseline already used on entry. The final theme suite, with that baseline on both directions, passed **18 of 18 cases**. Final type checking and the production build also passed.
+
+Reconciliation by file, suite title, test title and project confirms **291 distinct applicable cases passed across these runs, 13 intentional skips, 0 unresolved failures and 0 flaky cases**. The full run preceded the localized transition fix; affected Ember, environment and wordmark coverage ran afterward. JSON evidence (`full-results.json`, `focused-results.json`, `browser-results.json`) and desktop/mobile screenshots are stored in the chat's `ember-environment-2026-10-24` artifact directory. No push or deployment was performed.
+
+## Ember redesign: blood, lava and corruption — 30–31 October 2026
+
+Reworked Ember around the Genshin Impact abyss references (neon red grid, dark void, lava field) and a "Blackwall" crimson data corruption. Ember now uses Oswald headings, Rajdhani interface text and a Cinzel MOONSTORE logo, loaded only for Ember. Body copy stays DM Sans. Buttons, filters, prices and the cart badge use dark blood fills with vibrant red edges. Teammate product pages keep their own designs.
+
+- **Wordmark:** blood pours into the letters once per visit, then drips keep releasing drops that fall behind the hero copy. They stop when Home scrolls out of view.
+- **Section looks:** each Ember section now has its own background:
+  - lava for the hero, shop and cart (haze, lava cracks, neon-edged cubes, embers);
+  - a neon grid for the home catalog;
+  - a calmer grid with red ember particles and a lava pixel mosaic for Our story;
+  - a dark void with lit stone blocks for feedback and the footer;
+  - the grid over lava for the USB page.
+- **Backgrounds:** static layers are cached, so they paint at the display rate instead of the previous ~30 fps cap. They also fade at section edges.
+- **Theme switch:** a 600 ms corruption in both directions (tear, datamosh, crimson/black overload during the swap, heading decode), replacing the snapshot glitch. Its painter is shared with the controls below.
+- **Drop button:** round, with a single drop that falls halfway and freezes broken. The whole button then loops the switch's corruption.
+- **Footer social buttons:** they corrupt while dragged, softly after a long hold and harder past the arm point. They burst before the link opens, then are "deleted" and reboot. A tap still opens immediately.
+- **Home:** three small ring sigils behind the hero glitch occasionally.
+
+Reduced motion keeps every effect still or off, and hidden tabs pause or finish them. `.claude/launch.json` (local preview config) is now ignored by git.
+
+Type checking and the production build passed. The complete desktop/mobile suite, run before the last two changes, recorded **299 passed, 13 intentional platform skips and 2 failures**. Neither failure comes from this work:
+
+- "normal light and dark wordmarks retain their original dragging" times out in this environment with or without the Ember changes, checked by swapping the wordmark file back.
+- "live reduced motion stops hero canvases" polls a canvas while the default theme's WebGL galaxy renders at about 364 ms per frame in headless Chromium (17 ms with the galaxy hidden).
+
+After the final two changes (button corruption delay and footer social corruption), the Ember theme, social-button and new Ember sling specs passed **33 of 33 with 5 platform skips**. A cinematic-transition test assumed the switch outlasted its checks; it now reads the in-flight state at the click and passed 8 of 8 repeats.
+
+Not yet verified: native Safari (the social link opens 0.35 s after release, which older Safari may treat as a blocked popup) and real-device frame rates. No push or deployment was performed.

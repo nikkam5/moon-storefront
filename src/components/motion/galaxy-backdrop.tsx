@@ -13,6 +13,15 @@ export default function GalaxyBackdrop() {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const [reduced, setReduced] = useState(true);
+  const [ember, setEmber] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setEmber(document.documentElement.dataset.ember === "true");
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-ember"] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -66,7 +75,7 @@ export default function GalaxyBackdrop() {
     <div ref={host} className="galaxy-backdrop" aria-hidden="true">
       {mounted && !reduced && (
         <Galaxy
-          paused={!visible}
+          paused={!visible || ember}
           density={0.4}
           glowIntensity={0.2}
           saturation={0.12}

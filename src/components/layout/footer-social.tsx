@@ -12,6 +12,7 @@ const socials = [
   { label: "WhatsApp", href: business.whatsapp, icon: WhatsappIcon },
 ];
 
-export default function FooterSocial() {
-  return <nav className="footer-social" aria-label="Moon Store social links">{socials.map(({ label, href, icon }) => <SlingButton key={label} href={href} ariaLabel={`${label} (opens in a new tab)`} padColor="var(--social-pad)" iconColor="var(--social-icon)" accentColor="var(--social-accent)" wellColor="var(--social-well)" bandColor="var(--social-band)" size={48} strokeWidth={2} armAt={38} maxPull={120} flight={70} particles={10} tapSends><HugeiconsIcon icon={icon} size={23} strokeWidth={1.8} aria-hidden="true" /></SlingButton>)}</nav>;
+// `corrupt` adds the Ember drag corruption; teammate product pages leave it off.
+export default function FooterSocial({ corrupt = false }: { corrupt?: boolean }) {
+  return <nav className="footer-social" aria-label="Moon Store social links">{socials.map(({ label, href, icon }) => <SlingButton key={label} href={href} corrupt={corrupt} ariaLabel={`${label} (opens in a new tab)`} padColor="var(--social-pad)" iconColor="var(--social-icon)" accentColor="var(--social-accent)" wellColor="var(--social-well)" bandColor="var(--social-band)" size={48} strokeWidth={2} armAt={38} maxPull={120} flight={70} particles={10} tapSends><HugeiconsIcon icon={icon} size={23} strokeWidth={1.8} aria-hidden="true" /></SlingButton>)}</nav>;
 }

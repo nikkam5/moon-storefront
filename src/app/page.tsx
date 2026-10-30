@@ -2,6 +2,7 @@ import Hero from "@/components/home/hero";
 import TeamStory from "@/components/home/team-story";
 import ShopCatalog from "@/components/catalog/shop-catalog";
 import CustomerFeedback from "@/components/home/customer-feedback";
+import EmberEnvironment from "@/components/layout/ember-environment";
 
 export default function Home() {
   return (
@@ -9,7 +10,8 @@ export default function Home() {
       <div className="curtain-stage">
         <Hero />
 
-        <section id="shop" className="catalog-section ticket-catalog-section section-wrap" aria-labelledby="catalog-heading">
+        <section id="shop" className="catalog-section ticket-catalog-section section-wrap ember-section" aria-labelledby="catalog-heading">
+          <EmberEnvironment scene="fault" look="grid" />
           <div className="section-heading" data-reveal>
             <div><h2 id="catalog-heading">Shop the collection.</h2><p className="section-intro">Four local picks. Click a photo or tear a ticket to explore.</p></div>
           </div>
